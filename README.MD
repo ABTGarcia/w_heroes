@@ -1,39 +1,49 @@
 # Wallapop Heroes
 
-The app **Wallapop Heroes** is an application to get information of your favourite Marvel superheroes. 
+**Wallapop Heroes** is an iOS app that lets you browse information about your favorite Marvel superheroes.
 
-## Features
-- Show a list of heroes
-- Show the detail of a hero
+## ✨ Features
 
-## Requirements
+- Displays a list of Marvel heroes.
+- Shows detailed information for each hero.
 
-- Xcode 16.2+
-- iOS 18+
-- Swift 6+
+## 📋 Requirements
 
-## Installation
+- Xcode 16.2 or later  
+- iOS 18.0 or later  
+- Swift 6.0 or later  
 
-1. Clone the repository:
+## 🚀 Installation
 
+1. **Clone the repository**
     ```bash
     git clone https://github.com/ABTGarcia/w_heroes
     ```
 
-2. Install dependencies
-- [Brew](https://brew.sh)
-    ```bash
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    ```
+2. **Install dependencies**
+    - Install [Homebrew](https://brew.sh) (if not installed):
+      ```bash
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      ```
 
-- [Swiftlint](https://github.com/realm/SwiftLint)
-    ```bash
-    brew install swiftlint
-    ```
+    - Install [SwiftLint](https://github.com/realm/SwiftLint):
+      ```bash
+      brew install swiftlint
+      ```
 
-3. Open, build and run using Xcode.
+3. **Open the project in Xcode**
+    - Open `WallapopHeroes.xcodeproj` (or `.xcworkspace` if using CocoaPods/SwiftPM).
+    - Build and run the app on the simulator or a device.
 
-## Architecture
+## 🏗 Architecture
 
- This project was made using the MVVM architecture.
+The app is built using the **MVVM (Model-View-ViewModel)** architecture.  
+You can learn more about MVVM [here](https://www.hackingwithswift.com/books/ios-swiftui/introducing-mvvm-into-your-swiftui-project).
 
+## ✅ Testing
+
+The codebase is designed with testability in mind. We encourage writing and running unit tests to ensure the app’s reliability and maintainability.
+
+To accomplish this objective, we will use this frameworks:
+- [Swift Testing](https://developer.apple.com/documentation/testing)
+- [Snapshot Testing](https://github.com/pointfreeco/swift-snapshot-testing)
