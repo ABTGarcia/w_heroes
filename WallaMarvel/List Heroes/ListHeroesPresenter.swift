@@ -13,17 +13,17 @@ protocol ListHeroesUI: AnyObject {
 final class ListHeroesPresenter: ListHeroesPresenterProtocol {
     var ui: ListHeroesUI?
     private let getHeroesUseCase: GetHeroesUseCaseProtocol
-    
+
     init(getHeroesUseCase: GetHeroesUseCaseProtocol = GetHeroes()) {
         self.getHeroesUseCase = getHeroesUseCase
     }
-    
+
     func screenTitle() -> String {
         "List of Heroes"
     }
-    
+
     // MARK: UseCases
-    
+
     func getHeroes() {
         getHeroesUseCase.execute { characterDataContainer in
             print("Characters \(characterDataContainer.characters)")
@@ -31,4 +31,3 @@ final class ListHeroesPresenter: ListHeroesPresenterProtocol {
         }
     }
 }
-
