@@ -29,10 +29,10 @@ final class APIClient: APIClientProtocol {
 
         let urlRequest = URLRequest(url: urlComponent!.url!)
 
-        URLSession.shared.dataTask(with: urlRequest) { data, _, _ in
-            let dataModel = try! JSONDecoder().decode(CharacterDataContainer.self, from: data!)
-            completionBlock(dataModel)
-            print(dataModel)
+        URLSession.shared.dataTask(with: urlRequest) { _, _, _ in
+            // let dataModel = try! JSONDecoder().decode(CharacterDataContainer.self, from: data!)
+            // completionBlock(dataModel)
+            // print(dataModel)
         }.resume()
     }
 }
