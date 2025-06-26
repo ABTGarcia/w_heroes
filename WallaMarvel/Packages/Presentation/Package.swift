@@ -12,10 +12,7 @@ let package = Package(
             targets: ["Presentation"])
     ],
     dependencies: [
-        .package(
-            url: "https://github.com/pointfreeco/swift-snapshot-testing",
-            from: "1.12.0"
-        )
+        .package(path: "../TestExtensions")
     ],
     targets: [
         .target(
@@ -28,7 +25,7 @@ let package = Package(
             name: "PresentationTests",
             dependencies: [
                 "Presentation",
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                "TestExtensions"
             ],
             path: "Tests"
         )

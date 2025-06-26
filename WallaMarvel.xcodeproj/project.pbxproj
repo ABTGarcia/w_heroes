@@ -63,6 +63,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Presentation,
+				TestExtensions,
 			);
 			target = 1A0E3A942862F7E200132FCB /* WallaMarvel */;
 		};
@@ -328,6 +329,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		88B2B2E82E0D53A3008D7711 /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

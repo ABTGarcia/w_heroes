@@ -1,7 +1,7 @@
 import Testing
 import SwiftUI
 @testable import Presentation
-import SnapshotTesting
+import TestExtensions
 import Foundation
 
 @MainActor
@@ -13,13 +13,7 @@ struct HeroesListViewTests {
     }
 
     @Test func body() async throws {
-        // Given
-        let hostingController = UIHostingController(rootView: sut)
-
         // Then
-        assertSnapshot(
-            of: hostingController,
-            as: .image(on: .iPhoneSe)
-        )
+        expectSnapshot(matching: sut, size: .iPhone16Portrait)
     }
 }
