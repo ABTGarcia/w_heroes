@@ -2,6 +2,7 @@ import Testing
 import SwiftUI
 @testable import Presentation
 import TestExtensions
+import DesignSystem
 import Foundation
 
 @MainActor
@@ -24,9 +25,9 @@ struct HeroesListViewTests {
     @Test func loaded() async throws {
         // Given
         viewModel.state = .loaded(HeroesListViewData(list: [
-            HeroeViewData(id: "1", image: "A", name: "B"),
-            HeroeViewData(id: "2", image: "A", name: "C"),
-            HeroeViewData(id: "3", image: "A", name: "D")
+            HeroCardViewData(id: "1", image: "A", name: "B", description: "EEE"),
+            HeroCardViewData(id: "2", image: "A", name: "C", description: "III"),
+            HeroCardViewData(id: "3", image: "A", name: "D", description: "OOO")
         ]))
 
         // Then

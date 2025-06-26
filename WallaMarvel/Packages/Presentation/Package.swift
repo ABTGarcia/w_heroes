@@ -12,6 +12,7 @@ let package = Package(
             targets: ["Presentation"])
     ],
     dependencies: [
+        .package(path: "../DesignSystem"),
         .package(path: "../TestExtensions"),
         .package(
           url: "https://github.com/hmlongco/Factory",
@@ -22,6 +23,7 @@ let package = Package(
         .target(
             name: "Presentation",
             dependencies: [
+                "DesignSystem",
                 .product(name: "FactoryKit", package: "Factory")
             ],
             path: "Sources"

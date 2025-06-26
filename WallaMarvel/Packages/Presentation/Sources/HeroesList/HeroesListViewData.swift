@@ -1,9 +1,5 @@
-public struct HeroesListViewData: Equatable, Sendable {
-    let list: [HeroeViewData]
-}
+import DesignSystem
 
-public struct HeroeViewData: Equatable, Sendable, Identifiable {
-    public let id: String
-    let image: String
-    let name: String
+public struct HeroesListViewData: Equatable, Sendable {
+    let list: [HeroCardViewData]
 }

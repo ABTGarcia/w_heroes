@@ -2,15 +2,16 @@ import Testing
 @testable import Presentation
 import FactoryKit
 import TestExtensions
+import DesignSystem
 
 @MainActor
 struct HeroesListViewModelTests {
     private var sut: HeroesListViewModel!
     private let container: Container
     private let listData = HeroesListViewData(list: [
-        HeroeViewData(id: "1", image: "https://picsum.photos/100", name: "A"),
-        HeroeViewData(id: "2", image: "https://picsum.photos/100", name: "B"),
-        HeroeViewData(id: "3", image: "", name: "C")
+        HeroCardViewData(id: "1", image: "https://picsum.photos/100", name: "A", description: "orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut"),
+        HeroCardViewData(id: "2", image: "https://picsum.photos/100", name: "B", description: "orem ipsum dotempor incididunt ut labore"),
+        HeroCardViewData(id: "3", image: "", name: "C", description: "")
     ])
 
     init() {
