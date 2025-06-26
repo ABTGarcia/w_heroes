@@ -31,8 +31,12 @@
       brew install swiftlint
       ```
 
+    - Install [Sourcery](https://github.com/krzysztofzablocki/Sourcery) (only if you want to modify some tests):
+      ```bash
+      brew install sourcery
+      ```
+
 3. **Open the project in Xcode**
-    - Open `WallapopHeroes.xcodeproj` (or `.xcworkspace` if using CocoaPods/SwiftPM).
     - Build and run the app on the simulator or a device.
 
 ## 🏗 Architecture
@@ -47,3 +51,10 @@ The codebase is designed with testability in mind. We encourage writing and runn
 To accomplish this objective, we will use this frameworks:
 - [Swift Testing](https://developer.apple.com/documentation/testing)
 - [Snapshot Testing](https://github.com/pointfreeco/swift-snapshot-testing)
+- [Sourcery](https://github.com/krzysztofzablocki/Sourcery)
+
+### About mocking protocols
+
+Thanks to Sourcery we can create automatically mocks from protocols. To do that, we have to run the command ```sourcery``` from the project's root folder and it will create the mocks of the protocols that are marked with ```// sourcery: Automockable```.
+
+In order to modify the path of the mocks, imports, sourcefolders, etc... check the file .sourcery.yml in the root folder.

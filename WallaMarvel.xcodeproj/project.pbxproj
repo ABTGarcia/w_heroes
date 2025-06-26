@@ -71,7 +71,6 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		88B2B2EB2E0D59AE008D7711 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (88B2B2ED2E0D59E3008D7711 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
-		88F1EDCB2E0D6CC400F64C05 /* WallaMarvelTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = WallaMarvelTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +105,6 @@
 			children = (
 				88F1EDBE2E0D6B0100F64C05 /* WallaMarvel.xctestplan */,
 				1A0E3A972862F7E200132FCB /* WallaMarvel */,
-				88F1EDCB2E0D6CC400F64C05 /* WallaMarvelTests */,
 				1A0E3A962862F7E200132FCB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -243,9 +241,6 @@
 			);
 			dependencies = (
 				88F1EDCF2E0D6CC400F64C05 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				88F1EDCB2E0D6CC400F64C05 /* WallaMarvelTests */,
 			);
 			name = WallaMarvelTests;
 			packageProductDependencies = (

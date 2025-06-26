@@ -12,12 +12,17 @@ let package = Package(
             targets: ["Presentation"])
     ],
     dependencies: [
-        .package(path: "../TestExtensions")
+        .package(path: "../TestExtensions"),
+        .package(
+          url: "https://github.com/hmlongco/Factory",
+          from: "2.5.1"
+        )
     ],
     targets: [
         .target(
             name: "Presentation",
             dependencies: [
+                .product(name: "FactoryKit", package: "Factory")
             ],
             path: "Sources"
         ),
