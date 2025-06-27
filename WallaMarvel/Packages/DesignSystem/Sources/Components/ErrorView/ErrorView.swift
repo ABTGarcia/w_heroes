@@ -2,8 +2,8 @@ import SwiftUI
 
 public struct ErrorView: View {
     public init(
-        errorTitle: String = "Something Went Wrong",
-        errorMessage: String = "Please try again later.",
+        errorTitle: String = WMString.genericErrorTitle,
+        errorMessage: String = WMString.genericErrorMessage,
         onRetry: @escaping () -> Void) {
         self.errorTitle = errorTitle
         self.errorMessage = errorMessage
@@ -22,18 +22,18 @@ public struct ErrorView: View {
                 .frame(width: 150, height: 150)
                 .foregroundColor(.yellow)
 
-            Text(errorTitle)
+            Text(String(localized: String.LocalizationValue(errorTitle), bundle: .module))
                 .font(.title)
                 .fontWeight(.bold)
 
-            Text(errorMessage)
+            Text(String(localized: String.LocalizationValue(errorMessage), bundle: .module))
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
                 .padding(.horizontal)
 
             Button(action: onRetry) {
-                Text("Retry")
+                Text(WMString.genericErrorRetryButton)
                     .fontWeight(.semibold)
                     .padding()
                     .frame(maxWidth: .infinity)

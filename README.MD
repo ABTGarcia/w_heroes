@@ -21,6 +21,7 @@
     ```
 
 2. **Install dependencies**
+Mandatory dependencies to run the project:
     - Install [Homebrew](https://brew.sh) (if not installed):
       ```bash
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -30,8 +31,9 @@
       ```bash
       brew install swiftlint
       ```
+Dependencies to modify the project:
 
-    - Install [Sourcery](https://github.com/krzysztofzablocki/Sourcery) (only if you want to modify some tests):
+    - Install [Sourcery](https://github.com/krzysztofzablocki/Sourcery):
       ```bash
       brew install sourcery
       ```
