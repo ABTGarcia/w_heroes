@@ -25,7 +25,11 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
         case .loading:
             ProgressView()
         case .error:
-            EmptyView()
+            ErrorView {
+                Task {
+                    await viewModel.process(.loadData)
+                }
+            }
         }
     }
 }
