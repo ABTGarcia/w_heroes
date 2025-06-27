@@ -13,9 +13,12 @@ rules:
 configurations:
  - sources:
      - WallaMarvel/Packages/Presentation/Sources
+     - WallaMarvel/Packages/Domain/Sources/UseCases
    templates:
      - WallaMarvel/Automockable.stencil
    output: WallaMarvel/Packages/Presentation/Tests/Mocks.swift
    args:
+     autoMockableImports:
+       - Domain
      autoMockableTestableImports:
        - Presentation

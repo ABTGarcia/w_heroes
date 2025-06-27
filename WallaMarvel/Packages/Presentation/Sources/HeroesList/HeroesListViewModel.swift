@@ -9,6 +9,7 @@ public enum HeroesListEvent: Equatable, Sendable {
 public enum HeroesListState: Equatable, Sendable {
     case loaded(HeroesListViewData)
     case loading
+    case error
 }
 
 // sourcery: AutoMockable
@@ -34,11 +35,18 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     public func process(_ event: HeroesListEvent) async {
         switch event {
         case .loadData:
-            state = .loaded(HeroesListViewData(list: [
-                HeroCardViewData(id: "1", image: "https://picsum.photos/100", name: "A", description: "orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut"),
-                HeroCardViewData(id: "2", image: "https://picsum.photos/100", name: "B", description: "orem ipsum dotempor incididunt ut labore"),
-                HeroCardViewData(id: "3", image: "", name: "C", description: "")
-            ]))
+            state = .loading
+            do {
+                guard let list = try await container.getHeroesListUseCase()?.invoke() else {
+                    state = .error
+                    return
+                }
+                state = .loaded(
+                    HeroesListViewData(model: list)
+                )
+            } catch {
+                state = .error
+            }
         }
     }
 }
