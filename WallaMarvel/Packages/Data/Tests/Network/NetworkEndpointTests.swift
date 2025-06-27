@@ -1,0 +1,24 @@
+import Testing
+@testable import Data
+
+struct NetworkEndpointTests {
+
+    @Test func defaultData() async throws {
+        // Given
+        let sut = NetworkEndpointMock()
+
+        // Then
+        #expect(sut.path == "test")
+        #expect(sut.baseURL == "http://localhost:8080/api/")
+        #expect(sut.cachePolicy == .useProtocolCachePolicy)
+        #expect(sut.httpBody == .none)
+        #expect(sut.httpMethod == .get)
+        #expect(sut.queryParams == .none)
+        #expect(sut.headers == .none)
+        #expect(sut.timeoutInterval == 10.0)
+    }
+
+    struct NetworkEndpointMock: NetworkEndpointProtocol {
+        var path = "test"
+    }
+}
