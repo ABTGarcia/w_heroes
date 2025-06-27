@@ -32,6 +32,7 @@
 		88B2B2ED2E0D59E3008D7711 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Data,
 				DesignSystem,
 				Domain,
 				Presentation,
