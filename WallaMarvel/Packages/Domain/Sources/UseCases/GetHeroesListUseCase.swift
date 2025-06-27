@@ -13,8 +13,9 @@ public struct GetHeroesListUseCase: GetHeroesListUseCaseProtocol {
     }
 
     public func invoke() async throws -> HeroesList {
-        let heroes = [Hero(id: "1", image: "AAA", name: "BBB", description: "CCC")]
-        let pagination = Pagination(offset: 0, limit: 20, total: 30, count: 1)
-        return HeroesList(heroes: heroes, pagination: pagination)
+        guard let repository = container.heroRepository() else {
+            preconditionFailure("Repository not found")
+        }
+        return try await repository.findAll()
     }
 }

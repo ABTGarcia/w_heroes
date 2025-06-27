@@ -26,7 +26,7 @@ struct HeroesListViewModelTests {
         // Given
         let heroesList = HeroesList(
             heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
-            pagination: Pagination(offset: 1, limit: 2, total: 3, count: 4))
+            pagination: Pagination(offset: 1, limit: 2, total: 3))
         let listData = HeroesListViewData(model: heroesList)
         getHeroesListUseCaseProtocolMock.invokeReturnValue = heroesList
 

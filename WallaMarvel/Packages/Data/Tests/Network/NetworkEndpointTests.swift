@@ -9,11 +9,11 @@ struct NetworkEndpointTests {
 
         // Then
         #expect(sut.path == "test")
-        #expect(sut.baseURL == "http://localhost:8080/api/")
+        #expect(sut.baseURL == "https://comicvine.gamespot.com/api/")
         #expect(sut.cachePolicy == .useProtocolCachePolicy)
         #expect(sut.httpBody == .none)
         #expect(sut.httpMethod == .get)
-        #expect(sut.queryParams == .none)
+        #expect(sut.queryParams == ["format": "json"])
         #expect(sut.headers == .none)
         #expect(sut.timeoutInterval == 10.0)
     }

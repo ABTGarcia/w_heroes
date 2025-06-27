@@ -24,6 +24,17 @@ extension NetworkServiceBaseProtocol {
             }
         }
 
+        if endpoint.secured {
+            // The APIkey should be retrieved in a more secure way, as backend authentication but I don't have it here
+            let obfuscated: [UInt8] = [
+                98, 56, 50, 56, 48, 54, 54, 102, 98, 54,
+                49, 49, 98, 98, 52, 100, 48, 100, 54, 51,
+                55, 99, 48, 98, 98, 101, 54, 56, 98, 98,
+                57, 48, 102, 50, 99, 51, 57, 49, 51, 52
+            ]
+            urlComponents?.queryItems?.append(URLQueryItem(name: "api_key", value: String(bytes: obfuscated, encoding: .utf8)))
+        }
+
         guard let url = urlComponents?.url else {
             return nil
         }

@@ -9,14 +9,16 @@ public protocol NetworkEndpointProtocol {
     var path: String { get }
     var queryParams: [String: String]? { get }
     var timeoutInterval: TimeInterval { get }
+    var secured: Bool { get }
 }
 
 public extension NetworkEndpointProtocol {
-    var baseURL: String { "http://localhost:8080/api/" }
+    var baseURL: String { "https://comicvine.gamespot.com/api/" }
     var cachePolicy: URLRequest.CachePolicy { .useProtocolCachePolicy }
     var httpBody: Data? { nil }
     var httpMethod: HTTPMethod { .get }
-    var queryParams: [String: String]? { nil }
+    var queryParams: [String: String]? { ["format": "json"] }
     var headers: [String: String]? { nil }
     var timeoutInterval: TimeInterval { 10.0 }
+    var secured: Bool { true }
 }

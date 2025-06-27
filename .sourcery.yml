@@ -32,4 +32,11 @@ configurations:
        - Domain
      autoMockableTestableImports:
        - Data
-
+ - sources:
+     - WallaMarvel/Packages/Domain/Sources/RepositoryProtocols
+   templates:
+     - WallaMarvel/Automockable.stencil
+   output: WallaMarvel/Packages/Domain/Tests/Mocks.swift
+   args:
+     autoMockableTestableImports:
+       - Domain
