@@ -58,3 +58,6 @@ To accomplish this objective, we will use this frameworks:
 Thanks to Sourcery we can create automatically mocks from protocols. To do that, we have to run the command ```sourcery``` from the project's root folder and it will create the mocks of the protocols that are marked with ```// sourcery: Automockable```.
 
 In order to modify the path of the mocks, imports, sourcefolders, etc... check the file .sourcery.yml in the root folder.
+
+### Snapshot Testing
+To successfully pass all the snapshot tests, the battery must be executed using iPhone 16 Pro simulator with iOS 18.2, with Dark Appearance disabled and in English language.

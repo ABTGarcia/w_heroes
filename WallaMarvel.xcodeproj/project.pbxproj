@@ -17,6 +17,8 @@
 		1A821ED6286305590024D397 /* MarvelDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A821ED5286305590024D397 /* MarvelDataSource.swift */; };
 		1A821ED82863081A0024D397 /* MarvelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A821ED72863081A0024D397 /* MarvelRepository.swift */; };
 		1AC0347F2863214900E93178 /* GetHeroes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC0347E2863214900E93178 /* GetHeroes.swift */; };
+		885EDE9F2E0DCDC9006F9608 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885EDE9E2E0DCDC5006F9608 /* Dependencies.swift */; };
+		885EDEA22E0DCF04006F9608 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = 885EDEA12E0DCF04006F9608 /* Domain */; };
 		88B2B2F02E0D5B55008D7711 /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = 88B2B2EF2E0D5B55008D7711 /* Presentation */; };
 		88B2B2F22E0D5BC8008D7711 /* WallaMarvelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B2B2F12E0D5BC0008D7711 /* WallaMarvelApp.swift */; };
 		88F1EDE12E0D92EC00F64C05 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 88F1EDE02E0D92EC00F64C05 /* DesignSystem */; };
@@ -36,6 +38,7 @@
 		1A821ED5286305590024D397 /* MarvelDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelDataSource.swift; sourceTree = "<group>"; };
 		1A821ED72863081A0024D397 /* MarvelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelRepository.swift; sourceTree = "<group>"; };
 		1AC0347E2863214900E93178 /* GetHeroes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetHeroes.swift; sourceTree = "<group>"; };
+		885EDE9E2E0DCDC5006F9608 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		88B2B2F12E0D5BC0008D7711 /* WallaMarvelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallaMarvelApp.swift; sourceTree = "<group>"; };
 		88F1EDBE2E0D6B0100F64C05 /* WallaMarvel.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = WallaMarvel.xctestplan; path = ../WallaMarvel.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -45,6 +48,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				DesignSystem,
+				Domain,
 				Presentation,
 				TestExtensions,
 			);
@@ -63,6 +67,7 @@
 			files = (
 				88F1EDE12E0D92EC00F64C05 /* DesignSystem in Frameworks */,
 				88B2B2F02E0D5B55008D7711 /* Presentation in Frameworks */,
+				885EDEA22E0DCF04006F9608 /* Domain in Frameworks */,
 				A66389F32DCE202500466318 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,6 +80,7 @@
 			children = (
 				88F1EDBE2E0D6B0100F64C05 /* WallaMarvel.xctestplan */,
 				1A0E3A972862F7E200132FCB /* WallaMarvel */,
+				885EDEA02E0DCF04006F9608 /* Frameworks */,
 				1A0E3A962862F7E200132FCB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +96,7 @@
 		1A0E3A972862F7E200132FCB /* WallaMarvel */ = {
 			isa = PBXGroup;
 			children = (
+				885EDE9E2E0DCDC5006F9608 /* Dependencies.swift */,
 				88B2B2F12E0D5BC0008D7711 /* WallaMarvelApp.swift */,
 				88B2B2EB2E0D59AE008D7711 /* Packages */,
 				1A821EC52862FD500024D397 /* Detail Heroe */,
@@ -153,6 +160,13 @@
 				1AC0347E2863214900E93178 /* GetHeroes.swift */,
 			);
 			path = UseCases;
+			sourceTree = "<group>";
+		};
+		885EDEA02E0DCF04006F9608 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,6 +276,7 @@
 				1A821ED6286305590024D397 /* MarvelDataSource.swift in Sources */,
 				1A7B9BBF286D81B600EBC1A6 /* Thumbnail.swift in Sources */,
 				1A821ED4286302EC0024D397 /* CharacterResponseDataModel.swift in Sources */,
+				885EDE9F2E0DCDC9006F9608 /* Dependencies.swift in Sources */,
 				1A821EC92862FE3C0024D397 /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -493,6 +508,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		885EDEA12E0DCF04006F9608 /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
+		};
 		88B2B2EF2E0D5B55008D7711 /* Presentation */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Presentation;

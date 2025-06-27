@@ -4,6 +4,7 @@ import SwiftUI
 import TestExtensions
 import DesignSystem
 import Foundation
+import Domain
 
 @MainActor
 struct HeroesListViewTests {
@@ -24,11 +25,18 @@ struct HeroesListViewTests {
 
     @Test func loaded() async throws {
         // Given
-        viewModel.state = .loaded(HeroesListViewData(list: [
-            HeroCardViewData(id: "1", image: "A", name: "B", description: "EEE"),
-            HeroCardViewData(id: "2", image: "A", name: "C", description: "III"),
-            HeroCardViewData(id: "3", image: "A", name: "D", description: "OOO")
-        ]))
+        viewModel.state = .loaded(HeroesListViewData(
+            model: HeroesList(
+                heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+                pagination: Pagination(offset: 1, limit: 2, total: 3, count: 4))))
+
+        // Then
+        expectSnapshot(matching: sut, size: .iPhone16Portrait)
+    }
+
+    @Test func error() async throws {
+        // Given
+        viewModel.state = .error
 
         // Then
         expectSnapshot(matching: sut, size: .iPhone16Portrait)

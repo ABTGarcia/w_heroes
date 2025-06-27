@@ -4,17 +4,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "Presentation",
+    name: "Domain",
     platforms: [.iOS(.v18)],
     products: [
         .library(
-            name: "Presentation",
-            targets: ["Presentation"])
+            name: "Domain",
+            targets: ["Domain"])
     ],
     dependencies: [
-        .package(path: "../Domain"),
-        .package(path: "../DesignSystem"),
-        .package(path: "../TestExtensions"),
         .package(
           url: "https://github.com/hmlongco/Factory",
           from: "2.5.1"
@@ -22,21 +19,15 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Presentation",
+            name: "Domain",
             dependencies: [
-                "Domain",
-                "DesignSystem",
                 .product(name: "FactoryKit", package: "Factory")
             ],
             path: "Sources"
         ),
         .testTarget(
-            name: "PresentationTests",
-            dependencies: [
-                "Presentation",
-                "TestExtensions"
-            ],
-            path: "Tests"
+            name: "DomainTests",
+            dependencies: ["Domain"]
         )
     ]
 )

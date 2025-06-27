@@ -14,8 +14,37 @@ import UIKit
 import AppKit
 #endif
 
+import Domain
+
 @testable import Presentation
 
+public class GetHeroesListUseCaseProtocolMock: GetHeroesListUseCaseProtocol, @unchecked Sendable {
+
+    public init() {}
+
+    // MARK: - invoke
+
+    public var invokeThrowableError: (any Error)?
+    public var invokeCallsCount = 0
+    public var invokeCalled: Bool {
+        return invokeCallsCount > 0
+    }
+    public var invokeReturnValue: HeroesList!
+    public var invokeClosure: (() async throws -> HeroesList)?
+
+    public func invoke() async throws -> HeroesList {
+        invokeCallsCount += 1
+        if let error = invokeThrowableError {
+            throw error
+        }
+        if let invokeClosure = invokeClosure {
+            return try await invokeClosure()
+        } else {
+            return invokeReturnValue
+        }
+    }
+
+}
 public class HeroesListViewModelProtocolMock: HeroesListViewModelProtocol {
 
     public init() {}
