@@ -42,7 +42,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                     Hero(id: "1", image: "https://picsum.photos/100", name: "E", description: "T"),
                     Hero(id: "2", image: "A", name: "B", description: "C")
                 ],
-                pagination: Pagination(offset: 0, limit: 1, total: 2, count: 3))))
+                pagination: Pagination(offset: 0, limit: 1, total: 2))))
 
         func process(_ event: HeroesListEvent) async {}
     }

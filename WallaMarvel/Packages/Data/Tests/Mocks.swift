@@ -18,6 +18,31 @@ import Domain
 
 @testable import Data
 
+class HeroDatasourceProtocolMock: HeroDatasourceProtocol, @unchecked Sendable {
+
+    // MARK: - findAll
+
+    var findAllThrowableError: (any Error)?
+    var findAllCallsCount = 0
+    var findAllCalled: Bool {
+        return findAllCallsCount > 0
+    }
+    var findAllReturnValue: ListEntity<[HeroEntity]>!
+    var findAllClosure: (() async throws -> ListEntity<[HeroEntity]>)?
+
+    func findAll() async throws -> ListEntity<[HeroEntity]> {
+        findAllCallsCount += 1
+        if let error = findAllThrowableError {
+            throw error
+        }
+        if let findAllClosure = findAllClosure {
+            return try await findAllClosure()
+        } else {
+            return findAllReturnValue
+        }
+    }
+
+}
 public class NetworkEnvironmentProtocolMock: NetworkEnvironmentProtocol, @unchecked Sendable {
 
     public init() {}

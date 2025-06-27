@@ -79,7 +79,7 @@ struct NetworkServiceBaseTests {
         #expect(request?.httpMethod == endpoint.httpMethod.rawValue.uppercased())
         #expect(request?.allHTTPHeaderFields == ["Content-Type": "application/json"])
         #expect(request?.httpBody == endpoint.httpBody)
-        #expect(request?.url?.absoluteString == endpoint.baseURL + endpoint.path)
+        #expect(request?.url?.absoluteString == "https://comicvine.gamespot.com/api/test?format=json&api_key=b828066fb611bb4d0d637c0bbe68bb90f2c39134")
     }
 
     struct NetworkServiceBaseMock: NetworkServiceBaseProtocol {

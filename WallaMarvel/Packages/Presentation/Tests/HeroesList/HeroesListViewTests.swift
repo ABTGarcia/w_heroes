@@ -28,7 +28,7 @@ struct HeroesListViewTests {
         viewModel.state = .loaded(HeroesListViewData(
             model: HeroesList(
                 heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
-                pagination: Pagination(offset: 1, limit: 2, total: 3, count: 4))))
+                pagination: Pagination(offset: 1, limit: 2, total: 3))))
 
         // Then
         expectSnapshot(matching: sut, size: .iPhone16Portrait)
