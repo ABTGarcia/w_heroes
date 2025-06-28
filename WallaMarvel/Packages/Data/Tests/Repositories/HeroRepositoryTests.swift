@@ -13,7 +13,7 @@ struct HeroRepositoryTests {
             offset: 2,
             numberOfTotalResults: 3,
             results: [
-                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "D", screenUrl: "E"))
+                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
             ]
         )
     }

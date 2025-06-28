@@ -11,7 +11,7 @@ struct HeroesListViewModelTests {
     private let container: Container
     private var getHeroesListUseCaseProtocolMock = GetHeroesListUseCaseProtocolMock()
     private let heroesList = HeroesList(
-        heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+        heroes: [Hero(id: "1", image: "A", name: "B", description: "C", apiDetailUrl: "J")],
         pagination: Pagination(offset: 1, limit: 2, total: 5)
     )
 
@@ -43,7 +43,7 @@ struct HeroesListViewModelTests {
     @Test func loadDataLastHeroReached() async throws {
         // Given
         let heroesList = HeroesList(
-            heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+            heroes: [Hero(id: "1", image: "A", name: "B", description: "C", apiDetailUrl: "J")],
             pagination: Pagination(offset: 10, limit: 20, total: 3)
         )
         let expected: HeroesListState = .loaded(HeroesListViewData(heroes: [], isLoading: false))

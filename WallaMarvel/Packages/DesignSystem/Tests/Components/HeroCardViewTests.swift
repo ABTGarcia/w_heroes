@@ -9,7 +9,8 @@ struct HeroCardViewTests {
             id: "3",
             image: "AAA",
             name: "BB",
-            description: "CC"
+            description: "CC",
+            apiDetailUrl: "J"
         )
         let sut = await HeroCardView(data: data)
 
