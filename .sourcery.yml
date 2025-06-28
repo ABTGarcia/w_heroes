@@ -1,0 +1,42 @@
+rules:
+- id: no-controller-in-models
+  description: Do not define controllers in the model package.
+  pattern: ${name} = ${value}
+  condition: name.contains("controller")
+  paths:
+    include:
+      - models
+  tests:
+  - match: custom_controller = CustomController()
+  - match: custom_controller = SomeObject()
+  - match: controller = SomeObject()
+configurations:
+ - sources:
+     - WallaMarvel/Packages/Presentation/Sources
+     - WallaMarvel/Packages/Domain/Sources/UseCases
+   templates:
+     - WallaMarvel/Automockable.stencil
+   output: WallaMarvel/Packages/Presentation/Tests/Mocks.swift
+   args:
+     autoMockableImports:
+       - Domain
+     autoMockableTestableImports:
+       - Presentation
+ - sources:
+     - WallaMarvel/Packages/Data/Sources
+   templates:
+     - WallaMarvel/Automockable.stencil
+   output: WallaMarvel/Packages/Data/Tests/Mocks.swift
+   args:
+     autoMockableImports:
+       - Domain
+     autoMockableTestableImports:
+       - Data
+ - sources:
+     - WallaMarvel/Packages/Domain/Sources/RepositoryProtocols
+   templates:
+     - WallaMarvel/Automockable.stencil
+   output: WallaMarvel/Packages/Domain/Tests/Mocks.swift
+   args:
+     autoMockableTestableImports:
+       - Domain
