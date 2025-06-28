@@ -4,6 +4,7 @@ import Domain
 
 public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
+    @EnvironmentObject private var coordinator: Coordinator
 
     public init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -27,6 +28,9 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                                 }
                             }
                             .padding(.horizontal, .spacingL)
+                            .onTapGesture {
+                                coordinator.push(page: .heroDetail(hero.id))
+                            }
                     }
 
                     if data.isLoading {

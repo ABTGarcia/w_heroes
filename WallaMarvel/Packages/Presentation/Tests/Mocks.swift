@@ -49,6 +49,34 @@ public class GetHeroesListUseCaseProtocolMock: GetHeroesListUseCaseProtocol, @un
     }
 
 }
+public class HeroDetailViewModelProtocolMock: HeroDetailViewModelProtocol {
+
+    public init() {}
+
+    public var state: HeroDetailState {
+        get { return underlyingState }
+        set(value) { underlyingState = value }
+    }
+    public var underlyingState: (HeroDetailState)!
+
+    // MARK: - process
+
+    public var processCallsCount = 0
+    public var processCalled: Bool {
+        return processCallsCount > 0
+    }
+    public var processReceivedEvent: (HeroDetailEvent)?
+    public var processReceivedInvocations: [(HeroDetailEvent)] = []
+    public var processClosure: ((HeroDetailEvent) async -> Void)?
+
+    public func process(_ event: HeroDetailEvent) async {
+        processCallsCount += 1
+        processReceivedEvent = event
+        processReceivedInvocations.append(event)
+        await processClosure?(event)
+    }
+
+}
 public class HeroesListViewModelProtocolMock: HeroesListViewModelProtocol {
 
     public init() {}
