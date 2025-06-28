@@ -23,7 +23,7 @@ public struct GetHeroesListUseCase: GetHeroesListUseCaseProtocol {
             return HeroesList(heroes: [], pagination: pagination)
         }
 
-        if heroes.isEmpty || heroes.suffix(5).contains(where: { $0.id == lastId}) {
+        if heroes.isEmpty || heroes.suffix(5).contains(where: { $0.id == lastId }) {
             canRequestMore = false
             let offset = pagination.offset + pagination.limit
 
@@ -37,6 +37,5 @@ public struct GetHeroesListUseCase: GetHeroesListUseCaseProtocol {
         } else {
             return HeroesList(heroes: [], pagination: pagination)
         }
-
     }
 }

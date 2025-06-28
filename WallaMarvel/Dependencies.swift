@@ -1,6 +1,6 @@
+import Data
 import Domain
 import FactoryKit
-import Data
 
 extension Container: @retroactive AutoRegistering {
     public func autoRegister() {

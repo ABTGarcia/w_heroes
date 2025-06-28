@@ -9,15 +9,14 @@
 
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
+    import UIKit
 #elseif os(OSX)
-import AppKit
+    import AppKit
 #endif
 
 @testable import Domain
 
 public class HeroRepositoryProtocolMock: HeroRepositoryProtocol, @unchecked Sendable {
-
     public init() {}
 
     // MARK: - findAll
@@ -25,10 +24,11 @@ public class HeroRepositoryProtocolMock: HeroRepositoryProtocol, @unchecked Send
     public var findAllFromThrowableError: (any Error)?
     public var findAllFromCallsCount = 0
     public var findAllFromCalled: Bool {
-        return findAllFromCallsCount > 0
+        findAllFromCallsCount > 0
     }
-    public var findAllFromReceivedPosition: (Int)?
-    public var findAllFromReceivedInvocations: [(Int)] = []
+
+    public var findAllFromReceivedPosition: Int?
+    public var findAllFromReceivedInvocations: [Int] = []
     public var findAllFromReturnValue: HeroesList!
     public var findAllFromClosure: ((Int) async throws -> HeroesList)?
 
@@ -39,13 +39,12 @@ public class HeroRepositoryProtocolMock: HeroRepositoryProtocol, @unchecked Send
         if let error = findAllFromThrowableError {
             throw error
         }
-        if let findAllFromClosure = findAllFromClosure {
+        if let findAllFromClosure {
             return try await findAllFromClosure(position)
         } else {
             return findAllFromReturnValue
         }
     }
-
 }
 
 // swiftlint:enable line_length

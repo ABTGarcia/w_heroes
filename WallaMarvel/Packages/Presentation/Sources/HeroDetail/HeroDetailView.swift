@@ -1,6 +1,6 @@
-import SwiftUI
 import DesignSystem
 import Domain
+import SwiftUI
 
 public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
@@ -43,7 +43,8 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                                 name: String(localized: String.LocalizationValue(WMString.heroDetailSectionFriends)),
                                 systemImageName: "heart.fill",
                                 content: data.friends,
-                                backgroundColor: .wmSweetBackground))
+                                backgroundColor: .wmSweetBackground
+                            ))
 
                         Spacer()
 
@@ -52,8 +53,8 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                                 name: String(localized: String.LocalizationValue(WMString.heroDetailSectionEnemies)),
                                 systemImageName: "heart.slash.fill",
                                 content: data.enemies,
-                                backgroundColor: .wmSadBackground))
-
+                                backgroundColor: .wmSadBackground
+                            ))
                     }
 
                     SectionCardView(
@@ -61,7 +62,8 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                             name: String(localized: String.LocalizationValue(WMString.heroDetailSectionCreators)),
                             systemImageName: "pencil.and.scribble",
                             content: data.creators,
-                            backgroundColor: .wmDreamBackground))
+                            backgroundColor: .wmDreamBackground
+                        ))
                 }
                 .padding()
             }
@@ -78,11 +80,8 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
 }
 
 #Preview {
-
     final class HeroDetailViewModelPreview: HeroDetailViewModelProtocol {
-        func process(_ event: HeroDetailEvent) async {
-
-        }
+        func process(_: HeroDetailEvent) async {}
 
         var state: HeroDetailState = .loaded(
             HeroDetailViewData(
@@ -92,9 +91,10 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                 deck: "Nura Nal is from the planet Naltor, where all of the inhabitants have the ability to see into the ",
                 creators: ["Edmond Hamilton", "John Forte"],
                 enemies: ["Adam Orion", "Alex Luthor", "Anti-Monitor"],
-                friends: ["Acrata", "Alex Danvers", "Ambassador Relnic"]))
+                friends: ["Acrata", "Alex Danvers", "Ambassador Relnic"]
+            ))
 
-        func process(_ event: HeroesListEvent) async {}
+        func process(_: HeroesListEvent) async {}
     }
     let viewModel = HeroDetailViewModelPreview()
 

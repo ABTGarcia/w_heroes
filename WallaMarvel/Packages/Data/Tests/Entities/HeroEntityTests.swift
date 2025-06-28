@@ -1,6 +1,6 @@
-import Testing
 @testable import Data
 import Domain
+import Testing
 
 struct HeroEntityTests {
     @Test func toDomain() async throws {

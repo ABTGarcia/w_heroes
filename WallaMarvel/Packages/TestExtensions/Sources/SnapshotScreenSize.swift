@@ -8,19 +8,19 @@ public enum SnapshotScreenSize {
 
     public var cgSize: CGSize {
         switch self {
-        case .iPhone16Portrait: return CGSize(width: 393, height: 852)
-        case .iPhoneSEPortrait: return CGSize(width: 320, height: 568)
-        case .smallRectangle: return CGSize(width: 200, height: 150)
-        case let .custom(width, height): return CGSize(width: width, height: height)
+        case .iPhone16Portrait: CGSize(width: 393, height: 852)
+        case .iPhoneSEPortrait: CGSize(width: 320, height: 568)
+        case .smallRectangle: CGSize(width: 200, height: 150)
+        case let .custom(width, height): CGSize(width: width, height: height)
         }
     }
 
     public var sizeName: String {
         switch self {
-        case .iPhone16Portrait: return "iPhone"
-        case .iPhoneSEPortrait: return "iPhoneSEPortrait"
-        case .smallRectangle: return "smallRectangle"
-        case .custom: return "customSize"
+        case .iPhone16Portrait: "iPhone"
+        case .iPhoneSEPortrait: "iPhoneSEPortrait"
+        case .smallRectangle: "smallRectangle"
+        case .custom: "customSize"
         }
     }
 }

@@ -1,6 +1,6 @@
-import Testing
 @testable import DesignSystem
 import TestExtensions
+import Testing
 
 struct SectionCardViewTests {
     @Test func initTests() async throws {
@@ -9,7 +9,8 @@ struct SectionCardViewTests {
             name: "AAAAA",
             systemImageName: "heart.fill",
             content: ["Adwa", "fdswef", "fewe"],
-            backgroundColor: .wmDreamBackground)
+            backgroundColor: .wmDreamBackground
+        )
         let sut = await SectionCardView(data: data)
 
         // Then

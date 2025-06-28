@@ -1,6 +1,6 @@
-import Testing
-import SwiftUI
 @testable import DesignSystem
+import SwiftUI
+import Testing
 
 struct ColorsTests {
     @Test func allFColors() async throws {

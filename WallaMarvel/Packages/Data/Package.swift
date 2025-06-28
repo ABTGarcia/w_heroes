@@ -9,7 +9,8 @@ let package = Package(
     products: [
         .library(
             name: "Data",
-            targets: ["Data"])
+            targets: ["Data"]
+        )
     ],
     dependencies: [
         .package(path: "../Domain")

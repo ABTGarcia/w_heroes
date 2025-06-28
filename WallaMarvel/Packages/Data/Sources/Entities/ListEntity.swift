@@ -7,6 +7,6 @@ struct ListEntity<DataType: Codable & Equatable>: Codable, Equatable {
     let results: DataType
 
     public func domainPagination() -> Pagination {
-        Pagination(offset: self.offset, limit: self.limit, total: self.numberOfTotalResults)
+        Pagination(offset: offset, limit: limit, total: numberOfTotalResults)
     }
 }

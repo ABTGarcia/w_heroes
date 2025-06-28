@@ -1,5 +1,5 @@
 import SwiftUI
 
-public struct WMImage {
+public enum WMImage {
     public static let heroDetailPlaceholder = Image(.heroDetailPlaceholder)
 }

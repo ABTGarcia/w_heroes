@@ -4,7 +4,8 @@ public struct ErrorView: View {
     public init(
         errorTitle: String = WMString.genericErrorTitle,
         errorMessage: String = WMString.genericErrorMessage,
-        onRetry: @escaping () -> Void) {
+        onRetry: @escaping () -> Void
+    ) {
         self.errorTitle = errorTitle
         self.errorMessage = errorMessage
         self.onRetry = onRetry
@@ -15,33 +16,33 @@ public struct ErrorView: View {
     var onRetry: () -> Void
 
     public var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: .spacingM) {
             Image(.error)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 150, height: 150)
-                .foregroundColor(.yellow)
 
             Text(String(localized: String.LocalizationValue(errorTitle), bundle: .module))
-                .font(.title)
-                .fontWeight(.bold)
+                .font(.wmHeader)
+                .multilineTextAlignment(.center)
+                .foregroundColor(.wmMainText)
 
             Text(String(localized: String.LocalizationValue(errorMessage), bundle: .module))
-                .font(.body)
+                .font(.wmTitle)
                 .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
+                .foregroundColor(.wmSecondaryText)
                 .padding(.horizontal)
 
             Button(action: onRetry) {
                 Text(WMString.genericErrorRetryButton)
-                    .fontWeight(.semibold)
+                    .font(.wmTitle)
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(Color.wmMain)
-                    .foregroundColor(.white)
+                    .foregroundColor(.wmLightText)
                     .cornerRadius(12)
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, .spacingL)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)

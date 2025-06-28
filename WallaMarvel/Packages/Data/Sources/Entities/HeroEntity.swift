@@ -8,6 +8,6 @@ struct HeroEntity: Codable, Equatable {
     let image: ImageEntity
 
     public func toDomain() -> Hero {
-        Hero(id: String(self.id), image: self.image.iconUrl, name: self.name, description: self.deck ?? "")
+        Hero(id: String(id), image: image.iconUrl, name: name, description: deck ?? "")
     }
 }

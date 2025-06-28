@@ -7,6 +7,6 @@ class HeroesListEndpoint: NetworkEndpointProtocol {
     var queryParams: [String: String]? = [:]
 
     init(from position: Int) {
-        self.queryParams = ["limit": "20", "format": "json", "offset": String(position)]
+        queryParams = ["limit": "20", "format": "json", "offset": String(position)]
     }
 }

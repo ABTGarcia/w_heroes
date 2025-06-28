@@ -1,8 +1,8 @@
-import Testing
 @testable import Data
+import Testing
 
 struct HeroesListEndpointTests {
-    @Test func testValues() async throws {
+    @Test func values() async throws {
         // Given
         let sut = HeroesListEndpoint(from: 10)
 

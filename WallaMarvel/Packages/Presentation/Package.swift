@@ -9,15 +9,16 @@ let package = Package(
     products: [
         .library(
             name: "Presentation",
-            targets: ["Presentation"])
+            targets: ["Presentation"]
+        )
     ],
     dependencies: [
         .package(path: "../Domain"),
         .package(path: "../DesignSystem"),
         .package(path: "../TestExtensions"),
         .package(
-          url: "https://github.com/hmlongco/Factory",
-          from: "2.5.1"
+            url: "https://github.com/hmlongco/Factory",
+            from: "2.5.1"
         )
     ],
     targets: [

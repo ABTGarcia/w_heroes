@@ -11,16 +11,17 @@ public struct HeroesListViewData: Equatable, Sendable {
     }
 
     public mutating func appendHeroes(_ heroes: [Hero]) {
-        heroes.forEach { hero in
+        for hero in heroes {
             list.append(heroToCard(hero))
         }
     }
 
     private func heroToCard(_ hero: Hero) -> HeroCardViewData {
         HeroCardViewData(
-        id: hero.id,
-        image: hero.image,
-        name: hero.name,
-        description: hero.description)
+            id: hero.id,
+            image: hero.image,
+            name: hero.name,
+            description: hero.description
+        )
     }
 }

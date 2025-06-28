@@ -1,10 +1,10 @@
-import Testing
-import SwiftUI
-@testable import Presentation
-import TestExtensions
 import DesignSystem
-import Foundation
 import Domain
+import Foundation
+@testable import Presentation
+import SwiftUI
+import TestExtensions
+import Testing
 
 @MainActor
 struct HeroesListViewTests {

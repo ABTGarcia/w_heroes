@@ -9,4 +9,5 @@ public extension Color {
     static let wmSadBackground = Color("SadBackground", bundle: .module)
     static let wmMainText = Color("MainText", bundle: .module)
     static let wmSecondaryText = Color("SecondaryText", bundle: .module)
+    static let wmLightText = Color("LightText", bundle: .module)
 }

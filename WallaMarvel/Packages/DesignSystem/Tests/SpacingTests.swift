@@ -1,6 +1,6 @@
-import Testing
 import CoreGraphics
 @testable import DesignSystem
+import Testing
 
 struct SpacingTests {
     @Test func allSpacings() async throws {

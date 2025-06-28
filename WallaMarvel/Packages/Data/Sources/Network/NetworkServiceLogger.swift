@@ -42,7 +42,7 @@ public final class NetworkServiceLogger: NetworkServiceLoggerProtocol {
         let components = NSURLComponents(string: urlString ?? "")
 
         var responseLog = ""
-        if let urlString = urlString {
+        if let urlString {
             responseLog += "\(urlString)"
             responseLog += "\n\n"
         }
@@ -60,7 +60,7 @@ public final class NetworkServiceLogger: NetworkServiceLoggerProtocol {
             let bodyString = String(data: body, encoding: .utf8) ?? "Can't render body. Not utf8 encoded"
             responseLog += "\n\(bodyString)\n"
         }
-        if let error = error {
+        if let error {
             responseLog += "\nError: \(error.localizedDescription)\n"
         }
 

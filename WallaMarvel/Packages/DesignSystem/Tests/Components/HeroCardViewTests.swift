@@ -1,6 +1,6 @@
-import Testing
 @testable import DesignSystem
 import TestExtensions
+import Testing
 
 struct HeroCardViewTests {
     @Test func initTests() async throws {
@@ -9,7 +9,8 @@ struct HeroCardViewTests {
             id: "3",
             image: "AAA",
             name: "BB",
-            description: "CC")
+            description: "CC"
+        )
         let sut = await HeroCardView(data: data)
 
         // Then

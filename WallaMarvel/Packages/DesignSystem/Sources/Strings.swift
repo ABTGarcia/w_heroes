@@ -1,6 +1,6 @@
 import Foundation
 
-public struct WMString {
+public enum WMString {
     // Ideally I would use SwiftGen to auto generate it, but the PR with support for String catalogs is still open
     // https://github.com/SwiftGen/SwiftGen/pull/1124
     public static let genericErrorTitle = String(localized: "generic_error_title", bundle: .module)

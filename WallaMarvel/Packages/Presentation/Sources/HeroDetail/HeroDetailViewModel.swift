@@ -1,7 +1,7 @@
-import FactoryKit
-import Foundation
 import DesignSystem
 import Domain
+import FactoryKit
+import Foundation
 
 public enum HeroDetailEvent: Equatable, Sendable {
     case loadData
@@ -40,5 +40,4 @@ public final class HeroDetailViewModel: HeroDetailViewModelProtocol {
             print("Load Data")
         }
     }
-
 }

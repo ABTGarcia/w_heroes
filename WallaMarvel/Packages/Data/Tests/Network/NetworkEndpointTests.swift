@@ -1,8 +1,7 @@
-import Testing
 @testable import Data
+import Testing
 
 struct NetworkEndpointTests {
-
     @Test func defaultData() async throws {
         // Given
         let sut = NetworkEndpointMock()

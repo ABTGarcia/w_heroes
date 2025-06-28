@@ -1,9 +1,8 @@
-import Testing
 @testable import Data
 import Foundation
+import Testing
 
 struct NetworkServiceBaseTests {
-
     let loggerMock = NetworkServiceLoggerProtocolMock()
     let environmentMock = NetworkEnvironmentProtocolMock()
     let urlRequest = URLRequest(url: URL(string: "https://apple.com")!)

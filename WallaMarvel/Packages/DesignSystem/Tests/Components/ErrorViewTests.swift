@@ -1,6 +1,6 @@
-import Testing
 @testable import DesignSystem
 import TestExtensions
+import Testing
 
 struct ErrorViewTests {
     @Test func initTests() async throws {
