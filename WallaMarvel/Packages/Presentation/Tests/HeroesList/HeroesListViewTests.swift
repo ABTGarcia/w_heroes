@@ -26,7 +26,7 @@ struct HeroesListViewTests {
     @Test func loaded() async throws {
         // Given
         viewModel.state = .loaded(HeroesListViewData(
-            heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+            heroes: [Hero(id: "1", image: "A", name: "B", description: "C", apiDetailUrl: "J")],
             isLoading: false
         ))
 
@@ -37,7 +37,7 @@ struct HeroesListViewTests {
     @Test func loadedLoading() async throws {
         // Given
         viewModel.state = .loaded(HeroesListViewData(
-            heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+            heroes: [Hero(id: "1", image: "A", name: "B", description: "C", apiDetailUrl: "J")],
             isLoading: true
         ))
 

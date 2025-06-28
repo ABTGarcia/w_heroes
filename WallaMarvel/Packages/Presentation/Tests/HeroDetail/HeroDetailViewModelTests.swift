@@ -10,7 +10,7 @@ struct HeroDetailViewModelTests {
     private var sut: HeroDetailViewModel!
     private let container: Container
     private let heroesList = HeroesList(
-        heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+        heroes: [Hero(id: "1", image: "A", name: "B", description: "C", apiDetailUrl: "J")],
         pagination: Pagination(offset: 1, limit: 2, total: 5)
     )
 

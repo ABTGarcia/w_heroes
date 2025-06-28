@@ -21,7 +21,8 @@ public struct HeroesListViewData: Equatable, Sendable {
             id: hero.id,
             image: hero.image,
             name: hero.name,
-            description: hero.description
+            description: hero.description,
+            apiDetailUrl: hero.apiDetailUrl
         )
     }
 }
