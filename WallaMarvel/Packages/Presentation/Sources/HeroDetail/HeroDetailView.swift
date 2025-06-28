@@ -85,7 +85,6 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
 
         var state: HeroDetailState = .loaded(
             HeroDetailViewData(
-                id: "1254",
                 name: "Dream Girl",
                 image: "https://comicvine.gamespot.com/a/uploads/screen_medium/2/29837/2422799-dreamgirl_lsh_vol7_04.jpg",
                 deck: "Nura Nal is from the planet Naltor, where all of the inhabitants have the ability to see into the ",

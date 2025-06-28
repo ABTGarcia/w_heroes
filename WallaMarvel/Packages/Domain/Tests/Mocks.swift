@@ -45,6 +45,33 @@ public class HeroRepositoryProtocolMock: HeroRepositoryProtocol, @unchecked Send
             return findAllFromReturnValue
         }
     }
+
+    // MARK: - getDetail
+
+    public var getDetailWithUrlThrowableError: (any Error)?
+    public var getDetailWithUrlCallsCount = 0
+    public var getDetailWithUrlCalled: Bool {
+        getDetailWithUrlCallsCount > 0
+    }
+
+    public var getDetailWithUrlReceivedUrl: String?
+    public var getDetailWithUrlReceivedInvocations: [String] = []
+    public var getDetailWithUrlReturnValue: HeroDetail!
+    public var getDetailWithUrlClosure: ((String) async throws -> HeroDetail)?
+
+    public func getDetail(withUrl url: String) async throws -> HeroDetail {
+        getDetailWithUrlCallsCount += 1
+        getDetailWithUrlReceivedUrl = url
+        getDetailWithUrlReceivedInvocations.append(url)
+        if let error = getDetailWithUrlThrowableError {
+            throw error
+        }
+        if let getDetailWithUrlClosure {
+            return try await getDetailWithUrlClosure(url)
+        } else {
+            return getDetailWithUrlReturnValue
+        }
+    }
 }
 
 // swiftlint:enable line_length

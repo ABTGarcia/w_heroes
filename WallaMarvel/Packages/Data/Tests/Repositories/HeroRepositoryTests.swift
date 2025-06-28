@@ -39,6 +39,30 @@ struct HeroRepositoryTests {
         #expect(result == HeroesList(heroes: heroesDomain, pagination: paginationDomain))
     }
 
+    @Test func getDetail() async throws {
+        // Given
+        let detailURL = "AAA"
+        let detailEntity = HeroDetailEntity(
+            id: 1,
+            name: "A",
+            realName: "B",
+            deck: "C",
+            image: ImageEntity(iconUrl: "D", screenUrl: "E"),
+            creators: [RelatedSource(id: 1, name: "F", apiDetailUrl: "G")],
+            characterFriends: [RelatedSource(id: 2, name: "H", apiDetailUrl: "I")],
+            characterEnemies: [RelatedSource(id: 3, name: "J", apiDetailUrl: "K")]
+        )
+        heroDatasource.getDetailWithUrlReturnValue = detailEntity
+
+        // When
+        let result = try await sut.getDetail(withUrl: detailURL)
+
+        // Then
+        #expect(heroDatasource.getDetailWithUrlCallsCount == 1)
+        #expect(heroDatasource.getDetailWithUrlReceivedUrl == detailURL)
+        #expect(result == detailEntity.toDomain())
+    }
+
     private func setDependencies() {
         container.heroDatasource.register { heroDatasource }
     }
