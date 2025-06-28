@@ -4,8 +4,8 @@ import SwiftUI
 import Testing
 
 @MainActor
-public func expectSnapshot<Value>(
-    matching value: @autoclosure () throws -> Value,
+public func expectSnapshot(
+    matching value: @autoclosure () throws -> some View,
     size: SnapshotScreenSize? = nil,
     record recording: Bool? = nil,
     timeout: TimeInterval = 5,
@@ -18,7 +18,7 @@ public func expectSnapshot<Value>(
     container _: Container? = nil,
     skip: Bool = false,
     arguments: String? = nil
-) where Value: View {
+) {
     guard !skip else { return }
     do {
         let view = try value()

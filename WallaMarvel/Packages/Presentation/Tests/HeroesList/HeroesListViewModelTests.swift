@@ -1,9 +1,9 @@
-import Testing
-@testable import Presentation
-import FactoryKit
 import DesignSystem
 import Domain
+import FactoryKit
+@testable import Presentation
 import TestExtensions
+import Testing
 
 @MainActor
 struct HeroesListViewModelTests {
@@ -12,7 +12,8 @@ struct HeroesListViewModelTests {
     private var getHeroesListUseCaseProtocolMock = GetHeroesListUseCaseProtocolMock()
     private let heroesList = HeroesList(
         heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
-        pagination: Pagination(offset: 1, limit: 2, total: 5))
+        pagination: Pagination(offset: 1, limit: 2, total: 5)
+    )
 
     init() {
         container = Container()
@@ -43,7 +44,8 @@ struct HeroesListViewModelTests {
         // Given
         let heroesList = HeroesList(
             heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
-            pagination: Pagination(offset: 10, limit: 20, total: 3))
+            pagination: Pagination(offset: 10, limit: 20, total: 3)
+        )
         let expected: HeroesListState = .loaded(HeroesListViewData(heroes: [], isLoading: false))
         getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
 
@@ -60,7 +62,8 @@ struct HeroesListViewModelTests {
         // Given
         let heroesList = HeroesList(
             heroes: [],
-            pagination: Pagination(offset: 1, limit: 2, total: 5))
+            pagination: Pagination(offset: 1, limit: 2, total: 5)
+        )
         let expected: HeroesListState = .loaded(HeroesListViewData(heroes: [], isLoading: true))
         getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
 

@@ -1,7 +1,7 @@
-import Testing
 @testable import Data
 import Domain
 import FactoryKit
+import Testing
 
 struct HeroDatasourceTests {
     private var sut: HeroDatasource
@@ -22,7 +22,8 @@ struct HeroDatasourceTests {
             numberOfTotalResults: 3,
             results: [
                 HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "D", screenUrl: "E"))
-            ])
+            ]
+        )
         networkService.requestWithReturnValue = list
 
         // When

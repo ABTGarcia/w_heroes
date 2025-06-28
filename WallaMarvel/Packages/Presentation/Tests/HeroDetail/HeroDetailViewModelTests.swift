@@ -1,9 +1,9 @@
-import Testing
-@testable import Presentation
-import FactoryKit
 import DesignSystem
 import Domain
+import FactoryKit
+@testable import Presentation
 import TestExtensions
+import Testing
 
 @MainActor
 struct HeroDetailViewModelTests {
@@ -11,7 +11,8 @@ struct HeroDetailViewModelTests {
     private let container: Container
     private let heroesList = HeroesList(
         heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
-        pagination: Pagination(offset: 1, limit: 2, total: 5))
+        pagination: Pagination(offset: 1, limit: 2, total: 5)
+    )
 
     init() {
         container = Container()

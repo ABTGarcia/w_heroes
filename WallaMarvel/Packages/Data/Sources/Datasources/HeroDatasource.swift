@@ -1,5 +1,5 @@
-import FactoryKit
 import Domain
+import FactoryKit
 
 // sourcery: AutoMockable
 protocol HeroDatasourceProtocol: Sendable {

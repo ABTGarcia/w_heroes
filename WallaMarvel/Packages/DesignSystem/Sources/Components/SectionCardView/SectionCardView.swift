@@ -35,6 +35,7 @@ public struct SectionCardView: View {
         name: "Friends",
         systemImageName: "heart.fill",
         content: ["A", "B", "C", "D", "E"],
-        backgroundColor: .wmDreamBackground)
+        backgroundColor: .wmDreamBackground
+    )
     SectionCardView(data: data)
 }

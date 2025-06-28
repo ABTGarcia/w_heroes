@@ -1,7 +1,7 @@
-import FactoryKit
-import Foundation
 import DesignSystem
 import Domain
+import FactoryKit
+import Foundation
 
 public enum HeroesListEvent: Equatable, Sendable {
     case loadData
@@ -71,7 +71,7 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     }
 
     private func lastHeroReached(_ pagination: Pagination) -> Bool {
-        return pagination.limit + pagination.offset > pagination.total
+        pagination.limit + pagination.offset > pagination.total
     }
 
     private func setLoadMore(_ loading: Bool) {

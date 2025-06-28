@@ -9,9 +9,9 @@
 
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
+    import UIKit
 #elseif os(OSX)
-import AppKit
+    import AppKit
 #endif
 
 import Domain
@@ -19,16 +19,16 @@ import Domain
 @testable import Data
 
 class HeroDatasourceProtocolMock: HeroDatasourceProtocol, @unchecked Sendable {
-
     // MARK: - findAll
 
     var findAllFromThrowableError: (any Error)?
     var findAllFromCallsCount = 0
     var findAllFromCalled: Bool {
-        return findAllFromCallsCount > 0
+        findAllFromCallsCount > 0
     }
-    var findAllFromReceivedPosition: (Int)?
-    var findAllFromReceivedInvocations: [(Int)] = []
+
+    var findAllFromReceivedPosition: Int?
+    var findAllFromReceivedInvocations: [Int] = []
     var findAllFromReturnValue: ListEntity<[HeroEntity]>!
     var findAllFromClosure: ((Int) async throws -> ListEntity<[HeroEntity]>)?
 
@@ -39,35 +39,35 @@ class HeroDatasourceProtocolMock: HeroDatasourceProtocol, @unchecked Sendable {
         if let error = findAllFromThrowableError {
             throw error
         }
-        if let findAllFromClosure = findAllFromClosure {
+        if let findAllFromClosure {
             return try await findAllFromClosure(position)
         } else {
             return findAllFromReturnValue
         }
     }
-
 }
-public class NetworkEnvironmentProtocolMock: NetworkEnvironmentProtocol, @unchecked Sendable {
 
+public class NetworkEnvironmentProtocolMock: NetworkEnvironmentProtocol, @unchecked Sendable {
     public init() {}
 
     public var logMode: Bool {
-        get { return underlyingLogMode }
+        get { underlyingLogMode }
         set(value) { underlyingLogMode = value }
     }
-    public var underlyingLogMode: (Bool)!
 
+    public var underlyingLogMode: Bool!
 }
-public class NetworkServiceLoggerProtocolMock: NetworkServiceLoggerProtocol, @unchecked Sendable {
 
+public class NetworkServiceLoggerProtocolMock: NetworkServiceLoggerProtocol, @unchecked Sendable {
     public init() {}
 
     // MARK: - logResponse
 
     public var logResponseCallsCount = 0
     public var logResponseCalled: Bool {
-        return logResponseCallsCount > 0
+        logResponseCallsCount > 0
     }
+
     public var logResponseReceivedArguments: (data: Data?, response: URLResponse?, error: Error?)?
     public var logResponseReceivedInvocations: [(data: Data?, response: URLResponse?, error: Error?)] = []
     public var logResponseClosure: ((Data?, URLResponse?, Error?) -> Void)?
@@ -83,10 +83,11 @@ public class NetworkServiceLoggerProtocolMock: NetworkServiceLoggerProtocol, @un
 
     public var logRequestCallsCount = 0
     public var logRequestCalled: Bool {
-        return logRequestCallsCount > 0
+        logRequestCallsCount > 0
     }
-    public var logRequestReceivedLogRequest: (URLRequest)?
-    public var logRequestReceivedInvocations: [(URLRequest)] = []
+
+    public var logRequestReceivedLogRequest: URLRequest?
+    public var logRequestReceivedInvocations: [URLRequest] = []
     public var logRequestClosure: ((URLRequest) -> Void)?
 
     public func logRequest(_ logRequest: URLRequest) {
@@ -95,10 +96,9 @@ public class NetworkServiceLoggerProtocolMock: NetworkServiceLoggerProtocol, @un
         logRequestReceivedInvocations.append(logRequest)
         logRequestClosure?(logRequest)
     }
-
 }
-public class NetworkServiceProtocolMock: NetworkServiceProtocol, @unchecked Sendable {
 
+public class NetworkServiceProtocolMock: NetworkServiceProtocol, @unchecked Sendable {
     public init() {}
 
     // MARK: - request<T: Decodable>
@@ -106,10 +106,11 @@ public class NetworkServiceProtocolMock: NetworkServiceProtocol, @unchecked Send
     public var requestWithThrowableError: (any Error)?
     public var requestWithCallsCount = 0
     public var requestWithCalled: Bool {
-        return requestWithCallsCount > 0
+        requestWithCallsCount > 0
     }
-    public var requestWithReceivedEndpoint: (NetworkEndpointProtocol)?
-    public var requestWithReceivedInvocations: [(NetworkEndpointProtocol)] = []
+
+    public var requestWithReceivedEndpoint: NetworkEndpointProtocol?
+    public var requestWithReceivedInvocations: [NetworkEndpointProtocol] = []
     public var requestWithReturnValue: Any!
     public var requestWithClosure: ((NetworkEndpointProtocol) async throws -> Any)?
 
@@ -120,7 +121,7 @@ public class NetworkServiceProtocolMock: NetworkServiceProtocol, @unchecked Send
         if let error = requestWithThrowableError {
             throw error
         }
-        if let requestWithClosure = requestWithClosure {
+        if let requestWithClosure {
             return try await requestWithClosure(endpoint) as! T
         } else {
             return requestWithReturnValue as! T
@@ -132,10 +133,11 @@ public class NetworkServiceProtocolMock: NetworkServiceProtocol, @unchecked Send
     public var requestImageWithThrowableError: (any Error)?
     public var requestImageWithCallsCount = 0
     public var requestImageWithCalled: Bool {
-        return requestImageWithCallsCount > 0
+        requestImageWithCallsCount > 0
     }
-    public var requestImageWithReceivedEndpoint: (NetworkEndpointProtocol)?
-    public var requestImageWithReceivedInvocations: [(NetworkEndpointProtocol)] = []
+
+    public var requestImageWithReceivedEndpoint: NetworkEndpointProtocol?
+    public var requestImageWithReceivedInvocations: [NetworkEndpointProtocol] = []
     public var requestImageWithReturnValue: Data!
     public var requestImageWithClosure: ((NetworkEndpointProtocol) async throws -> Data)?
 
@@ -146,13 +148,12 @@ public class NetworkServiceProtocolMock: NetworkServiceProtocol, @unchecked Send
         if let error = requestImageWithThrowableError {
             throw error
         }
-        if let requestImageWithClosure = requestImageWithClosure {
+        if let requestImageWithClosure {
             return try await requestImageWithClosure(endpoint)
         } else {
             return requestImageWithReturnValue
         }
     }
-
 }
 
 // swiftlint:enable line_length

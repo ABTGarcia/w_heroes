@@ -9,7 +9,8 @@ let package = Package(
     products: [
         .library(
             name: "TestExtensions",
-            targets: ["TestExtensions"])
+            targets: ["TestExtensions"]
+        )
     ],
     dependencies: [
         .package(
@@ -17,8 +18,8 @@ let package = Package(
             from: "1.12.0"
         ),
         .package(
-          url: "https://github.com/hmlongco/Factory",
-          from: "2.5.1"
+            url: "https://github.com/hmlongco/Factory",
+            from: "2.5.1"
         )
     ],
     targets: [

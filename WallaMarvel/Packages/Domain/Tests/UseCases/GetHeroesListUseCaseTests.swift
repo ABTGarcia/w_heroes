@@ -1,8 +1,8 @@
-import Testing
 @testable import Domain
-import Foundation
 import FactoryKit
+import Foundation
 import TestExtensions
+import Testing
 
 struct GetHeroesListUseCaseTests {
     private var sut: GetHeroesListUseCase

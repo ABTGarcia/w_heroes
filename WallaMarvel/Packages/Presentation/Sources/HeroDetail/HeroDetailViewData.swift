@@ -1,5 +1,5 @@
-import Domain
 import DesignSystem
+import Domain
 
 public struct HeroDetailViewData: Identifiable, Equatable, Sendable {
     public let id: String

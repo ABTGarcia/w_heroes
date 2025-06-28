@@ -1,5 +1,5 @@
-import FactoryKit
 import Domain
+import FactoryKit
 
 public final class HeroRepository: HeroRepositoryProtocol {
     private let container: Container

@@ -1,7 +1,7 @@
-import Testing
-import SwiftUI
 import CoreGraphics
 @testable import DesignSystem
+import SwiftUI
+import Testing
 
 struct FontsTests {
     @Test func allFonts() async throws {

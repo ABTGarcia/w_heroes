@@ -1,10 +1,10 @@
-import Testing
-import SwiftUI
-@testable import Presentation
-import TestExtensions
 import DesignSystem
-import Foundation
 import Domain
+import Foundation
+@testable import Presentation
+import SwiftUI
+import TestExtensions
+import Testing
 
 @MainActor
 struct HeroDetailViewTests {
@@ -41,7 +41,8 @@ struct HeroDetailViewTests {
                 deck: "few fewfew",
                 creators: ["A", "B", "C"],
                 enemies: ["D", "E", "F"],
-                friends: ["G", "H", "I"]))
+                friends: ["G", "H", "I"]
+            ))
 
         // Then
         expectSnapshot(matching: sut, size: .iPhone16Portrait)

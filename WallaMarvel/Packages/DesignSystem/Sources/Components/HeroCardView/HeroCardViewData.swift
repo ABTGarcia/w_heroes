@@ -10,7 +10,8 @@ public struct HeroCardViewData: Identifiable, Equatable, Sendable {
         id: String,
         image: String?,
         name: String,
-        description: String) {
+        description: String
+    ) {
         self.id = id
         self.image = image
         self.name = name

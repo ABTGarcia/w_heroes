@@ -8,18 +8,18 @@ public struct HeroCardView: View {
     }
 
     public var body: some View {
-            HStack(alignment: .top) {
-                profileImage
-                    .clipShape(Circle())
-                    .frame(width: 50, height: 50)
-                    .padding(.trailing, .spacingXXS)
-                VStack(alignment: .leading) {
-                    Text(data.name)
-                        .font(.wmTitle)
-                    Text(data.description)
-                        .font(.wmDescription)
-                }
+        HStack(alignment: .top) {
+            profileImage
+                .clipShape(Circle())
+                .frame(width: 50, height: 50)
+                .padding(.trailing, .spacingXXS)
+            VStack(alignment: .leading) {
+                Text(data.name)
+                    .font(.wmTitle)
+                Text(data.description)
+                    .font(.wmDescription)
             }
+        }
     }
 
     @ViewBuilder
@@ -39,10 +39,11 @@ public struct HeroCardView: View {
         image: "AAAA",
         name: "DeadPool",
         description:
-"""
-Lorem Ipsum is simply dummy
-text of the printing and typesetting industry.
-Lorem Ipsum has been the industry's standar
-""")
+        """
+        Lorem Ipsum is simply dummy
+        text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standar
+        """
+    )
     HeroCardView(data: data)
 }

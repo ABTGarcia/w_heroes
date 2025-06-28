@@ -1,7 +1,7 @@
-import Testing
-@testable import Presentation
-import Domain
 import DesignSystem
+import Domain
+@testable import Presentation
+import Testing
 
 @MainActor
 struct HeroesListViewDataTests {

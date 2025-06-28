@@ -17,7 +17,8 @@ public actor Expectation {
 
     public func wait(
         timeout: TimeInterval = 10,
-        sourceLocation: Testing.SourceLocation = #_sourceLocation) async throws {
+        sourceLocation: Testing.SourceLocation = #_sourceLocation
+    ) async throws {
         let timeout = ContinuousClock.now + .seconds(timeout)
         var waiting: Bool = !fulfilled
         while waiting {
@@ -36,14 +37,15 @@ public func expectation(name: String) -> Expectation {
     .init(name: name)
 }
 
-extension Collection where Element == Expectation {
+extension Collection<Expectation> {
     private var pendingExpectations: [Expectation] {
         get async { await asyncCompactMap { await $0.fulfilled ? nil : $0 } }
     }
 
     public func wait(
         timeout: TimeInterval = 10,
-        sourceLocation: Testing.SourceLocation = #_sourceLocation) async throws {
+        sourceLocation: Testing.SourceLocation = #_sourceLocation
+    ) async throws {
         let timeout = ContinuousClock.now + .seconds(timeout)
         var waiting: [Expectation] = await pendingExpectations
         while waiting.count > 0 {
@@ -52,11 +54,13 @@ extension Collection where Element == Expectation {
                 if waiting.count == 1 {
                     Issue.record(
                         "Expectation Timeout: \(waiting.first!.name)",
-                        sourceLocation: sourceLocation)
+                        sourceLocation: sourceLocation
+                    )
                 } else {
                     Issue.record(
-                        "Expectations Timeout: \(waiting.map { $0.name }.joined(separator: ", "))",
-                        sourceLocation: sourceLocation)
+                        "Expectations Timeout: \(waiting.map(\.name).joined(separator: ", "))",
+                        sourceLocation: sourceLocation
+                    )
                 }
                 waiting = []
             } else {

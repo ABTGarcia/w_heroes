@@ -9,9 +9,9 @@
 
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
+    import UIKit
 #elseif os(OSX)
-import AppKit
+    import AppKit
 #endif
 
 import Domain
@@ -19,7 +19,6 @@ import Domain
 @testable import Presentation
 
 public class GetHeroesListUseCaseProtocolMock: GetHeroesListUseCaseProtocol, @unchecked Sendable {
-
     public init() {}
 
     // MARK: - invoke
@@ -27,10 +26,11 @@ public class GetHeroesListUseCaseProtocolMock: GetHeroesListUseCaseProtocol, @un
     public var invokeLastIdThrowableError: (any Error)?
     public var invokeLastIdCallsCount = 0
     public var invokeLastIdCalled: Bool {
-        return invokeLastIdCallsCount > 0
+        invokeLastIdCallsCount > 0
     }
-    public var invokeLastIdReceivedLastId: (String)?
-    public var invokeLastIdReceivedInvocations: [(String)?] = []
+
+    public var invokeLastIdReceivedLastId: String?
+    public var invokeLastIdReceivedInvocations: [String?] = []
     public var invokeLastIdReturnValue: HeroesList!
     public var invokeLastIdClosure: ((String?) async throws -> HeroesList)?
 
@@ -41,32 +41,33 @@ public class GetHeroesListUseCaseProtocolMock: GetHeroesListUseCaseProtocol, @un
         if let error = invokeLastIdThrowableError {
             throw error
         }
-        if let invokeLastIdClosure = invokeLastIdClosure {
+        if let invokeLastIdClosure {
             return try await invokeLastIdClosure(lastId)
         } else {
             return invokeLastIdReturnValue
         }
     }
-
 }
-public class HeroDetailViewModelProtocolMock: HeroDetailViewModelProtocol {
 
+public class HeroDetailViewModelProtocolMock: HeroDetailViewModelProtocol {
     public init() {}
 
     public var state: HeroDetailState {
-        get { return underlyingState }
+        get { underlyingState }
         set(value) { underlyingState = value }
     }
-    public var underlyingState: (HeroDetailState)!
+
+    public var underlyingState: HeroDetailState!
 
     // MARK: - process
 
     public var processCallsCount = 0
     public var processCalled: Bool {
-        return processCallsCount > 0
+        processCallsCount > 0
     }
-    public var processReceivedEvent: (HeroDetailEvent)?
-    public var processReceivedInvocations: [(HeroDetailEvent)] = []
+
+    public var processReceivedEvent: HeroDetailEvent?
+    public var processReceivedInvocations: [HeroDetailEvent] = []
     public var processClosure: ((HeroDetailEvent) async -> Void)?
 
     public func process(_ event: HeroDetailEvent) async {
@@ -75,26 +76,27 @@ public class HeroDetailViewModelProtocolMock: HeroDetailViewModelProtocol {
         processReceivedInvocations.append(event)
         await processClosure?(event)
     }
-
 }
-public class HeroesListViewModelProtocolMock: HeroesListViewModelProtocol {
 
+public class HeroesListViewModelProtocolMock: HeroesListViewModelProtocol {
     public init() {}
 
     public var state: HeroesListState {
-        get { return underlyingState }
+        get { underlyingState }
         set(value) { underlyingState = value }
     }
-    public var underlyingState: (HeroesListState)!
+
+    public var underlyingState: HeroesListState!
 
     // MARK: - process
 
     public var processCallsCount = 0
     public var processCalled: Bool {
-        return processCallsCount > 0
+        processCallsCount > 0
     }
-    public var processReceivedEvent: (HeroesListEvent)?
-    public var processReceivedInvocations: [(HeroesListEvent)] = []
+
+    public var processReceivedEvent: HeroesListEvent?
+    public var processReceivedInvocations: [HeroesListEvent] = []
     public var processClosure: ((HeroesListEvent) async -> Void)?
 
     public func process(_ event: HeroesListEvent) async {
@@ -103,7 +105,6 @@ public class HeroesListViewModelProtocolMock: HeroesListViewModelProtocol {
         processReceivedInvocations.append(event)
         await processClosure?(event)
     }
-
 }
 
 // swiftlint:enable line_length

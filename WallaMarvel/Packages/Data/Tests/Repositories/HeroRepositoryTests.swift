@@ -1,7 +1,7 @@
-import Testing
 @testable import Data
 import Domain
 import FactoryKit
+import Testing
 
 struct HeroRepositoryTests {
     private var sut: HeroRepository
@@ -14,7 +14,8 @@ struct HeroRepositoryTests {
             numberOfTotalResults: 3,
             results: [
                 HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "D", screenUrl: "E"))
-            ])
+            ]
+        )
     }
 
     init() {
