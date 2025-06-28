@@ -16,4 +16,10 @@ public final class HeroRepository: HeroRepositoryProtocol {
 
         return HeroesList(heroes: heroes, pagination: pagination)
     }
+
+    public func getDetail(withUrl url: String) async throws -> HeroDetail {
+        let response = try await container.heroDatasource().getDetail(withUrl: url)
+
+        return response.toDomain()
+    }
 }

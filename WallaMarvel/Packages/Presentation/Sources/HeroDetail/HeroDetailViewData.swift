@@ -1,8 +1,7 @@
 import DesignSystem
 import Domain
 
-public struct HeroDetailViewData: Identifiable, Equatable, Sendable {
-    public let id: String
+public struct HeroDetailViewData: Equatable, Sendable {
     let name: String
     let image: String
     let deck: String
@@ -10,8 +9,7 @@ public struct HeroDetailViewData: Identifiable, Equatable, Sendable {
     let enemies: [String]
     let friends: [String]
 
-    public init(id: String, name: String, image: String, deck: String, creators: [String], enemies: [String], friends: [String]) {
-        self.id = id
+    public init(name: String, image: String, deck: String, creators: [String], enemies: [String], friends: [String]) {
         self.name = name
         self.image = image
         self.deck = deck

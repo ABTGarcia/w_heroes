@@ -18,6 +18,37 @@ import Domain
 
 @testable import Presentation
 
+public class GetHeroDetailUseCaseProtocolMock: GetHeroDetailUseCaseProtocol, @unchecked Sendable {
+    public init() {}
+
+    // MARK: - invoke
+
+    public var invokeDetailUrlThrowableError: (any Error)?
+    public var invokeDetailUrlCallsCount = 0
+    public var invokeDetailUrlCalled: Bool {
+        invokeDetailUrlCallsCount > 0
+    }
+
+    public var invokeDetailUrlReceivedDetailUrl: String?
+    public var invokeDetailUrlReceivedInvocations: [String] = []
+    public var invokeDetailUrlReturnValue: HeroDetail!
+    public var invokeDetailUrlClosure: ((String) async throws -> HeroDetail)?
+
+    public func invoke(detailUrl: String) async throws -> HeroDetail {
+        invokeDetailUrlCallsCount += 1
+        invokeDetailUrlReceivedDetailUrl = detailUrl
+        invokeDetailUrlReceivedInvocations.append(detailUrl)
+        if let error = invokeDetailUrlThrowableError {
+            throw error
+        }
+        if let invokeDetailUrlClosure {
+            return try await invokeDetailUrlClosure(detailUrl)
+        } else {
+            return invokeDetailUrlReturnValue
+        }
+    }
+}
+
 public class GetHeroesListUseCaseProtocolMock: GetHeroesListUseCaseProtocol, @unchecked Sendable {
     public init() {}
 

@@ -45,6 +45,33 @@ class HeroDatasourceProtocolMock: HeroDatasourceProtocol, @unchecked Sendable {
             return findAllFromReturnValue
         }
     }
+
+    // MARK: - getDetail
+
+    var getDetailWithUrlThrowableError: (any Error)?
+    var getDetailWithUrlCallsCount = 0
+    var getDetailWithUrlCalled: Bool {
+        getDetailWithUrlCallsCount > 0
+    }
+
+    var getDetailWithUrlReceivedUrl: String?
+    var getDetailWithUrlReceivedInvocations: [String] = []
+    var getDetailWithUrlReturnValue: HeroDetailEntity!
+    var getDetailWithUrlClosure: ((String) async throws -> HeroDetailEntity)?
+
+    func getDetail(withUrl url: String) async throws -> HeroDetailEntity {
+        getDetailWithUrlCallsCount += 1
+        getDetailWithUrlReceivedUrl = url
+        getDetailWithUrlReceivedInvocations.append(url)
+        if let error = getDetailWithUrlThrowableError {
+            throw error
+        }
+        if let getDetailWithUrlClosure {
+            return try await getDetailWithUrlClosure(url)
+        } else {
+            return getDetailWithUrlReturnValue
+        }
+    }
 }
 
 public class NetworkEnvironmentProtocolMock: NetworkEnvironmentProtocol, @unchecked Sendable {

@@ -15,7 +15,7 @@ struct HeroDetailViewTests {
         sut = HeroDetailView(viewModel: viewModel)
     }
 
-    @Test func loading() async throws {
+    @Test func loading() async {
         // Given
         viewModel.state = .loading
 
@@ -23,7 +23,7 @@ struct HeroDetailViewTests {
         expectSnapshot(matching: sut, size: .iPhone16Portrait)
     }
 
-    @Test func error() async throws {
+    @Test func error() async {
         // Given
         viewModel.state = .error
 
@@ -31,11 +31,10 @@ struct HeroDetailViewTests {
         expectSnapshot(matching: sut, size: .iPhone16Portrait)
     }
 
-    @Test func loaded() async throws {
+    @Test func loaded() async {
         // Given
         viewModel.state = .loaded(
             HeroDetailViewData(
-                id: "1",
                 name: "AA",
                 image: "BBB",
                 deck: "few fewfew",

@@ -4,6 +4,7 @@ import FactoryKit
 // sourcery: AutoMockable
 protocol HeroDatasourceProtocol: Sendable {
     func findAll(from position: Int) async throws -> ListEntity<[HeroEntity]>
+    func getDetail(withUrl url: String) async throws -> HeroDetailEntity
 }
 
 final class HeroDatasource: HeroDatasourceProtocol {
@@ -19,5 +20,13 @@ final class HeroDatasource: HeroDatasourceProtocol {
         )
 
         return response
+    }
+
+    func getDetail(withUrl url: String) async throws -> HeroDetailEntity {
+        let response: ListEntity<HeroDetailEntity> = try await container.networkService().request(
+            with: HeroDetailEndpoint(detailUrl: url)
+        )
+
+        return response.results
     }
 }
