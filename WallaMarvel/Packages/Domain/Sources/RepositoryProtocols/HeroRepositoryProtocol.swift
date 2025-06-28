@@ -1,4 +1,4 @@
 // sourcery: AutoMockable
 public protocol HeroRepositoryProtocol: Sendable {
-    func findAll() async throws -> HeroesList
+    func findAll(from position: Int) async throws -> HeroesList
 }

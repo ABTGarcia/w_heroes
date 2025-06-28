@@ -1,15 +1,18 @@
 import Testing
 @testable import Presentation
 import FactoryKit
-import TestExtensions
 import DesignSystem
 import Domain
+import TestExtensions
 
 @MainActor
 struct HeroesListViewModelTests {
     private var sut: HeroesListViewModel!
     private let container: Container
     private var getHeroesListUseCaseProtocolMock = GetHeroesListUseCaseProtocolMock()
+    private let heroesList = HeroesList(
+        heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+        pagination: Pagination(offset: 1, limit: 2, total: 5))
 
     init() {
         container = Container()
@@ -24,40 +27,75 @@ struct HeroesListViewModelTests {
 
     @Test func loadData() async throws {
         // Given
-        let heroesList = HeroesList(
-            heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
-            pagination: Pagination(offset: 1, limit: 2, total: 3))
-        let listData = HeroesListViewData(model: heroesList)
-        getHeroesListUseCaseProtocolMock.invokeReturnValue = heroesList
+        let expected: HeroesListState = .loaded(HeroesListViewData(heroes: heroesList.heroes, isLoading: false))
+        getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
 
         // When
         await sut.process(.loadData)
 
         // Then
-        #expect(sut.state == .loaded(listData))
-        #expect(getHeroesListUseCaseProtocolMock.invokeCallsCount == 1)
+        #expect(sut.state == expected)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdCallsCount == 1)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == nil)
     }
 
-    @Test func loadDataUseCaseNil() async throws {
+    @Test func loadDataLastHeroReached() async throws {
         // Given
-        container.getHeroesListUseCase.register { nil }
+        let heroesList = HeroesList(
+            heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+            pagination: Pagination(offset: 10, limit: 20, total: 3))
+        let expected: HeroesListState = .loaded(HeroesListViewData(heroes: [], isLoading: false))
+        getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
 
         // When
         await sut.process(.loadData)
 
         // Then
-        #expect(sut.state == .error)
+        #expect(sut.state == expected)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdCallsCount == 1)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == nil)
+    }
+
+    @Test func loadDataLoadingMore() async throws {
+        // Given
+        let heroesList = HeroesList(
+            heroes: [],
+            pagination: Pagination(offset: 1, limit: 2, total: 5))
+        let expected: HeroesListState = .loaded(HeroesListViewData(heroes: [], isLoading: true))
+        getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
+
+        // When
+        await sut.process(.loadData)
+
+        // Then
+        #expect(sut.state == expected)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdCallsCount == 1)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == nil)
     }
 
     @Test func loadDataThrows() async throws {
         // Given
-        getHeroesListUseCaseProtocolMock.invokeThrowableError = TestError.genericError
+        getHeroesListUseCaseProtocolMock.invokeLastIdThrowableError = TestError.genericError
 
         // When
         await sut.process(.loadData)
 
         // Then
         #expect(sut.state == .error)
+    }
+
+    @Test func appearedHeroId() async throws {
+        // Given
+        let listData = HeroesListViewData(heroes: heroesList.heroes, isLoading: false)
+        getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
+
+        // When
+        await sut.process(.appearedHeroId("5"))
+
+        // Then
+        #expect(sut.state == .loaded(listData))
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdCallsCount == 1)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == "5")
     }
 
     private func setDependencies() {

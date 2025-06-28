@@ -26,9 +26,20 @@ struct HeroesListViewTests {
     @Test func loaded() async throws {
         // Given
         viewModel.state = .loaded(HeroesListViewData(
-            model: HeroesList(
-                heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
-                pagination: Pagination(offset: 1, limit: 2, total: 3))))
+            heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+            isLoading: false
+        ))
+
+        // Then
+        expectSnapshot(matching: sut, size: .iPhone16Portrait)
+    }
+
+    @Test func loadedLoading() async throws {
+        // Given
+        viewModel.state = .loaded(HeroesListViewData(
+            heroes: [Hero(id: "1", image: "A", name: "B", description: "C")],
+            isLoading: true
+        ))
 
         // Then
         expectSnapshot(matching: sut, size: .iPhone16Portrait)

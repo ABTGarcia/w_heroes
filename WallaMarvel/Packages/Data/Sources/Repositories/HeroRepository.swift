@@ -8,8 +8,8 @@ public final class HeroRepository: HeroRepositoryProtocol {
         self.container = container
     }
 
-    public func findAll() async throws -> HeroesList {
-        let response = try await container.heroDatasource().findAll()
+    public func findAll(from position: Int) async throws -> HeroesList {
+        let response = try await container.heroDatasource().findAll(from: position)
 
         let heroes = response.results.map { $0.toDomain() }
         let pagination = response.domainPagination()

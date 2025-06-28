@@ -24,23 +24,27 @@ public class GetHeroesListUseCaseProtocolMock: GetHeroesListUseCaseProtocol, @un
 
     // MARK: - invoke
 
-    public var invokeThrowableError: (any Error)?
-    public var invokeCallsCount = 0
-    public var invokeCalled: Bool {
-        return invokeCallsCount > 0
+    public var invokeLastIdThrowableError: (any Error)?
+    public var invokeLastIdCallsCount = 0
+    public var invokeLastIdCalled: Bool {
+        return invokeLastIdCallsCount > 0
     }
-    public var invokeReturnValue: HeroesList!
-    public var invokeClosure: (() async throws -> HeroesList)?
+    public var invokeLastIdReceivedLastId: (String)?
+    public var invokeLastIdReceivedInvocations: [(String)?] = []
+    public var invokeLastIdReturnValue: HeroesList!
+    public var invokeLastIdClosure: ((String?) async throws -> HeroesList)?
 
-    public func invoke() async throws -> HeroesList {
-        invokeCallsCount += 1
-        if let error = invokeThrowableError {
+    public func invoke(lastId: String?) async throws -> HeroesList {
+        invokeLastIdCallsCount += 1
+        invokeLastIdReceivedLastId = lastId
+        invokeLastIdReceivedInvocations.append(lastId)
+        if let error = invokeLastIdThrowableError {
             throw error
         }
-        if let invokeClosure = invokeClosure {
-            return try await invokeClosure()
+        if let invokeLastIdClosure = invokeLastIdClosure {
+            return try await invokeLastIdClosure(lastId)
         } else {
-            return invokeReturnValue
+            return invokeLastIdReturnValue
         }
     }
 

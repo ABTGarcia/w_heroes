@@ -26,7 +26,7 @@ struct HeroDatasourceTests {
         networkService.requestWithReturnValue = list
 
         // When
-        let result = try await sut.findAll()
+        let result = try await sut.findAll(from: 0)
 
         // Then
         #expect(networkService.requestWithCalled)

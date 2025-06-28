@@ -3,7 +3,7 @@ import Domain
 
 // sourcery: AutoMockable
 protocol HeroDatasourceProtocol: Sendable {
-    func findAll() async throws -> ListEntity<[HeroEntity]>
+    func findAll(from position: Int) async throws -> ListEntity<[HeroEntity]>
 }
 
 final class HeroDatasource: HeroDatasourceProtocol {
@@ -13,9 +13,9 @@ final class HeroDatasource: HeroDatasourceProtocol {
         self.container = container
     }
 
-    func findAll() async throws -> ListEntity<[HeroEntity]> {
+    func findAll(from position: Int) async throws -> ListEntity<[HeroEntity]> {
         let response: ListEntity<[HeroEntity]> = try await container.networkService().request(
-            with: HeroesListEndpoint()
+            with: HeroesListEndpoint(from: position)
         )
 
         return response

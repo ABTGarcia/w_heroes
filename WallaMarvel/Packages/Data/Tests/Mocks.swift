@@ -22,23 +22,27 @@ class HeroDatasourceProtocolMock: HeroDatasourceProtocol, @unchecked Sendable {
 
     // MARK: - findAll
 
-    var findAllThrowableError: (any Error)?
-    var findAllCallsCount = 0
-    var findAllCalled: Bool {
-        return findAllCallsCount > 0
+    var findAllFromThrowableError: (any Error)?
+    var findAllFromCallsCount = 0
+    var findAllFromCalled: Bool {
+        return findAllFromCallsCount > 0
     }
-    var findAllReturnValue: ListEntity<[HeroEntity]>!
-    var findAllClosure: (() async throws -> ListEntity<[HeroEntity]>)?
+    var findAllFromReceivedPosition: (Int)?
+    var findAllFromReceivedInvocations: [(Int)] = []
+    var findAllFromReturnValue: ListEntity<[HeroEntity]>!
+    var findAllFromClosure: ((Int) async throws -> ListEntity<[HeroEntity]>)?
 
-    func findAll() async throws -> ListEntity<[HeroEntity]> {
-        findAllCallsCount += 1
-        if let error = findAllThrowableError {
+    func findAll(from position: Int) async throws -> ListEntity<[HeroEntity]> {
+        findAllFromCallsCount += 1
+        findAllFromReceivedPosition = position
+        findAllFromReceivedInvocations.append(position)
+        if let error = findAllFromThrowableError {
             throw error
         }
-        if let findAllClosure = findAllClosure {
-            return try await findAllClosure()
+        if let findAllFromClosure = findAllFromClosure {
+            return try await findAllFromClosure(position)
         } else {
-            return findAllReturnValue
+            return findAllFromReturnValue
         }
     }
 

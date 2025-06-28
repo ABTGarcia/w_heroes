@@ -22,23 +22,27 @@ public class HeroRepositoryProtocolMock: HeroRepositoryProtocol, @unchecked Send
 
     // MARK: - findAll
 
-    public var findAllThrowableError: (any Error)?
-    public var findAllCallsCount = 0
-    public var findAllCalled: Bool {
-        return findAllCallsCount > 0
+    public var findAllFromThrowableError: (any Error)?
+    public var findAllFromCallsCount = 0
+    public var findAllFromCalled: Bool {
+        return findAllFromCallsCount > 0
     }
-    public var findAllReturnValue: HeroesList!
-    public var findAllClosure: (() async throws -> HeroesList)?
+    public var findAllFromReceivedPosition: (Int)?
+    public var findAllFromReceivedInvocations: [(Int)] = []
+    public var findAllFromReturnValue: HeroesList!
+    public var findAllFromClosure: ((Int) async throws -> HeroesList)?
 
-    public func findAll() async throws -> HeroesList {
-        findAllCallsCount += 1
-        if let error = findAllThrowableError {
+    public func findAll(from position: Int) async throws -> HeroesList {
+        findAllFromCallsCount += 1
+        findAllFromReceivedPosition = position
+        findAllFromReceivedInvocations.append(position)
+        if let error = findAllFromThrowableError {
             throw error
         }
-        if let findAllClosure = findAllClosure {
-            return try await findAllClosure()
+        if let findAllFromClosure = findAllFromClosure {
+            return try await findAllFromClosure(position)
         } else {
-            return findAllReturnValue
+            return findAllFromReturnValue
         }
     }
 
