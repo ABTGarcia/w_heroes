@@ -5,7 +5,7 @@ import Presentation
 struct ExoticusApp: App {
     var body: some Scene {
         WindowGroup {
-            HeroesListView(viewModel: HeroesListViewModel())
+            CoordinatorView()
         }
     }
 }
