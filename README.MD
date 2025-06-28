@@ -11,6 +11,7 @@
 - [Usage](#usage)
 - [Architecture](#architecture)
 - [Testing](#testing)
+- [More](#more)
 
 ---
 
@@ -85,3 +86,6 @@ The codebase is designed with testability in mind. Unit and snapshot tests are i
   - [Swift Testing](https://developer.apple.com/documentation/testing)
   - [Snapshot Testing](https://github.com/pointfreeco/swift-snapshot-testing)
   - [Sourcery](https://github.com/krzysztofzablocki/Sourcery)
+
+## 👀 More
+- Marvel API documentation was not running, returning constantly errors and I couldn't even use it. Instead of that API, I used [ComicVine API](https://comicvine.gamespot.com/api/), even if it's not wonderful, it works pretty well for this technical challenge. To help you a little bit, I added a postman collection in the root of this project. Please, feel free to use it, including my own API Key 😁
