@@ -37,9 +37,10 @@ class Coordinator: ObservableObject {
     @MainActor @ViewBuilder
     func build(page: AppPages) -> some View {
         switch page {
-        case .heroesList: HeroesListView(viewModel: HeroesListViewModel())
-        case let .heroDetail(id):
-            HeroDetailView()
+        case .heroesList:
+            HeroesListView(viewModel: HeroesListViewModel())
+        case let .heroDetail(detailUrl):
+            HeroDetailView(viewModel: HeroDetailViewModel(detailUrl: detailUrl))
         }
     }
 
