@@ -1,9 +1,11 @@
 import FactoryKit
 import Foundation
 import DesignSystem
+import Domain
 
 public enum HeroesListEvent: Equatable, Sendable {
     case loadData
+    case appearedHeroId(String)
 }
 
 public enum HeroesListState: Equatable, Sendable {
@@ -22,13 +24,18 @@ public protocol HeroesListViewModelProtocol: ObservableObject {
 // sourcery: AutoMockable
 @MainActor
 public final class HeroesListViewModel: HeroesListViewModelProtocol {
-
     @Published public var state: HeroesListState
 
     private let container: Container
+    private var viewData = HeroesListViewData(heroes: [], isLoading: false)
+    private var getHeroesListUseCase: GetHeroesListUseCaseProtocol
 
     public init(container: Container = .shared) {
         self.container = container
+        guard let getHeroesListUseCase = container.getHeroesListUseCase() else {
+            preconditionFailure("UseCase not found")
+        }
+        self.getHeroesListUseCase = getHeroesListUseCase
         state = .loading
     }
 
@@ -36,17 +43,39 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
         switch event {
         case .loadData:
             state = .loading
-            do {
-                guard let list = try await container.getHeroesListUseCase()?.invoke() else {
-                    state = .error
-                    return
-                }
-                state = .loaded(
-                    HeroesListViewData(model: list)
-                )
-            } catch {
-                state = .error
-            }
+            await retrieveData()
+        case let .appearedHeroId(id):
+            await retrieveData(lastId: id)
         }
+    }
+
+    private func retrieveData(lastId: String? = nil) async {
+        setLoadMore(true)
+        do {
+            let newHeroesList = try await getHeroesListUseCase.invoke(lastId: lastId)
+
+            if lastHeroReached(newHeroesList.pagination) {
+                setLoadMore(false)
+                return
+            }
+
+            if newHeroesList.heroes.isEmpty {
+                return
+            }
+
+            viewData.appendHeroes(newHeroesList.heroes)
+            setLoadMore(false)
+        } catch {
+            state = .error
+        }
+    }
+
+    private func lastHeroReached(_ pagination: Pagination) -> Bool {
+        return pagination.limit + pagination.offset > pagination.total
+    }
+
+    private func setLoadMore(_ loading: Bool) {
+        viewData.isLoading = loading
+        state = .loaded(viewData)
     }
 }

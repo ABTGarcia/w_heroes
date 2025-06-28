@@ -27,13 +27,14 @@ struct HeroRepositoryTests {
         // Given
         let heroesDomain = responseList.results.map { $0.toDomain() }
         let paginationDomain = responseList.domainPagination()
-        heroDatasource.findAllReturnValue = responseList
+        heroDatasource.findAllFromReturnValue = responseList
 
         // When
-        let result = try await sut.findAll()
+        let result = try await sut.findAll(from: 100)
 
         // Then
-        #expect(heroDatasource.findAllCallsCount == 1)
+        #expect(heroDatasource.findAllFromCallsCount == 1)
+        #expect(heroDatasource.findAllFromReceivedPosition == 100)
         #expect(result == HeroesList(heroes: heroesDomain, pagination: paginationDomain))
     }
 

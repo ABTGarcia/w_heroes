@@ -15,11 +15,27 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     public var body: some View {
         switch viewModel.state {
         case let .loaded(data):
-            List {
-                ForEach(data.list) { hero in
-                    HeroCardView(data: hero)
-                        .listRowSeparatorTint(.wmMain)
-                        .listRowSeparator(.automatic)
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: .spacingS) {
+                    ForEach(data.list) { hero in
+                        HeroCardView(data: hero)
+                            .listRowSeparatorTint(.wmMain)
+                            .listRowSeparator(.automatic)
+                            .onAppear {
+                                Task {
+                                    await viewModel.process(.appearedHeroId(hero.id))
+                                }
+                            }
+                            .padding(.horizontal, .spacingL)
+                    }
+
+                    if data.isLoading {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                    }
                 }
             }
         case .loading:
@@ -37,12 +53,10 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
 #Preview {
     final class HeroesListViewModelPreview: HeroesListViewModelProtocol {
         var state: HeroesListState = .loaded(HeroesListViewData(
-            model: HeroesList(
-                heroes: [
+            heroes: [
                     Hero(id: "1", image: "https://picsum.photos/100", name: "E", description: "T"),
                     Hero(id: "2", image: "A", name: "B", description: "C")
-                ],
-                pagination: Pagination(offset: 0, limit: 1, total: 2))))
+            ], isLoading: false))
 
         func process(_ event: HeroesListEvent) async {}
     }

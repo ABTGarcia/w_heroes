@@ -2,15 +2,25 @@ import DesignSystem
 import Domain
 
 public struct HeroesListViewData: Equatable, Sendable {
-    let list: [HeroCardViewData]
+    var list: [HeroCardViewData] = []
+    var isLoading: Bool = false
 
-    public init(model: HeroesList) {
-        list = model.heroes.map({ hero in
-            HeroCardViewData(
-                id: hero.id,
-                image: hero.image,
-                name: hero.name,
-                description: hero.description)
-        })
+    public init(heroes: [Hero], isLoading: Bool) {
+        list = heroes.map { heroToCard($0) }
+        self.isLoading = isLoading
+    }
+
+    public mutating func appendHeroes(_ heroes: [Hero]) {
+        heroes.forEach { hero in
+            list.append(heroToCard(hero))
+        }
+    }
+
+    private func heroToCard(_ hero: Hero) -> HeroCardViewData {
+        HeroCardViewData(
+        id: hero.id,
+        image: hero.image,
+        name: hero.name,
+        description: hero.description)
     }
 }

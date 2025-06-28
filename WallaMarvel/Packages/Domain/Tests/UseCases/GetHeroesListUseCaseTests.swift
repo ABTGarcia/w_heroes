@@ -1,9 +1,11 @@
 import Testing
 @testable import Domain
+import Foundation
 import FactoryKit
+import TestExtensions
 
 struct GetHeroesListUseCaseTests {
-    private let sut: GetHeroesListUseCase
+    private var sut: GetHeroesListUseCase
     private let heroRepository = HeroRepositoryProtocolMock()
     private let container: Container
 
@@ -20,16 +22,70 @@ struct GetHeroesListUseCaseTests {
         setDependencies()
     }
 
-    @Test func invoke() async throws {
+    @Test mutating func firstInvoke() async throws {
         // Given
-        heroRepository.findAllReturnValue = heroesList
+        heroRepository.findAllFromReturnValue = heroesList
 
         // When
-        let result = try await sut.invoke()
+        let result = try await sut.invoke(lastId: nil)
 
         // Then
-        #expect(heroRepository.findAllCallsCount == 1)
+        #expect(heroRepository.findAllFromCallsCount == 1)
         #expect(result == heroesList)
+    }
+
+    @Test mutating func consecutiveInvokeWithRequestedIdInLastOnes() async throws {
+        // Given
+        heroRepository.findAllFromReturnValue = heroesList
+
+        // When
+        _ = try await sut.invoke(lastId: nil)
+        let result = try await sut.invoke(lastId: "1")
+
+        // Then
+        #expect(heroRepository.findAllFromCallsCount == 2)
+        #expect(result == heroesList)
+    }
+
+    @Test mutating func heroesExceedsTotal() async throws {
+        // Given
+        let pagination = Pagination(offset: 20, limit: 20, total: 1)
+        let heroesList = HeroesList(
+            heroes: [
+                Hero(id: "1", image: "AAA", name: "BBB", description: "CCC"),
+                Hero(id: "2", image: "BBB", name: "CCC", description: "DDD")
+            ],
+            pagination: pagination
+        )
+        heroRepository.findAllFromReturnValue = heroesList
+
+        // When
+        _ = try await sut.invoke(lastId: nil)
+        let result = try await sut.invoke(lastId: nil)
+
+        // Then
+        #expect(heroRepository.findAllFromCallsCount == 1)
+        #expect(result == HeroesList(heroes: [], pagination: pagination))
+    }
+
+    @Test mutating func requestedIdIsNotInTheLastsOnes() async throws {
+        // Given
+        let pagination = Pagination(offset: 1, limit: 2, total: 30)
+        let heroesList = HeroesList(
+            heroes: [
+                Hero(id: "1", image: "AAA", name: "BBB", description: "CCC")
+            ],
+            pagination: pagination
+        )
+        heroRepository.findAllFromReturnValue = heroesList
+
+        // When
+        _ = try await sut.invoke(lastId: nil)
+        let result = try await sut.invoke(lastId: "5")
+
+        // Then
+        #expect(heroRepository.findAllFromCallsCount == 1)
+        #expect(result == HeroesList(heroes: [], pagination: pagination))
     }
 
     private func setDependencies() {

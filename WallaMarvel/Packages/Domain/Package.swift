@@ -12,6 +12,7 @@ let package = Package(
             targets: ["Domain"])
     ],
     dependencies: [
+        .package(path: "../TestExtensions"),
         .package(
           url: "https://github.com/hmlongco/Factory",
           from: "2.5.1"
@@ -27,7 +28,7 @@ let package = Package(
         ),
         .testTarget(
             name: "DomainTests",
-            dependencies: ["Domain"]
+            dependencies: ["Domain", "TestExtensions"]
         )
     ]
 )
