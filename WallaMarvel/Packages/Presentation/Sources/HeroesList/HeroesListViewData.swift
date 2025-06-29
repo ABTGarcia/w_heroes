@@ -4,9 +4,9 @@ import Domain
 public struct HeroesListViewData: Equatable, Sendable {
     var list: [HeroCardViewData] = []
     var isLoading: Bool = false
-    var searchList: [String]
+    var searchList: [SearchResultsCardViewData]
 
-    public init(heroes: [Hero], isLoading: Bool, searchList: [String]) {
+    public init(heroes: [Hero], isLoading: Bool, searchList: [SearchResultsCardViewData]) {
         self.searchList = searchList
         list = heroes.map { heroToCard($0) }
         self.isLoading = isLoading

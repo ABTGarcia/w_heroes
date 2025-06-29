@@ -10,8 +10,10 @@ struct HeroesListViewModelTests {
     private var sut: HeroesListViewModel!
     private let container: Container
     private var getHeroesListUseCaseProtocolMock = GetHeroesListUseCaseProtocolMock()
+    private var searchHeroByNameUseCaseProtocolMock = SearchHeroByNameUseCaseProtocolMock()
+
     private let heroesList = HeroesList(
-        heroes: [Hero(id: "1", image: "A", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
+        heroes: [Hero(id: "1", image: "A", thumbnail: "F", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
         pagination: Pagination(offset: 1, limit: 2, total: 5)
     )
 
@@ -43,7 +45,7 @@ struct HeroesListViewModelTests {
     @Test func loadDataLastHeroReached() async throws {
         // Given
         let heroesList = HeroesList(
-            heroes: [Hero(id: "1", image: "A", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
+            heroes: [Hero(id: "1", image: "A", thumbnail: "F", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
             pagination: Pagination(offset: 10, limit: 20, total: 3)
         )
         let expected: HeroesListState = .loaded(HeroesListViewData(heroes: [], isLoading: false, searchList: []))
@@ -103,8 +105,17 @@ struct HeroesListViewModelTests {
 
     @Test func search() async throws {
         // Given
-        let listData = HeroesListViewData(heroes: [], isLoading: false, searchList: ["A"])
-        getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
+        let listData = HeroesListViewData(
+            heroes: [],
+            isLoading: false,
+            searchList: [SearchResultsCardViewData(
+                id: heroesList.heroes.first!.id,
+                name: heroesList.heroes.first!.name,
+                thumbnail: heroesList.heroes.first!.thumbnail,
+                apiDetailUrl: heroesList.heroes.first!.apiDetailUrl
+            )]
+        )
+        searchHeroByNameUseCaseProtocolMock.invokeReturnValue = heroesList.heroes
 
         // When
         await sut.process(.search("A"))
@@ -113,15 +124,47 @@ struct HeroesListViewModelTests {
         #expect(sut.state == .loaded(listData))
     }
 
-    @Test func searchEmptyNotAdded() async throws {
+    @Test func searchUseCaseReturnsNil() async throws {
         // Given
-        getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
+        searchHeroByNameUseCaseProtocolMock.invokeReturnValue = nil
 
         // When
-        await sut.process(.search(""))
+        await sut.process(.search("A"))
 
         // Then
         #expect(sut.state == .loading)
+    }
+
+    @Test func searchNoResults() async throws {
+        // Given
+        let listData = HeroesListViewData(
+            heroes: [],
+            isLoading: false,
+            searchList: [SearchResultsCardViewData(id: "", name: WMString.searchHeroesEmpty, thumbnail: "", apiDetailUrl: "")]
+        )
+        searchHeroByNameUseCaseProtocolMock.invokeReturnValue = []
+
+        // When
+        await sut.process(.search("A"))
+
+        // Then
+        #expect(sut.state == .loaded(listData))
+    }
+
+    @Test func searchError() async throws {
+        // Given
+        let listData = HeroesListViewData(
+            heroes: [],
+            isLoading: false,
+            searchList: [SearchResultsCardViewData(id: "", name: WMString.searchHeroesError, thumbnail: "", apiDetailUrl: "")]
+        )
+        searchHeroByNameUseCaseProtocolMock.invokeThrowableError = TestError.genericError
+
+        // When
+        await sut.process(.search("A"))
+
+        // Then
+        #expect(sut.state == .loaded(listData))
     }
 
     @Test func clearResults() async throws {
@@ -139,6 +182,7 @@ struct HeroesListViewModelTests {
 
     private func setDependencies() {
         container.getHeroesListUseCase.register { getHeroesListUseCaseProtocolMock }
+        container.searchHeroByNameUseCase.register { searchHeroByNameUseCaseProtocolMock }
     }
 
     private enum TestError: Error {

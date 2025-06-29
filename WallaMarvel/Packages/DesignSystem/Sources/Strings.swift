@@ -13,5 +13,8 @@ public enum WMString {
     public static let heroDetailRealName = String(localized: "hero_detail_real_name", bundle: .module)
     public static let heroDetailSearch = String(localized: "hero_detail_search", bundle: .module)
 
+    public static let searchHeroesEmpty = String(localized: "search_heroes_empty", bundle: .module)
+    public static let searchHeroesError = String(localized: "search_heroes_error", bundle: .module)
+
     public static let loading = String(localized: "loading", bundle: .module)
 }

@@ -5,8 +5,8 @@ import Testing
 
 @MainActor
 struct HeroesListViewDataTests {
-    private let heroes = [Hero(id: "1", image: "A", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")]
-    private let moreHeroes = [Hero(id: "2", image: "B", name: "C", realName: "FDF", description: "D", apiDetailUrl: "J")]
+    private let heroes = [Hero(id: "1", image: "A", thumbnail: "F", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")]
+    private let moreHeroes = [Hero(id: "2", image: "B", thumbnail: "F", name: "C", realName: "FDF", description: "D", apiDetailUrl: "J")]
 
     @Test func initTests() async throws {
         // Given
