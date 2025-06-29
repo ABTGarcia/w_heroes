@@ -32,6 +32,7 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     private var viewData = HeroesListViewData(heroes: [], isLoading: false, searchList: [])
     private var getHeroesListUseCase: GetHeroesListUseCaseProtocol
     private var searchHeroByNameUseCase: SearchHeroByNameUseCaseProtocol
+    private var showResults = false
 
     public init(container: Container = .shared) {
         self.container = container
@@ -91,15 +92,22 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     }
 
     private func clearResults() {
+        showResults = false
         viewData.searchList = []
         state = .loaded(viewData)
     }
 
     private func search(by name: String) async {
+        showResults = true
         do {
             guard let results = try await searchHeroByNameUseCase.invoke(name) else {
                 return
             }
+
+            guard showResults else {
+                return
+            }
+
             let foundHeroes = results.map { SearchResultsCardViewData(id: $0.id, name: $0.name, thumbnail: $0.thumbnail, apiDetailUrl: $0.apiDetailUrl) }
             viewData.searchList = foundHeroes.count > 0 ? foundHeroes : [SearchResultsCardViewData(id: "", name: WMString.searchHeroesEmpty, thumbnail: "", apiDetailUrl: "")]
             state = .loaded(viewData)

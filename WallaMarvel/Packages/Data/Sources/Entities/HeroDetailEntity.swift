@@ -16,9 +16,18 @@ struct HeroDetailEntity: Codable, Equatable {
             realName: realName,
             deck: deck,
             image: image.screenUrl,
-            creators: creators.compactMap(\.name),
-            friends: characterFriends.compactMap(\.name),
-            enemies: characterEnemies.compactMap(\.name)
+            creators: relatedNamesWithoutDuplicates(creators),
+            friends: relatedNamesWithoutDuplicates(characterFriends),
+            enemies: relatedNamesWithoutDuplicates(characterEnemies)
         )
+    }
+
+    private func relatedNamesWithoutDuplicates(_ source: [RelatedSource]) -> [String] {
+        let creators = source.compactMap(\.name)
+        return creators.reduce(into: [String]()) { result, name in
+            if !result.contains(name) {
+                result.append(name)
+            }
+        }
     }
 }

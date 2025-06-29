@@ -64,6 +64,9 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                             LazyVStack(alignment: .leading) {
                                 ForEach(data.searchList) { result in
                                     SearchResultsCardView(result: result)
+                                        .onTapGesture {
+                                            coordinator.push(page: .heroDetail(result.apiDetailUrl))
+                                        }
                                         .padding()
                                 }
                             }
