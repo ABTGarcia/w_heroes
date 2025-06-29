@@ -15,6 +15,12 @@ public enum WMString {
 
     public static let searchHeroesEmpty = String(localized: "search_heroes_empty", bundle: .module)
     public static let searchHeroesError = String(localized: "search_heroes_error", bundle: .module)
+    public static let searchHeroesAccTextfield = String(localized: "search_heroes_acc_textfield", bundle: .module)
+    public static let searchHeroesAccClear = String(localized: "search_heroes_acc_clear", bundle: .module)
+
+    public static let errorAccRetry = String(localized: "error_acc_retry", bundle: .module)
+
+    public static let heroListAccNavigateDetail = String(localized: "hero_list_acc_navigate_detail", bundle: .module)
 
     public static let loading = String(localized: "loading", bundle: .module)
 }

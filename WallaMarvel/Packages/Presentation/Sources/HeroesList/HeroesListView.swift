@@ -46,6 +46,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                                 .onTapGesture {
                                     coordinator.push(page: .heroDetail(hero.apiDetailUrl))
                                 }
+                                .accessibilityHint(String(localized: String.LocalizationValue(WMString.heroListAccNavigateDetail)))
                                 .frame(maxHeight: .infinity, alignment: .top)
                         }
                     }
@@ -67,6 +68,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                                         .onTapGesture {
                                             coordinator.push(page: .heroDetail(result.apiDetailUrl))
                                         }
+                                        .accessibilityHint(String(localized: String.LocalizationValue(WMString.heroListAccNavigateDetail)))
                                         .padding()
                                 }
                             }

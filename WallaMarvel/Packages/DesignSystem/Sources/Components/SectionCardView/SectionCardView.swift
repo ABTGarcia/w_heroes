@@ -15,6 +15,7 @@ public struct SectionCardView: View {
             }, icon: {
                 Image(systemName: data.systemImageName)
                     .foregroundColor(.wmMain)
+                    .accessibilityHidden(true)
             })
             .foregroundColor(.wmMainText)
             .padding(.bottom, .spacingXXS)

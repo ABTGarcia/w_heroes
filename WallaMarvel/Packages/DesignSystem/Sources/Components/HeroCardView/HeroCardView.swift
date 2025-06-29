@@ -12,6 +12,7 @@ public struct HeroCardView: View {
             profileImage
                 .scaledToFit()
                 .clipped()
+                .accessibilityHidden(true)
             VStack(alignment: .center) {
                 Text(data.name)
                     .font(.wmTitle)
