@@ -8,28 +8,31 @@ public struct HeroCardView: View {
     }
 
     public var body: some View {
-        HStack(alignment: .top) {
+        VStack(alignment: .center) {
             profileImage
-                .clipShape(Circle())
-                .frame(width: 50, height: 50)
-                .padding(.trailing, .spacingXXS)
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(data.name)
-                        .font(.wmTitle)
-                    if let realName = data.realName {
-                        Text("(\(realName))")
-                            .font(.wmSmallText)
-                    }
+                .scaledToFit()
+                .clipped()
+            VStack(alignment: .center) {
+                Text(data.name)
+                    .font(.wmTitle)
+
+                if let realName = data.realName {
+                    Text("(\(realName))")
+                        .font(.wmSmallText)
                 }
+
                 if let description = data.description {
                     Text(description)
                         .font(.wmDescription)
-                        .lineLimit(3)
+                        .lineLimit(4)
                         .truncationMode(.tail)
+                        .padding(.top, .spacingXS)
                 }
             }
+            .padding(.spacingXS)
         }
+        .background(Color.wmDreamBackground)
+        .cornerRadius(15)
     }
 
     @ViewBuilder
@@ -58,4 +61,5 @@ public struct HeroCardView: View {
         apiDetailUrl: ""
     )
     HeroCardView(data: data)
+        .frame(width: 150, height: 400)
 }

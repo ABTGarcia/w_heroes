@@ -13,7 +13,7 @@ struct HeroRepositoryTests {
             offset: 2,
             numberOfTotalResults: 3,
             results: [
-                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
+                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(smallUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
             ]
         )
     }
@@ -47,7 +47,7 @@ struct HeroRepositoryTests {
             name: "A",
             realName: "B",
             deck: "C",
-            image: ImageEntity(iconUrl: "D", screenUrl: "E"),
+            image: ImageEntity(smallUrl: "D", screenUrl: "E"),
             creators: [RelatedSource(id: 1, name: "F", apiDetailUrl: "G")],
             characterFriends: [RelatedSource(id: 2, name: "H", apiDetailUrl: "I")],
             characterEnemies: [RelatedSource(id: 3, name: "J", apiDetailUrl: "K")]

@@ -17,28 +17,29 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
         switch viewModel.state {
         case let .loaded(data):
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: .spacingS) {
+                LazyVGrid(columns: [
+                    GridItem(.flexible(), spacing: .spacingL),
+                    GridItem(.flexible())
+                ]) {
                     ForEach(data.list) { hero in
                         HeroCardView(data: hero)
-                            .listRowSeparatorTint(.wmMain)
-                            .listRowSeparator(.automatic)
                             .onAppear {
                                 Task {
                                     await viewModel.process(.appearedHeroId(hero.id))
                                 }
                             }
-                            .padding(.horizontal, .spacingL)
                             .onTapGesture {
                                 coordinator.push(page: .heroDetail(hero.apiDetailUrl))
                             }
+                            .frame(maxHeight: .infinity, alignment: .top)
                     }
-
-                    if data.isLoading {
-                        HStack {
-                            Spacer()
-                            LoadingView()
-                            Spacer()
-                        }
+                }
+                .padding()
+                if data.isLoading {
+                    HStack {
+                        Spacer()
+                        LoadingView()
+                        Spacer()
                     }
                 }
             }
