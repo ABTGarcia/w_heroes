@@ -36,6 +36,7 @@ struct HeroDetailViewTests {
         viewModel.state = .loaded(
             HeroDetailViewData(
                 name: "AA",
+                realName: "ABA",
                 image: "BBB",
                 deck: "few fewfew",
                 creators: ["A", "B", "C"],

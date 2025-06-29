@@ -33,6 +33,7 @@ struct HeroDetailViewModelTests {
         // Given
         let expected = HeroDetailViewData(
             name: heroDetail.name,
+            realName: heroDetail.realName ?? "",
             image: heroDetail.image,
             deck: heroDetail.deck ?? "",
             creators: heroDetail.creators,

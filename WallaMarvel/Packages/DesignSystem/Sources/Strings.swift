@@ -10,4 +10,7 @@ public enum WMString {
     public static let heroDetailSectionEnemies = String(localized: "hero_detail_section_enemies", bundle: .module)
     public static let heroDetailSectionCreators = String(localized: "hero_detail_section_creators", bundle: .module)
     public static let heroDetailSectionFriends = String(localized: "hero_detail_section_friends", bundle: .module)
+    public static let heroDetailRealName = String(localized: "hero_detail_real_name", bundle: .module)
+
+    public static let loading = String(localized: "loading", bundle: .module)
 }

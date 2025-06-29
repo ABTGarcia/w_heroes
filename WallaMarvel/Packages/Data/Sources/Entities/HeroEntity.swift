@@ -9,6 +9,6 @@ struct HeroEntity: Codable, Equatable {
     let apiDetailUrl: String
 
     public func toDomain() -> Hero {
-        Hero(id: String(id), image: image.iconUrl, name: name, description: deck ?? "", apiDetailUrl: apiDetailUrl)
+        Hero(id: String(id), image: image.smallUrl, name: name, realName: realName, description: deck, apiDetailUrl: apiDetailUrl)
     }
 }

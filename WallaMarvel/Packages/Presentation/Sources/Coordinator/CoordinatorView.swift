@@ -1,3 +1,4 @@
+import DesignSystem
 import SwiftUI
 
 public struct CoordinatorView: View {
@@ -19,5 +20,6 @@ public struct CoordinatorView: View {
                 }
         }
         .environmentObject(coordinator)
+        .tint(.wmMain)
     }
 }
