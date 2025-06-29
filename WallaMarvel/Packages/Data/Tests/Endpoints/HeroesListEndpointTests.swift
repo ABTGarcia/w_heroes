@@ -9,6 +9,11 @@ struct HeroesListEndpointTests {
         // Then
         #expect(sut.path == "characters")
         #expect(sut.httpMethod == .get)
-        #expect(sut.queryParams == ["limit": "20", "format": "json", "offset": "10"])
+        #expect(sut.queryParams == [
+            "limit": "20",
+            "format": "json",
+            "offset": "10",
+            "field_list": "id,name,api_detail_url,image,real_name,deck"
+        ])
     }
 }
