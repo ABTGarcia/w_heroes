@@ -88,7 +88,27 @@ struct GetHeroesListUseCaseTests {
         #expect(result == HeroesList(heroes: [], pagination: pagination))
     }
 
+    @Test mutating func canRequestMoreAfterThrowingError() async throws {
+        // Given
+        heroRepository.findAllFromThrowableError = TestError.genericError
+
+        // When
+        await #expect(throws: TestError.self) {
+            _ = try await sut.invoke(lastId: nil)
+        }
+        await #expect(throws: TestError.self) {
+            _ = try await sut.invoke(lastId: nil)
+        }
+
+        // Then
+        #expect(heroRepository.findAllFromCallsCount == 2)
+    }
+
     private func setDependencies() {
         container.heroRepository.register { heroRepository }
+    }
+
+    private enum TestError: Error {
+        case genericError
     }
 }
