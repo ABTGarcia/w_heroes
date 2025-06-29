@@ -25,7 +25,10 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                 }
                 .padding()
                 .shadow(radius: 2)
-                .onChange(of: searchText, initial: true) { _, _ in
+                .onChange(of: searchText, initial: true) { prev, current in
+                    guard prev != current else {
+                        return
+                    }
                     Task {
                         await viewModel.process(.search(searchText))
                     }
