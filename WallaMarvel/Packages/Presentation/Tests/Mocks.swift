@@ -138,6 +138,37 @@ public class HeroesListViewModelProtocolMock: HeroesListViewModelProtocol {
     }
 }
 
+public class SearchHeroByNameUseCaseProtocolMock: SearchHeroByNameUseCaseProtocol, @unchecked Sendable {
+    public init() {}
+
+    // MARK: - invoke
+
+    public var invokeThrowableError: (any Error)?
+    public var invokeCallsCount = 0
+    public var invokeCalled: Bool {
+        invokeCallsCount > 0
+    }
+
+    public var invokeReceivedName: String?
+    public var invokeReceivedInvocations: [String] = []
+    public var invokeReturnValue: [Hero]?
+    public var invokeClosure: ((String) async throws -> [Hero]?)?
+
+    public func invoke(_ name: String) async throws -> [Hero]? {
+        invokeCallsCount += 1
+        invokeReceivedName = name
+        invokeReceivedInvocations.append(name)
+        if let error = invokeThrowableError {
+            throw error
+        }
+        if let invokeClosure {
+            return try await invokeClosure(name)
+        } else {
+            return invokeReturnValue
+        }
+    }
+}
+
 // swiftlint:enable line_length
 // swiftlint:enable variable_name
 // swiftlint:enable superfluous_disable_command

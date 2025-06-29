@@ -21,7 +21,7 @@ struct HeroDatasourceTests {
             offset: 2,
             numberOfTotalResults: 3,
             results: [
-                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
+                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "A", smallUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
             ]
         )
         networkService.requestWithReturnValue = list
@@ -47,7 +47,7 @@ struct HeroDatasourceTests {
                 name: "A",
                 realName: "B",
                 deck: "C",
-                image: ImageEntity(iconUrl: "D", screenUrl: "E"),
+                image: ImageEntity(iconUrl: "A", smallUrl: "D", screenUrl: "E"),
                 creators: [RelatedSource(id: 2, name: "F", apiDetailUrl: "G")],
                 characterFriends: [RelatedSource(id: 3, name: "H", apiDetailUrl: "I")],
                 characterEnemies: [RelatedSource(id: 4, name: "J", apiDetailUrl: "K")]
@@ -57,6 +57,26 @@ struct HeroDatasourceTests {
 
         // When
         let result = try await sut.getDetail(withUrl: detailUrl)
+
+        // Then
+        #expect(networkService.requestWithCalled)
+        #expect(result == list.results)
+    }
+
+    @Test func searchByName() async throws {
+        // Given
+        let list = ListEntity(
+            limit: 1,
+            offset: 2,
+            numberOfTotalResults: 3,
+            results: [
+                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "A", smallUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
+            ]
+        )
+        networkService.requestWithReturnValue = list
+
+        // When
+        let result = try await sut.searchByName("A")
 
         // Then
         #expect(networkService.requestWithCalled)

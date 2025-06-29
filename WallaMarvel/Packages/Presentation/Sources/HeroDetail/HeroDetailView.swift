@@ -25,19 +25,32 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                     } placeholder: {
                         WMImage.heroDetailPlaceholder
                             .resizable()
+                            .aspectRatio(contentMode: .fit)
                     }
                     .clipped()
                     .cornerRadius(12)
 
-                    Text(data.name)
-                        .font(.wmHeader)
-                        .foregroundColor(.wmMainText)
-
-                    Text(data.deck)
-                        .font(.wmTitle)
-                        .foregroundColor(.wmSecondaryText)
-
                     HStack {
+                        Label(title: {
+                            Text(String(localized: String.LocalizationValue(WMString.heroDetailRealName)))
+                                .font(.wmTitle)
+                                .foregroundColor(.wmMainText)
+                        }, icon: {
+                            Image(systemName: "person.fill.questionmark")
+                                .foregroundColor(.wmMain)
+                        })
+                        Text(data.realName ?? data.name)
+                            .font(.wmTitle)
+                            .foregroundColor(.wmSecondaryText)
+                    }
+
+                    if let deck = data.deck {
+                        Text(deck)
+                            .font(.wmTitle)
+                            .foregroundColor(.wmSecondaryText)
+                    }
+
+                    HStack(alignment: .top) {
                         SectionCardView(
                             data: SectionCardViewData(
                                 name: String(localized: String.LocalizationValue(WMString.heroDetailSectionFriends)),
@@ -66,9 +79,11 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                         ))
                 }
                 .padding()
+                .navigationTitle(data.name)
+                .navigationBarTitleDisplayMode(.large)
             }
         case .loading:
-            ProgressView()
+            LoadingView()
         case .error:
             ErrorView {
                 Task {
@@ -86,6 +101,7 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
         var state: HeroDetailState = .loaded(
             HeroDetailViewData(
                 name: "Dream Girl",
+                realName: "AAA",
                 image: "https://comicvine.gamespot.com/a/uploads/screen_medium/2/29837/2422799-dreamgirl_lsh_vol7_04.jpg",
                 deck: "Nura Nal is from the planet Naltor, where all of the inhabitants have the ability to see into the ",
                 creators: ["Edmond Hamilton", "John Forte"],

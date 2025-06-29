@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "7d94a5d3-3cf3-4459-81af-7f5c9ca34ff2",
+		"name": "ComicVine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6434344"
+	},
+	"item": [
+		{
+			"name": "Hero Detail",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Heroes List",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://comicvine.gamespot.com/api/characters?api_key=b828066fb611bb4d0d637c0bbe68bb90f2c39134&format=json&limit=20&offset=0",
+					"protocol": "https",
+					"host": [
+						"comicvine",
+						"gamespot",
+						"com"
+					],
+					"path": [
+						"api",
+						"characters"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "b828066fb611bb4d0d637c0bbe68bb90f2c39134"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

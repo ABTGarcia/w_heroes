@@ -22,4 +22,9 @@ public final class HeroRepository: HeroRepositoryProtocol {
 
         return response.toDomain()
     }
+
+    public func searchByName(_ name: String) async throws -> [Hero] {
+        let response = try await container.heroDatasource().searchByName(name)
+        return response.map { $0.toDomain() }
+    }
 }

@@ -10,7 +10,7 @@ struct ListEntityTests {
             limit: 1,
             offset: 2,
             numberOfTotalResults: 3,
-            results: HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
+            results: HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "S", smallUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
         )
 
         // When

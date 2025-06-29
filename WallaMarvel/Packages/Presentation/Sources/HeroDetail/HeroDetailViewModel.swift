@@ -46,8 +46,9 @@ public final class HeroDetailViewModel: HeroDetailViewModelProtocol {
                 let response = try await getHeroDetailUseCase.invoke(detailUrl: detailUrl)
                 state = .loaded(HeroDetailViewData(
                     name: response.name,
+                    realName: response.realName,
                     image: response.image,
-                    deck: response.deck ?? "",
+                    deck: response.deck,
                     creators: response.creators,
                     enemies: response.enemies,
                     friends: response.friends

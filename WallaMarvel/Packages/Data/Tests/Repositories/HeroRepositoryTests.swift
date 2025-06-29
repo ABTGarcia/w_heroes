@@ -13,7 +13,7 @@ struct HeroRepositoryTests {
             offset: 2,
             numberOfTotalResults: 3,
             results: [
-                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
+                HeroEntity(id: 1, name: "A", realName: "B", deck: "C", image: ImageEntity(iconUrl: "F", smallUrl: "D", screenUrl: "E"), apiDetailUrl: "J")
             ]
         )
     }
@@ -47,7 +47,7 @@ struct HeroRepositoryTests {
             name: "A",
             realName: "B",
             deck: "C",
-            image: ImageEntity(iconUrl: "D", screenUrl: "E"),
+            image: ImageEntity(iconUrl: "F", smallUrl: "D", screenUrl: "E"),
             creators: [RelatedSource(id: 1, name: "F", apiDetailUrl: "G")],
             characterFriends: [RelatedSource(id: 2, name: "H", apiDetailUrl: "I")],
             characterEnemies: [RelatedSource(id: 3, name: "J", apiDetailUrl: "K")]
@@ -61,6 +61,28 @@ struct HeroRepositoryTests {
         #expect(heroDatasource.getDetailWithUrlCallsCount == 1)
         #expect(heroDatasource.getDetailWithUrlReceivedUrl == detailURL)
         #expect(result == detailEntity.toDomain())
+    }
+
+    @Test func searchByName() async throws {
+        // Given
+        let name = "AAA"
+        let returnValue = [HeroEntity(
+            id: 1,
+            name: "A",
+            realName: "B",
+            deck: "C",
+            image: ImageEntity(iconUrl: "F", smallUrl: "D", screenUrl: "E"),
+            apiDetailUrl: "J"
+        )]
+        heroDatasource.searchByNameReturnValue = returnValue
+
+        // When
+        let result = try await sut.searchByName(name)
+
+        // Then
+        #expect(heroDatasource.searchByNameCallsCount == 1)
+        #expect(heroDatasource.searchByNameReceivedName == name)
+        #expect(result == returnValue.map { $0.toDomain() })
     }
 
     private func setDependencies() {
