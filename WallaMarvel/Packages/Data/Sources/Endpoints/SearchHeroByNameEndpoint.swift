@@ -1,16 +1,17 @@
 import Domain
 import Foundation
 
-class HeroesListEndpoint: NetworkEndpointProtocol {
-    var path: String = "characters"
+class SearchHeroByNameEndpoint: NetworkEndpointProtocol {
+    var path: String = "search"
     var httpMethod: HTTPMethod = .get
     var queryParams: [String: String]? = [:]
 
-    init(from position: Int) {
+    init(_ name: String) {
         queryParams = [
-            "limit": "20",
+            "limit": "100",
             "format": "json",
-            "offset": String(position),
+            "query": "name:\(name)",
+            "resources": "character",
             "field_list": "id,name,api_detail_url,image,real_name,deck"
         ]
     }

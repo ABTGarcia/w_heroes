@@ -72,6 +72,33 @@ public class HeroRepositoryProtocolMock: HeroRepositoryProtocol, @unchecked Send
             return getDetailWithUrlReturnValue
         }
     }
+
+    // MARK: - searchByName
+
+    public var searchByNameThrowableError: (any Error)?
+    public var searchByNameCallsCount = 0
+    public var searchByNameCalled: Bool {
+        searchByNameCallsCount > 0
+    }
+
+    public var searchByNameReceivedName: String?
+    public var searchByNameReceivedInvocations: [String] = []
+    public var searchByNameReturnValue: [Hero]!
+    public var searchByNameClosure: ((String) async throws -> [Hero])?
+
+    public func searchByName(_ name: String) async throws -> [Hero] {
+        searchByNameCallsCount += 1
+        searchByNameReceivedName = name
+        searchByNameReceivedInvocations.append(name)
+        if let error = searchByNameThrowableError {
+            throw error
+        }
+        if let searchByNameClosure {
+            return try await searchByNameClosure(name)
+        } else {
+            return searchByNameReturnValue
+        }
+    }
 }
 
 // swiftlint:enable line_length

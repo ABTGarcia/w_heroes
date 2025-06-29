@@ -1,18 +1,19 @@
 @testable import Data
 import Testing
 
-struct HeroesListEndpointTests {
+struct SearchHeroByNameEndpointTests {
     @Test func values() async throws {
         // Given
-        let sut = HeroesListEndpoint(from: 10)
+        let sut = SearchHeroByNameEndpoint("AAA")
 
         // Then
-        #expect(sut.path == "characters")
+        #expect(sut.path == "search")
         #expect(sut.httpMethod == .get)
         #expect(sut.queryParams == [
-            "limit": "20",
+            "limit": "100",
             "format": "json",
-            "offset": "10",
+            "query": "name:AAA",
+            "resources": "character",
             "field_list": "id,name,api_detail_url,image,real_name,deck"
         ])
     }

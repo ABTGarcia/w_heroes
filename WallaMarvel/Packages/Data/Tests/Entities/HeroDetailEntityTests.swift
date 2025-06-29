@@ -11,10 +11,10 @@ struct HeroDetailEntityTests {
             name: "A",
             realName: "B",
             deck: "C",
-            image: ImageEntity(smallUrl: "D", screenUrl: "E"),
-            creators: [RelatedSource(id: 2, name: "F", apiDetailUrl: "G")],
-            characterFriends: [RelatedSource(id: 3, name: "H", apiDetailUrl: "I")],
-            characterEnemies: [RelatedSource(id: 4, name: "J", apiDetailUrl: "K")]
+            image: ImageEntity(iconUrl: "A", smallUrl: "D", screenUrl: "E"),
+            creators: [RelatedSource(id: 2, name: "F", apiDetailUrl: "G"), RelatedSource(id: 3, name: "F", apiDetailUrl: "Z")],
+            characterFriends: [RelatedSource(id: 3, name: "H", apiDetailUrl: "I"), RelatedSource(id: 4, name: "H", apiDetailUrl: "T")],
+            characterEnemies: [RelatedSource(id: 4, name: "J", apiDetailUrl: "K"), RelatedSource(id: 5, name: "J", apiDetailUrl: "Q")]
         )
 
         // When

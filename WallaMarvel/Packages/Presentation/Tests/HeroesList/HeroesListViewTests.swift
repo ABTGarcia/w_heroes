@@ -26,8 +26,21 @@ struct HeroesListViewTests {
     @Test func loaded() async throws {
         // Given
         viewModel.state = .loaded(HeroesListViewData(
-            heroes: [Hero(id: "1", image: "A", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
-            isLoading: false
+            heroes: [Hero(id: "1", image: "A", thumbnail: "F", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
+            isLoading: false,
+            searchList: []
+        ))
+
+        // Then
+        expectSnapshot(matching: sut, size: .iPhone16Portrait)
+    }
+
+    @Test func loadedSearch() async throws {
+        // Given
+        viewModel.state = .loaded(HeroesListViewData(
+            heroes: [Hero(id: "1", image: "A", thumbnail: "F", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
+            isLoading: false,
+            searchList: [SearchResultsCardViewData(id: "", name: "AA", thumbnail: "", apiDetailUrl: "")]
         ))
 
         // Then
@@ -37,8 +50,9 @@ struct HeroesListViewTests {
     @Test func loadedLoading() async throws {
         // Given
         viewModel.state = .loaded(HeroesListViewData(
-            heroes: [Hero(id: "1", image: "A", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
-            isLoading: true
+            heroes: [Hero(id: "1", image: "A", thumbnail: "G", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
+            isLoading: true,
+            searchList: []
         ))
 
         // Then

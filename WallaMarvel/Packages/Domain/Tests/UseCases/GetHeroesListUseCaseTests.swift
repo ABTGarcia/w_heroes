@@ -11,7 +11,7 @@ struct GetHeroesListUseCaseTests {
 
     private let heroesList = HeroesList(
         heroes: [
-            Hero(id: "1", image: "AAA", name: "BBB", realName: "FDF", description: "CCC", apiDetailUrl: "J")
+            Hero(id: "1", image: "AAA", thumbnail: "G", name: "BBB", realName: "FDF", description: "CCC", apiDetailUrl: "J")
         ],
         pagination: Pagination(offset: 0, limit: 20, total: 30)
     )
@@ -52,8 +52,8 @@ struct GetHeroesListUseCaseTests {
         let pagination = Pagination(offset: 20, limit: 20, total: 1)
         let heroesList = HeroesList(
             heroes: [
-                Hero(id: "1", image: "AAA", name: "BBB", realName: "FDF", description: "CCC", apiDetailUrl: "J"),
-                Hero(id: "2", image: "BBB", name: "CCC", realName: "FDF", description: "DDD", apiDetailUrl: "J")
+                Hero(id: "1", image: "AAA", thumbnail: "E", name: "BBB", realName: "FDF", description: "CCC", apiDetailUrl: "J"),
+                Hero(id: "2", image: "BBB", thumbnail: "E", name: "CCC", realName: "FDF", description: "DDD", apiDetailUrl: "J")
             ],
             pagination: pagination
         )
@@ -73,7 +73,7 @@ struct GetHeroesListUseCaseTests {
         let pagination = Pagination(offset: 1, limit: 2, total: 30)
         let heroesList = HeroesList(
             heroes: [
-                Hero(id: "1", image: "AAA", name: "BBB", realName: "FDF", description: "CCC", apiDetailUrl: "J")
+                Hero(id: "1", image: "AAA", thumbnail: "E", name: "BBB", realName: "FDF", description: "CCC", apiDetailUrl: "J")
             ],
             pagination: pagination
         )

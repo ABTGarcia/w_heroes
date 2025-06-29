@@ -69,6 +69,23 @@
         }
       }
     },
+    "hero_detail_search" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search by name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar por nombre"
+          }
+        }
+      }
+    },
     "hero_detail_section_creators" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -133,6 +150,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cargando"
+          }
+        }
+      }
+    },
+    "search_heroes_empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No heroes found"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado héroes"
+          }
+        }
+      }
+    },
+    "search_heroes_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algo ha salido mal…"
           }
         }
       }

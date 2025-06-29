@@ -39,14 +39,16 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                             Image(systemName: "person.fill.questionmark")
                                 .foregroundColor(.wmMain)
                         })
-                        Text(data.realName)
+                        Text(data.realName ?? data.name)
                             .font(.wmTitle)
                             .foregroundColor(.wmSecondaryText)
                     }
 
-                    Text(data.deck)
-                        .font(.wmTitle)
-                        .foregroundColor(.wmSecondaryText)
+                    if let deck = data.deck {
+                        Text(deck)
+                            .font(.wmTitle)
+                            .foregroundColor(.wmSecondaryText)
+                    }
 
                     HStack(alignment: .top) {
                         SectionCardView(

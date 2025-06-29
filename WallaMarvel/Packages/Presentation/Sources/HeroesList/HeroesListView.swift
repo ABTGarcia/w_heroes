@@ -5,6 +5,7 @@ import SwiftUI
 public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
     @EnvironmentObject private var coordinator: Coordinator
+    @State private var searchText = ""
 
     public init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -16,30 +17,61 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     public var body: some View {
         switch viewModel.state {
         case let .loaded(data):
-            ScrollView {
-                LazyVGrid(columns: [
-                    GridItem(.flexible(), spacing: .spacingL),
-                    GridItem(.flexible())
-                ]) {
-                    ForEach(data.list) { hero in
-                        HeroCardView(data: hero)
-                            .onAppear {
-                                Task {
-                                    await viewModel.process(.appearedHeroId(hero.id))
-                                }
-                            }
-                            .onTapGesture {
-                                coordinator.push(page: .heroDetail(hero.apiDetailUrl))
-                            }
-                            .frame(maxHeight: .infinity, alignment: .top)
+            VStack {
+                SearchFieldView(searchText: $searchText) {
+                    Task {
+                        await viewModel.process(.clearResults)
                     }
                 }
                 .padding()
-                if data.isLoading {
-                    HStack {
-                        Spacer()
-                        LoadingView()
-                        Spacer()
+                .shadow(radius: 2)
+                .onChange(of: searchText, initial: true) { _, _ in
+                    Task {
+                        await viewModel.process(.search(searchText))
+                    }
+                }
+
+                ScrollView {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible(), spacing: .spacingL),
+                        GridItem(.flexible())
+                    ]) {
+                        ForEach(data.list) { hero in
+                            HeroCardView(data: hero)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.process(.appearedHeroId(hero.id))
+                                    }
+                                }
+                                .onTapGesture {
+                                    coordinator.push(page: .heroDetail(hero.apiDetailUrl))
+                                }
+                                .frame(maxHeight: .infinity, alignment: .top)
+                        }
+                    }
+                    .padding()
+                    if data.isLoading {
+                        HStack {
+                            Spacer()
+                            LoadingView()
+                            Spacer()
+                        }
+                    }
+                }
+                .overlay(alignment: .top) {
+                    if !data.searchList.isEmpty {
+                        ScrollView {
+                            LazyVStack(alignment: .leading) {
+                                ForEach(data.searchList) { result in
+                                    SearchResultsCardView(result: result)
+                                        .onTapGesture {
+                                            coordinator.push(page: .heroDetail(result.apiDetailUrl))
+                                        }
+                                        .padding()
+                                }
+                            }
+                        }
+                        .background(Color.white)
                     }
                 }
             }
@@ -59,9 +91,8 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     final class HeroesListViewModelPreview: HeroesListViewModelProtocol {
         var state: HeroesListState = .loaded(HeroesListViewData(
             heroes: [
-                Hero(id: "1", image: "https://picsum.photos/100", name: "E", realName: "AA", description: "T", apiDetailUrl: "A"),
-                Hero(id: "2", image: "A", name: "B", realName: "EEE", description: "C", apiDetailUrl: "A")
-            ], isLoading: false
+                Hero(id: "1", image: "https://picsum.photos/100", thumbnail: "", name: "E", realName: "AA", description: "T", apiDetailUrl: "A")
+            ], isLoading: false, searchList: []
         ))
 
         func process(_: HeroesListEvent) async {}

@@ -11,5 +11,9 @@ struct HeroDetailEndpointTests {
         #expect(sut.path == "")
         #expect(sut.httpMethod == .get)
         #expect(sut.baseURL == detailUrl)
+        #expect(sut.queryParams == [
+            "format": "json",
+            "field_list": "id,name,realName,image,creators,deck,character_friends,character_enemies"
+        ])
     }
 }

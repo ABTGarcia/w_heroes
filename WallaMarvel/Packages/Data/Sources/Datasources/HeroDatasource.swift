@@ -5,6 +5,7 @@ import FactoryKit
 protocol HeroDatasourceProtocol: Sendable {
     func findAll(from position: Int) async throws -> ListEntity<[HeroEntity]>
     func getDetail(withUrl url: String) async throws -> HeroDetailEntity
+    func searchByName(_ name: String) async throws -> [HeroEntity]
 }
 
 final class HeroDatasource: HeroDatasourceProtocol {
@@ -25,6 +26,14 @@ final class HeroDatasource: HeroDatasourceProtocol {
     func getDetail(withUrl url: String) async throws -> HeroDetailEntity {
         let response: ListEntity<HeroDetailEntity> = try await container.networkService().request(
             with: HeroDetailEndpoint(detailUrl: url)
+        )
+
+        return response.results
+    }
+
+    func searchByName(_ name: String) async throws -> [HeroEntity] {
+        let response: ListEntity<[HeroEntity]> = try await container.networkService().request(
+            with: SearchHeroByNameEndpoint(name)
         )
 
         return response.results
