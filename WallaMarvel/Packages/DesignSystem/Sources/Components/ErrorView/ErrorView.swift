@@ -21,6 +21,7 @@ public struct ErrorView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 150, height: 150)
+                .accessibilityHidden(true)
 
             Text(String(localized: String.LocalizationValue(errorTitle), bundle: .module))
                 .font(.wmHeader)
@@ -43,6 +44,7 @@ public struct ErrorView: View {
                     .cornerRadius(12)
             }
             .padding(.horizontal, .spacingL)
+            .accessibilityHint(String(localized: String.LocalizationValue(WMString.errorAccRetry), bundle: .module))
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
