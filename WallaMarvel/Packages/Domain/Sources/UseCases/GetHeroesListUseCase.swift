@@ -27,13 +27,18 @@ public struct GetHeroesListUseCase: GetHeroesListUseCaseProtocol {
             canRequestMore = false
             let offset = pagination.offset + pagination.limit
 
-            let list = try await repository.findAll(from: offset)
+            do {
+                let list = try await repository.findAll(from: offset)
 
-            pagination = list.pagination
-            heroes.append(contentsOf: list.heroes)
+                pagination = list.pagination
+                heroes.append(contentsOf: list.heroes)
 
-            canRequestMore = true
-            return list
+                canRequestMore = true
+                return list
+            } catch {
+                canRequestMore = true
+                throw error
+            }
         } else {
             return HeroesList(heroes: [], pagination: pagination)
         }
