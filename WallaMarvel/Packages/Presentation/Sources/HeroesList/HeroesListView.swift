@@ -36,14 +36,14 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                     if data.isLoading {
                         HStack {
                             Spacer()
-                            ProgressView()
+                            LoadingView()
                             Spacer()
                         }
                     }
                 }
             }
         case .loading:
-            ProgressView()
+            LoadingView()
         case .error:
             ErrorView {
                 Task {

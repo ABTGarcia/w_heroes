@@ -68,7 +68,7 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                 .padding()
             }
         case .loading:
-            ProgressView()
+            LoadingView()
         case .error:
             ErrorView {
                 Task {

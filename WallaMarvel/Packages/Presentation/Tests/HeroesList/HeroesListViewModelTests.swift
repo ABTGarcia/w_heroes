@@ -58,7 +58,7 @@ struct HeroesListViewModelTests {
         #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == nil)
     }
 
-    @Test func loadDataLoadingMore() async throws {
+    @Test func appearedHeroIdLoadingMore() async throws {
         // Given
         let heroesList = HeroesList(
             heroes: [],
@@ -68,12 +68,12 @@ struct HeroesListViewModelTests {
         getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
 
         // When
-        await sut.process(.loadData)
+        await sut.process(.appearedHeroId("5"))
 
         // Then
         #expect(sut.state == expected)
         #expect(getHeroesListUseCaseProtocolMock.invokeLastIdCallsCount == 1)
-        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == nil)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == "5")
     }
 
     @Test func loadDataThrows() async throws {

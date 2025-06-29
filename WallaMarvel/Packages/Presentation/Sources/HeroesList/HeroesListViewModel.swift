@@ -45,12 +45,12 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
             state = .loading
             await retrieveData()
         case let .appearedHeroId(id):
+            setLoadMore(true)
             await retrieveData(lastId: id)
         }
     }
 
     private func retrieveData(lastId: String? = nil) async {
-        setLoadMore(true)
         do {
             let newHeroesList = try await getHeroesListUseCase.invoke(lastId: lastId)
 
