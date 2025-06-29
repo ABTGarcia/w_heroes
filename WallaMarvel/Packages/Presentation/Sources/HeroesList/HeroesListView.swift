@@ -58,8 +58,8 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     final class HeroesListViewModelPreview: HeroesListViewModelProtocol {
         var state: HeroesListState = .loaded(HeroesListViewData(
             heroes: [
-                Hero(id: "1", image: "https://picsum.photos/100", name: "E", description: "T", apiDetailUrl: "A"),
-                Hero(id: "2", image: "A", name: "B", description: "C", apiDetailUrl: "A")
+                Hero(id: "1", image: "https://picsum.photos/100", name: "E", realName: "AA", description: "T", apiDetailUrl: "A"),
+                Hero(id: "2", image: "A", name: "B", realName: "EEE", description: "C", apiDetailUrl: "A")
             ], isLoading: false
         ))
 

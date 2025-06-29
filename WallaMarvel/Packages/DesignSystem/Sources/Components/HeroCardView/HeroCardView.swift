@@ -14,10 +14,20 @@ public struct HeroCardView: View {
                 .frame(width: 50, height: 50)
                 .padding(.trailing, .spacingXXS)
             VStack(alignment: .leading) {
-                Text(data.name)
-                    .font(.wmTitle)
-                Text(data.description)
-                    .font(.wmDescription)
+                HStack {
+                    Text(data.name)
+                        .font(.wmTitle)
+                    if let realName = data.realName {
+                        Text("(\(realName))")
+                            .font(.wmSmallText)
+                    }
+                }
+                if let description = data.description {
+                    Text(description)
+                        .font(.wmDescription)
+                        .lineLimit(3)
+                        .truncationMode(.tail)
+                }
             }
         }
     }
@@ -38,6 +48,7 @@ public struct HeroCardView: View {
         id: "1",
         image: "AAAA",
         name: "DeadPool",
+        realName: "AAA",
         description:
         """
         Lorem Ipsum is simply dummy

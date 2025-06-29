@@ -9,6 +9,7 @@ struct HeroCardViewTests {
             id: "3",
             image: "AAA",
             name: "BB",
+            realName: "FDF",
             description: "CC",
             apiDetailUrl: "J"
         )
