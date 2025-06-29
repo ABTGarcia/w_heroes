@@ -27,7 +27,8 @@ struct HeroesListViewTests {
         // Given
         viewModel.state = .loaded(HeroesListViewData(
             heroes: [Hero(id: "1", image: "A", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
-            isLoading: false
+            isLoading: false,
+            searchList: []
         ))
 
         // Then
@@ -38,7 +39,8 @@ struct HeroesListViewTests {
         // Given
         viewModel.state = .loaded(HeroesListViewData(
             heroes: [Hero(id: "1", image: "A", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
-            isLoading: true
+            isLoading: true,
+            searchList: []
         ))
 
         // Then

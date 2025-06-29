@@ -5,6 +5,7 @@ import SwiftUI
 public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
     @EnvironmentObject private var coordinator: Coordinator
+    @State private var searchText = ""
 
     public init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -16,30 +17,75 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     public var body: some View {
         switch viewModel.state {
         case let .loaded(data):
-            ScrollView {
-                LazyVGrid(columns: [
-                    GridItem(.flexible(), spacing: .spacingL),
-                    GridItem(.flexible())
-                ]) {
-                    ForEach(data.list) { hero in
-                        HeroCardView(data: hero)
-                            .onAppear {
+            GeometryReader { _ in
+                VStack {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                        TextField(String(localized: String.LocalizationValue(WMString.heroDetailSearch)), text: $searchText)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                            .padding(.spacingXS)
+                            .background(Color.wmTranspBackground)
+                            .cornerRadius(8)
+
+                        if !searchText.isEmpty {
+                            Button(action: {
+                                searchText = ""
                                 Task {
-                                    await viewModel.process(.appearedHeroId(hero.id))
+                                    await viewModel.process(.clearResults)
+                                }
+                            }, label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.wmTranspBackground)
+                            })
+                        }
+                    }
+                    .padding()
+                    .shadow(radius: 2)
+                    .onChange(of: searchText, initial: true) { _, _ in
+                        Task {
+                            await viewModel.process(.search(searchText))
+                        }
+                    }
+
+                    ScrollView {
+                        LazyVGrid(columns: [
+                            GridItem(.flexible(), spacing: .spacingL),
+                            GridItem(.flexible())
+                        ]) {
+                            ForEach(data.list) { hero in
+                                HeroCardView(data: hero)
+                                    .onAppear {
+                                        Task {
+                                            await viewModel.process(.appearedHeroId(hero.id))
+                                        }
+                                    }
+                                    .onTapGesture {
+                                        coordinator.push(page: .heroDetail(hero.apiDetailUrl))
+                                    }
+                                    .frame(maxHeight: .infinity, alignment: .top)
+                            }
+                        }
+                        .padding()
+                        if data.isLoading {
+                            HStack {
+                                Spacer()
+                                LoadingView()
+                                Spacer()
+                            }
+                        }
+                    }
+                    .overlay(alignment: .top) {
+                        if !data.searchList.isEmpty {
+                            List {
+                                ForEach(data.searchList, id: \.self) { result in
+                                    Text(result)
+                                        .font(.wmDescription)
+                                        .foregroundColor(.wmMainText)
                                 }
                             }
-                            .onTapGesture {
-                                coordinator.push(page: .heroDetail(hero.apiDetailUrl))
-                            }
-                            .frame(maxHeight: .infinity, alignment: .top)
-                    }
-                }
-                .padding()
-                if data.isLoading {
-                    HStack {
-                        Spacer()
-                        LoadingView()
-                        Spacer()
+                            .listStyle(PlainListStyle())
+                        }
                     }
                 }
             }
@@ -61,7 +107,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
             heroes: [
                 Hero(id: "1", image: "https://picsum.photos/100", name: "E", realName: "AA", description: "T", apiDetailUrl: "A"),
                 Hero(id: "2", image: "A", name: "B", realName: "EEE", description: "C", apiDetailUrl: "A")
-            ], isLoading: false
+            ], isLoading: false, searchList: []
         ))
 
         func process(_: HeroesListEvent) async {}

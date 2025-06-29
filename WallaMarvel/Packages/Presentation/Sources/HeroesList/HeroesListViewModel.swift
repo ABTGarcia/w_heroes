@@ -6,6 +6,8 @@ import Foundation
 public enum HeroesListEvent: Equatable, Sendable {
     case loadData
     case appearedHeroId(String)
+    case search(String)
+    case clearResults
 }
 
 public enum HeroesListState: Equatable, Sendable {
@@ -27,7 +29,7 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     @Published public var state: HeroesListState
 
     private let container: Container
-    private var viewData = HeroesListViewData(heroes: [], isLoading: false)
+    private var viewData = HeroesListViewData(heroes: [], isLoading: false, searchList: [])
     private var getHeroesListUseCase: GetHeroesListUseCaseProtocol
 
     public init(container: Container = .shared) {
@@ -47,6 +49,10 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
         case let .appearedHeroId(id):
             setLoadMore(true)
             await retrieveData(lastId: id)
+        case let .search(name):
+            search(by: name)
+        case .clearResults:
+            clearResults()
         }
     }
 
@@ -77,5 +83,17 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     private func setLoadMore(_ loading: Bool) {
         viewData.isLoading = loading
         state = .loaded(viewData)
+    }
+
+    private func clearResults() {
+        viewData.searchList = []
+        state = .loaded(viewData)
+    }
+
+    private func search(by name: String) {
+        if !name.isEmpty {
+            viewData.searchList.append(name)
+            state = .loaded(viewData)
+        }
     }
 }

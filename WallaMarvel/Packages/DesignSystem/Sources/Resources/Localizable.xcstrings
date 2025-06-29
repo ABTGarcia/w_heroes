@@ -69,6 +69,23 @@
         }
       }
     },
+    "hero_detail_search" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search by name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar por nombre"
+          }
+        }
+      }
+    },
     "hero_detail_section_creators" : {
       "extractionState" : "manual",
       "localizations" : {

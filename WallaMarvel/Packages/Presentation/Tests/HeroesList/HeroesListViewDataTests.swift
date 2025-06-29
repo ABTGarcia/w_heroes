@@ -10,7 +10,7 @@ struct HeroesListViewDataTests {
 
     @Test func initTests() async throws {
         // Given
-        let sut = HeroesListViewData(heroes: heroes, isLoading: true)
+        let sut = HeroesListViewData(heroes: heroes, isLoading: true, searchList: [])
 
         // Then
         #expect(sut.isLoading == true)
@@ -19,7 +19,7 @@ struct HeroesListViewDataTests {
 
     @Test func appendHeroes() async throws {
         // Given
-        var sut = HeroesListViewData(heroes: heroes, isLoading: true)
+        var sut = HeroesListViewData(heroes: heroes, isLoading: true, searchList: [])
 
         // When
         sut.appendHeroes(moreHeroes)
