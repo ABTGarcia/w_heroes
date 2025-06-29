@@ -1,0 +1,12 @@
+appId: com.alberto.WallaMarvel
+---
+- launchApp
+- tapOn: "Lightning Lad"
+- assertVisible : .*Real name.*
+- assertVisible : Garth Ranzz is one.*
+- tapOn: "Back"
+- scrollUntilVisible:
+    speed: 100
+    element:
+      text: "Phren"
+- tapOn: "Phren"
