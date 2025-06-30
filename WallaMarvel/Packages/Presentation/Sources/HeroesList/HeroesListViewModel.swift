@@ -10,6 +10,7 @@ public enum HeroesListEvent: Equatable, Sendable {
     case searchTextChanged(String)
     case tapClearResults
     case tapListRetry
+    case tapHeroCell(String)
 }
 
 public enum HeroesListState: Equatable, Sendable {
@@ -30,13 +31,14 @@ public protocol HeroesListViewModelProtocol: ObservableObject {
 public final class HeroesListViewModel: HeroesListViewModelProtocol {
     @Published public var state: HeroesListState
 
+    private let coordinator: CoordinatorProtocol
     private let container: Container
     private var viewData = HeroesListViewData(heroes: [], isLoading: false, searchList: [])
     private var getHeroesListUseCase: GetHeroesListUseCaseProtocol
     private var searchHeroByNameUseCase: SearchHeroByNameUseCaseProtocol
     private var showResults = false
 
-    public init(container: Container = .shared) {
+    public init(coordinator: CoordinatorProtocol, container: Container = .shared) {
         self.container = container
         guard
             let getHeroesListUseCase = container.getHeroesListUseCase(),
@@ -44,6 +46,7 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
         else {
             preconditionFailure("UseCase not found")
         }
+        self.coordinator = coordinator
         self.getHeroesListUseCase = getHeroesListUseCase
         self.searchHeroByNameUseCase = searchHeroByNameUseCase
         state = .loading
@@ -65,7 +68,16 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
         case .tapListRetry:
             setLoadMore(true)
             await retrieveData(lastId: viewData.list.last?.id)
+        case let .tapHeroCell(apiDetailUrl):
+            navigateDetail(apiDetailUrl)
         }
+    }
+
+    private func navigateDetail(_ url: String) {
+        guard !url.isEmpty else {
+            return
+        }
+        coordinator.push(page: .heroDetail(url))
     }
 
     private func firstRetrieveData() async {
@@ -120,6 +132,10 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     }
 
     private func search(by name: String) async {
+        guard !name.isEmpty else {
+            clearResults()
+            return
+        }
         showResults = true
         do {
             guard let results = try await searchHeroByNameUseCase.invoke(name) else {

@@ -1,58 +1,77 @@
 import Foundation
 import SwiftUI
 
-class Coordinator: ObservableObject {
-    @Published var path: NavigationPath = .init()
-    @Published var sheet: Sheet?
-    @Published var fullScreenCover: FullScreenCover?
+// sourcery: AutoMockable
+@MainActor
+public protocol CoordinatorProtocol {
+    var path: NavigationPath { get }
+    var sheet: Sheet? { get }
+    var fullScreenCover: FullScreenCover? { get }
+    func push(page: AppPages)
+    func pop()
+    func popToRoot()
+    func presentSheet(_ sheet: Sheet)
+    func presentFullScreenCover(_ cover: FullScreenCover)
+    func dismissSheet()
+    func dismissCover()
+    func build(page: AppPages) -> any View
+    func buildSheet(sheet: Sheet) -> any View
+    func buildCover(cover: FullScreenCover) -> any View
+}
 
-    func push(page: AppPages) {
+@MainActor
+public class Coordinator: CoordinatorProtocol, ObservableObject {
+    @Published public var path: NavigationPath = .init()
+    @Published public var sheet: Sheet?
+    @Published public var fullScreenCover: FullScreenCover?
+
+    public func push(page: AppPages) {
         path.append(page)
     }
 
-    func pop() {
+    public func pop() {
         path.removeLast()
     }
 
-    func popToRoot() {
+    public func popToRoot() {
         path.removeLast(path.count)
     }
 
-    func presentSheet(_ sheet: Sheet) {
+    public func presentSheet(_ sheet: Sheet) {
         self.sheet = sheet
     }
 
-    func presentFullScreenCover(_ cover: FullScreenCover) {
+    public func presentFullScreenCover(_ cover: FullScreenCover) {
         fullScreenCover = cover
     }
 
-    func dismissSheet() {
+    public func dismissSheet() {
         sheet = nil
     }
 
-    func dismissCover() {
+    public func dismissCover() {
         fullScreenCover = nil
     }
 
     @MainActor @ViewBuilder
-    func build(page: AppPages) -> some View {
+    public func build(page: AppPages) -> any View {
         switch page {
         case .heroesList:
-            HeroesListView(viewModel: HeroesListViewModel())
+            HeroesListView(viewModel: HeroesListViewModel(coordinator: self))
         case let .heroDetail(detailUrl):
             HeroDetailView(viewModel: HeroDetailViewModel(detailUrl: detailUrl))
         }
     }
 
     @ViewBuilder
-    func buildSheet(sheet: Sheet) -> some View {
+    public func buildSheet(sheet: Sheet) -> any View {
         switch sheet {
         case .empty: EmptyView()
         }
     }
 
     @ViewBuilder
-    func buildCover(cover: FullScreenCover) -> some View {
+    public func buildCover(cover: FullScreenCover) -> any View {
         switch cover {
         case .empty: EmptyView()
         }

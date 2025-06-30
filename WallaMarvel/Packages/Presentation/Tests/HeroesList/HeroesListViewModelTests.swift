@@ -11,6 +11,7 @@ struct HeroesListViewModelTests {
     private let container: Container
     private var getHeroesListUseCaseProtocolMock = GetHeroesListUseCaseProtocolMock()
     private var searchHeroByNameUseCaseProtocolMock = SearchHeroByNameUseCaseProtocolMock()
+    private var coordinatorProtocolMock = CoordinatorProtocolMock()
 
     private let heroesList = HeroesList(
         heroes: [Hero(id: "1", image: "A", thumbnail: "F", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
@@ -20,7 +21,7 @@ struct HeroesListViewModelTests {
     init() {
         container = Container()
         setDependencies()
-        sut = HeroesListViewModel(container: container)
+        sut = HeroesListViewModel(coordinator: coordinatorProtocolMock, container: container)
     }
 
     @Test func initTests() async throws {
@@ -167,6 +168,23 @@ struct HeroesListViewModelTests {
         #expect(sut.state == .loaded(listData))
     }
 
+    @Test func searchEmptyText() async throws {
+        // Given
+        let expected = HeroesListViewData(
+            heroes: [],
+            isLoading: false,
+            searchList: []
+        )
+        searchHeroByNameUseCaseProtocolMock.invokeReturnValue = heroesList.heroes
+
+        // When
+        await sut.process(.searchTextChanged("A"))
+        await sut.process(.searchTextChanged(""))
+
+        // Then
+        #expect(sut.state == .loaded(expected))
+    }
+
     @Test func tapClearResults() async throws {
         // Given
         let listData = HeroesListViewData(heroes: [], isLoading: false, searchList: [])
@@ -205,6 +223,28 @@ struct HeroesListViewModelTests {
         // Then
         #expect(getHeroesListUseCaseProtocolMock.invokeLastIdCallsCount == 2)
         #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == "1")
+    }
+
+    @Test func tapHeroCell() async throws {
+        // Given
+        let url = "AA"
+
+        // When
+        await sut.process(.tapHeroCell(url))
+
+        // Then
+        #expect(coordinatorProtocolMock.pushPageReceivedPage == .heroDetail(url))
+    }
+
+    @Test func tapHeroCellEmptyUrlDoesntNavigates() async throws {
+        // Given
+        let url = ""
+
+        // When
+        await sut.process(.tapHeroCell(url))
+
+        // Then
+        #expect(!coordinatorProtocolMock.pushPageCalled)
     }
 
     private func setDependencies() {

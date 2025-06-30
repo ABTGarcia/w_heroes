@@ -4,7 +4,6 @@ import SwiftUI
 
 public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
-    @EnvironmentObject private var coordinator: Coordinator
     @State private var searchText = ""
 
     public init(viewModel: ViewModel) {
@@ -47,7 +46,9 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                                     }
                                 }
                                 .onTapGesture {
-                                    coordinator.push(page: .heroDetail(hero.apiDetailUrl))
+                                    Task {
+                                        await viewModel.process(.tapHeroCell(hero.apiDetailUrl))
+                                    }
                                 }
                                 .accessibilityHint(String(localized: String.LocalizationValue(WMString.heroListAccNavigateDetail)))
                                 .frame(maxHeight: .infinity, alignment: .top)
@@ -75,7 +76,9 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                                 ForEach(data.searchList) { result in
                                     SearchResultsCardView(result: result)
                                         .onTapGesture {
-                                            coordinator.push(page: .heroDetail(result.apiDetailUrl))
+                                            Task {
+                                                await viewModel.process(.tapHeroCell(result.apiDetailUrl))
+                                            }
                                         }
                                         .accessibilityHint(String(localized: String.LocalizationValue(WMString.heroListAccNavigateDetail)))
                                         .padding()
