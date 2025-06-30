@@ -4,7 +4,6 @@ import SwiftUI
 
 public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
-    @EnvironmentObject private var coordinator: Coordinator
 
     public init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)

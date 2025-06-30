@@ -15,8 +15,201 @@ import Foundation
 #endif
 
 import Domain
+import SwiftUI
 
 @testable import Presentation
+
+public class CoordinatorProtocolMock: CoordinatorProtocol {
+    public init() {}
+
+    public var path: NavigationPath {
+        get { underlyingPath }
+        set(value) { underlyingPath = value }
+    }
+
+    public var underlyingPath: NavigationPath!
+    public var sheet: Sheet?
+    public var fullScreenCover: FullScreenCover?
+
+    // MARK: - push
+
+    public var pushPageCallsCount = 0
+    public var pushPageCalled: Bool {
+        pushPageCallsCount > 0
+    }
+
+    public var pushPageReceivedPage: AppPages?
+    public var pushPageReceivedInvocations: [AppPages] = []
+    public var pushPageClosure: ((AppPages) -> Void)?
+
+    public func push(page: AppPages) {
+        pushPageCallsCount += 1
+        pushPageReceivedPage = page
+        pushPageReceivedInvocations.append(page)
+        pushPageClosure?(page)
+    }
+
+    // MARK: - pop
+
+    public var popCallsCount = 0
+    public var popCalled: Bool {
+        popCallsCount > 0
+    }
+
+    public var popClosure: (() -> Void)?
+
+    public func pop() {
+        popCallsCount += 1
+        popClosure?()
+    }
+
+    // MARK: - popToRoot
+
+    public var popToRootCallsCount = 0
+    public var popToRootCalled: Bool {
+        popToRootCallsCount > 0
+    }
+
+    public var popToRootClosure: (() -> Void)?
+
+    public func popToRoot() {
+        popToRootCallsCount += 1
+        popToRootClosure?()
+    }
+
+    // MARK: - presentSheet
+
+    public var presentSheetCallsCount = 0
+    public var presentSheetCalled: Bool {
+        presentSheetCallsCount > 0
+    }
+
+    public var presentSheetReceivedSheet: Sheet?
+    public var presentSheetReceivedInvocations: [Sheet] = []
+    public var presentSheetClosure: ((Sheet) -> Void)?
+
+    public func presentSheet(_ sheet: Sheet) {
+        presentSheetCallsCount += 1
+        presentSheetReceivedSheet = sheet
+        presentSheetReceivedInvocations.append(sheet)
+        presentSheetClosure?(sheet)
+    }
+
+    // MARK: - presentFullScreenCover
+
+    public var presentFullScreenCoverCallsCount = 0
+    public var presentFullScreenCoverCalled: Bool {
+        presentFullScreenCoverCallsCount > 0
+    }
+
+    public var presentFullScreenCoverReceivedCover: FullScreenCover?
+    public var presentFullScreenCoverReceivedInvocations: [FullScreenCover] = []
+    public var presentFullScreenCoverClosure: ((FullScreenCover) -> Void)?
+
+    public func presentFullScreenCover(_ cover: FullScreenCover) {
+        presentFullScreenCoverCallsCount += 1
+        presentFullScreenCoverReceivedCover = cover
+        presentFullScreenCoverReceivedInvocations.append(cover)
+        presentFullScreenCoverClosure?(cover)
+    }
+
+    // MARK: - dismissSheet
+
+    public var dismissSheetCallsCount = 0
+    public var dismissSheetCalled: Bool {
+        dismissSheetCallsCount > 0
+    }
+
+    public var dismissSheetClosure: (() -> Void)?
+
+    public func dismissSheet() {
+        dismissSheetCallsCount += 1
+        dismissSheetClosure?()
+    }
+
+    // MARK: - dismissCover
+
+    public var dismissCoverCallsCount = 0
+    public var dismissCoverCalled: Bool {
+        dismissCoverCallsCount > 0
+    }
+
+    public var dismissCoverClosure: (() -> Void)?
+
+    public func dismissCover() {
+        dismissCoverCallsCount += 1
+        dismissCoverClosure?()
+    }
+
+    // MARK: - build
+
+    public var buildPageCallsCount = 0
+    public var buildPageCalled: Bool {
+        buildPageCallsCount > 0
+    }
+
+    public var buildPageReceivedPage: AppPages?
+    public var buildPageReceivedInvocations: [AppPages] = []
+    public var buildPageReturnValue: (any View)!
+    public var buildPageClosure: ((AppPages) -> any View)?
+
+    public func build(page: AppPages) -> any View {
+        buildPageCallsCount += 1
+        buildPageReceivedPage = page
+        buildPageReceivedInvocations.append(page)
+        if let buildPageClosure {
+            return buildPageClosure(page)
+        } else {
+            return buildPageReturnValue
+        }
+    }
+
+    // MARK: - buildSheet
+
+    public var buildSheetSheetCallsCount = 0
+    public var buildSheetSheetCalled: Bool {
+        buildSheetSheetCallsCount > 0
+    }
+
+    public var buildSheetSheetReceivedSheet: Sheet?
+    public var buildSheetSheetReceivedInvocations: [Sheet] = []
+    public var buildSheetSheetReturnValue: (any View)!
+    public var buildSheetSheetClosure: ((Sheet) -> any View)?
+
+    public func buildSheet(sheet: Sheet) -> any View {
+        buildSheetSheetCallsCount += 1
+        buildSheetSheetReceivedSheet = sheet
+        buildSheetSheetReceivedInvocations.append(sheet)
+        if let buildSheetSheetClosure {
+            return buildSheetSheetClosure(sheet)
+        } else {
+            return buildSheetSheetReturnValue
+        }
+    }
+
+    // MARK: - buildCover
+
+    public var buildCoverCoverCallsCount = 0
+    public var buildCoverCoverCalled: Bool {
+        buildCoverCoverCallsCount > 0
+    }
+
+    public var buildCoverCoverReceivedCover: FullScreenCover?
+    public var buildCoverCoverReceivedInvocations: [FullScreenCover] = []
+    public var buildCoverCoverReturnValue: (any View)!
+    public var buildCoverCoverClosure: ((FullScreenCover) -> any View)?
+
+    public func buildCover(cover: FullScreenCover) -> any View {
+        buildCoverCoverCallsCount += 1
+        buildCoverCoverReceivedCover = cover
+        buildCoverCoverReceivedInvocations.append(cover)
+        if let buildCoverCoverClosure {
+            return buildCoverCoverClosure(cover)
+        } else {
+            return buildCoverCoverReturnValue
+        }
+    }
+}
 
 public class GetHeroDetailUseCaseProtocolMock: GetHeroDetailUseCaseProtocol, @unchecked Sendable {
     public init() {}
