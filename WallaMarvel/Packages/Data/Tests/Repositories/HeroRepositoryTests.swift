@@ -3,10 +3,11 @@ import Domain
 import FactoryKit
 import Testing
 
-struct HeroRepositoryTests {
+struct HeroRepositoryTests: @unchecked Sendable {
     private var sut: HeroRepository
     private let container: Container
-    private var heroDatasource = HeroDatasourceProtocolMock()
+    private var heroRemoteDatasource = HeroRemoteDatasourceProtocolMock()
+    private var heroLocalDatasource = HeroLocalDatasourceProtocolMock()
     private var responseList: ListEntity<[HeroEntity]> {
         ListEntity(
             limit: 1,
@@ -28,14 +29,33 @@ struct HeroRepositoryTests {
         // Given
         let heroesDomain = responseList.results.map { $0.toDomain() }
         let paginationDomain = responseList.domainPagination()
-        heroDatasource.findAllFromReturnValue = responseList
+        heroRemoteDatasource.findAllFromLimitReturnValue = responseList
 
         // When
         let result = try await sut.findAll(from: 100)
 
         // Then
-        #expect(heroDatasource.findAllFromCallsCount == 1)
-        #expect(heroDatasource.findAllFromReceivedPosition == 100)
+        #expect(heroRemoteDatasource.findAllFromLimitCallsCount == 1)
+        #expect(heroRemoteDatasource.findAllFromLimitReceivedArguments?.position == 100)
+        #expect(heroRemoteDatasource.findAllFromLimitReceivedArguments?.limit == 20)
+        #expect(result == HeroesList(heroes: heroesDomain, pagination: paginationDomain))
+    }
+
+    @Test func findAllLocally() async throws {
+        // Given
+        let heroesDomain = responseList.results.map { $0.toDomain() }
+        let paginationDomain = responseList.domainPagination()
+        heroRemoteDatasource.findAllFromLimitThrowableError = TestError.genericError
+        heroLocalDatasource.findAllFromLimitReturnValue = responseList
+
+        // When
+        let result = try await sut.findAll(from: 100)
+
+        // Then
+        #expect(heroRemoteDatasource.findAllFromLimitCallsCount == 1)
+        #expect(heroLocalDatasource.findAllFromLimitCallsCount == 1)
+        #expect(heroLocalDatasource.findAllFromLimitReceivedArguments?.position == 100)
+        #expect(heroLocalDatasource.findAllFromLimitReceivedArguments?.limit == 20)
         #expect(result == HeroesList(heroes: heroesDomain, pagination: paginationDomain))
     }
 
@@ -52,14 +72,14 @@ struct HeroRepositoryTests {
             characterFriends: [RelatedSource(id: 2, name: "H", apiDetailUrl: "I")],
             characterEnemies: [RelatedSource(id: 3, name: "J", apiDetailUrl: "K")]
         )
-        heroDatasource.getDetailWithUrlReturnValue = detailEntity
+        heroRemoteDatasource.getDetailWithUrlReturnValue = detailEntity
 
         // When
         let result = try await sut.getDetail(withUrl: detailURL)
 
         // Then
-        #expect(heroDatasource.getDetailWithUrlCallsCount == 1)
-        #expect(heroDatasource.getDetailWithUrlReceivedUrl == detailURL)
+        #expect(heroRemoteDatasource.getDetailWithUrlCallsCount == 1)
+        #expect(heroRemoteDatasource.getDetailWithUrlReceivedUrl == detailURL)
         #expect(result == detailEntity.toDomain())
     }
 
@@ -74,18 +94,23 @@ struct HeroRepositoryTests {
             image: ImageEntity(iconUrl: "F", smallUrl: "D", screenUrl: "E"),
             apiDetailUrl: "J"
         )]
-        heroDatasource.searchByNameReturnValue = returnValue
+        heroRemoteDatasource.searchByNameReturnValue = returnValue
 
         // When
         let result = try await sut.searchByName(name)
 
         // Then
-        #expect(heroDatasource.searchByNameCallsCount == 1)
-        #expect(heroDatasource.searchByNameReceivedName == name)
+        #expect(heroRemoteDatasource.searchByNameCallsCount == 1)
+        #expect(heroRemoteDatasource.searchByNameReceivedName == name)
         #expect(result == returnValue.map { $0.toDomain() })
     }
 
     private func setDependencies() {
-        container.heroDatasource.register { heroDatasource }
+        container.heroRemoteDatasource.register { heroRemoteDatasource }
+        container.heroLocalDatasource.register { heroLocalDatasource }
+    }
+
+    private enum TestError: Error {
+        case genericError
     }
 }

@@ -31,4 +31,8 @@ class ImageEntity: Codable, Equatable {
         try container.encode(smallUrl, forKey: .smallUrl)
         try container.encode(screenUrl, forKey: .screenUrl)
     }
+
+    static func == (lhs: ImageEntity, rhs: ImageEntity) -> Bool {
+        lhs.iconUrl == rhs.iconUrl && lhs.smallUrl == rhs.smallUrl && lhs.screenUrl == rhs.screenUrl
+    }
 }

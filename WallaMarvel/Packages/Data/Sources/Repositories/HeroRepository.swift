@@ -1,30 +1,43 @@
 import Domain
 import FactoryKit
+import SwiftData
 
 public final class HeroRepository: HeroRepositoryProtocol {
     private let container: Container
+    private let limit = 20
 
     public init(container: Container = .shared) {
         self.container = container
     }
 
     public func findAll(from position: Int) async throws -> HeroesList {
-        let response = try await container.heroDatasource().findAll(from: position)
+        do {
+            let response = try await container.heroRemoteDatasource().findAll(from: position, limit: limit)
+            try await container.heroLocalDatasource().save(heroes: response.results)
 
-        let heroes = response.results.map { $0.toDomain() }
-        let pagination = response.domainPagination()
+            return responseToHeroesList(response)
+        } catch {
+            let response = try await container.heroLocalDatasource().findAll(from: position, limit: limit)
 
-        return HeroesList(heroes: heroes, pagination: pagination)
+            return responseToHeroesList(response)
+        }
     }
 
     public func getDetail(withUrl url: String) async throws -> HeroDetail {
-        let response = try await container.heroDatasource().getDetail(withUrl: url)
+        let response = try await container.heroRemoteDatasource().getDetail(withUrl: url)
 
         return response.toDomain()
     }
 
     public func searchByName(_ name: String) async throws -> [Hero] {
-        let response = try await container.heroDatasource().searchByName(name)
+        let response = try await container.heroRemoteDatasource().searchByName(name)
         return response.map { $0.toDomain() }
+    }
+
+    private func responseToHeroesList(_ response: ListEntity<[HeroEntity]>) -> HeroesList {
+        let heroes = response.results.map { $0.toDomain() }
+        let pagination = response.domainPagination()
+
+        return HeroesList(heroes: heroes, pagination: pagination)
     }
 }

@@ -4,7 +4,7 @@ import Testing
 struct HeroesListEndpointTests {
     @Test func values() async throws {
         // Given
-        let sut = HeroesListEndpoint(from: 10)
+        let sut = HeroesListEndpoint(from: 10, limit: 20)
 
         // Then
         #expect(sut.path == "characters")

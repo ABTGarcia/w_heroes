@@ -18,31 +18,82 @@ import Domain
 
 @testable import Data
 
-class HeroDatasourceProtocolMock: HeroRemoteDatasourceProtocol, @unchecked Sendable {
+class HeroLocalDatasourceProtocolMock: HeroLocalDatasourceProtocol {
     // MARK: - findAll
 
-    var findAllFromThrowableError: (any Error)?
-    var findAllFromCallsCount = 0
-    var findAllFromCalled: Bool {
-        findAllFromCallsCount > 0
+    var findAllFromLimitThrowableError: (any Error)?
+    var findAllFromLimitCallsCount = 0
+    var findAllFromLimitCalled: Bool {
+        findAllFromLimitCallsCount > 0
     }
 
-    var findAllFromReceivedPosition: Int?
-    var findAllFromReceivedInvocations: [Int] = []
-    var findAllFromReturnValue: ListEntity<[HeroEntity]>!
-    var findAllFromClosure: ((Int) async throws -> ListEntity<[HeroEntity]>)?
+    var findAllFromLimitReceivedArguments: (position: Int, limit: Int)?
+    var findAllFromLimitReceivedInvocations: [(position: Int, limit: Int)] = []
+    var findAllFromLimitReturnValue: ListEntity<[HeroEntity]>!
+    var findAllFromLimitClosure: ((Int, Int) async throws -> ListEntity<[HeroEntity]>)?
 
-    func findAll(from position: Int) async throws -> ListEntity<[HeroEntity]> {
-        findAllFromCallsCount += 1
-        findAllFromReceivedPosition = position
-        findAllFromReceivedInvocations.append(position)
-        if let error = findAllFromThrowableError {
+    func findAll(from position: Int, limit: Int) async throws -> ListEntity<[HeroEntity]> {
+        findAllFromLimitCallsCount += 1
+        findAllFromLimitReceivedArguments = (position: position, limit: limit)
+        findAllFromLimitReceivedInvocations.append((position: position, limit: limit))
+        if let error = findAllFromLimitThrowableError {
             throw error
         }
-        if let findAllFromClosure {
-            return try await findAllFromClosure(position)
+        if let findAllFromLimitClosure {
+            return try await findAllFromLimitClosure(position, limit)
         } else {
-            return findAllFromReturnValue
+            return findAllFromLimitReturnValue
+        }
+    }
+
+    // MARK: - save
+
+    var saveHeroesThrowableError: (any Error)?
+    var saveHeroesCallsCount = 0
+    var saveHeroesCalled: Bool {
+        saveHeroesCallsCount > 0
+    }
+
+    var saveHeroesReceivedHeroes: [HeroEntity]?
+    var saveHeroesReceivedInvocations: [[HeroEntity]] = []
+    var saveHeroesClosure: (([HeroEntity]) async throws -> Void)?
+
+    func save(heroes: [HeroEntity]) async throws {
+        saveHeroesCallsCount += 1
+        saveHeroesReceivedHeroes = heroes
+        saveHeroesReceivedInvocations.append(heroes)
+        if let error = saveHeroesThrowableError {
+            throw error
+        }
+        try await saveHeroesClosure?(heroes)
+    }
+}
+
+class HeroRemoteDatasourceProtocolMock: HeroRemoteDatasourceProtocol, @unchecked Sendable {
+    // MARK: - findAll
+
+    var findAllFromLimitThrowableError: (any Error)?
+    var findAllFromLimitCallsCount = 0
+    var findAllFromLimitCalled: Bool {
+        findAllFromLimitCallsCount > 0
+    }
+
+    var findAllFromLimitReceivedArguments: (position: Int, limit: Int)?
+    var findAllFromLimitReceivedInvocations: [(position: Int, limit: Int)] = []
+    var findAllFromLimitReturnValue: ListEntity<[HeroEntity]>!
+    var findAllFromLimitClosure: ((Int, Int) async throws -> ListEntity<[HeroEntity]>)?
+
+    func findAll(from position: Int, limit: Int) async throws -> ListEntity<[HeroEntity]> {
+        findAllFromLimitCallsCount += 1
+        findAllFromLimitReceivedArguments = (position: position, limit: limit)
+        findAllFromLimitReceivedInvocations.append((position: position, limit: limit))
+        if let error = findAllFromLimitThrowableError {
+            throw error
+        }
+        if let findAllFromLimitClosure {
+            return try await findAllFromLimitClosure(position, limit)
+        } else {
+            return findAllFromLimitReturnValue
         }
     }
 
