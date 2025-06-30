@@ -36,7 +36,7 @@
 						},
 						{
 							"key": "field_list",
-							"value": "id,name,realName,image,creators,deck,character_friends,character_enemies"
+							"value": "id,name,real_name,image,creators,deck,character_friends,character_enemies"
 						}
 					]
 				}

@@ -13,7 +13,7 @@ struct HeroDetailEndpointTests {
         #expect(sut.baseURL == detailUrl)
         #expect(sut.queryParams == [
             "format": "json",
-            "field_list": "id,name,realName,image,creators,deck,character_friends,character_enemies"
+            "field_list": "id,name,real_name,image,creators,deck,character_friends,character_enemies"
         ])
     }
 }
