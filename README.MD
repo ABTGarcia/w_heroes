@@ -113,5 +113,13 @@ This project includes UI automation tests using [Maestro](https://maestro.mobile
 
 ---
 
+## 📝 Changelog
+
+- **2024-06-10**
+  - Added Maestro UI automation tests and documentation
+  - Improved HeroDetailView UI and layout
+  - Added and iterated on custom loading animations
+  - Updated README with Maestro and testing instructions
+
 ## 👀 More
 - Marvel API documentation was not running, returning constantly errors and I couldn't even use it. Instead of that API, I used [ComicVine API](https://comicvine.gamespot.com/api/), even if it's not wonderful, it works pretty well for this technical challenge. To help you a little bit, I added a Postman collection in the root of this project. Please, feel free to use it, including my own API Key 😁
