@@ -11,6 +11,7 @@
 - [Usage](#usage)
 - [Architecture](#architecture)
 - [Testing](#testing)
+- [Changelog](#changelog)
 - [More](#more)
 
 ---
@@ -18,6 +19,7 @@
 ## ✨ Features
 - Browse a list of Marvel heroes
 - View detailed information for each hero
+- Search hero by name
 
 ---
 
@@ -115,11 +117,30 @@ This project includes UI automation tests using [Maestro](https://maestro.mobile
 
 ## 📝 Changelog
 
-- **2024-06-10**
-  - Added Maestro UI automation tests and documentation
-  - Improved HeroDetailView UI and layout
-  - Added and iterated on custom loading animations
-  - Updated README with Maestro and testing instructions
+### **v1.0.0**
+- Add basic list of heroes
+- Add basic Detail of heroes
+
+
+### **v1.1.0**
+ - Add Postman collection
+ - Improve loading animation
+ - Improve Heroes List UI
+ - Improve Heroes Detail UI
+ - Add Search feature
+ - Improve API query to get the only necessary fields
+
+### **v1.2.0**
+ - Bugfix of retry button in error page
+ - Update Postman collection
+ - Improve accessibility
+ - Add Maestro tests
+ - Show error when load more in HeroesList
+ - Improve navigation
+ - Bugfix realname in HeroDetail
+
 
 ## 👀 More
 - Marvel API documentation was not running, returning constantly errors and I couldn't even use it. Instead of that API, I used [ComicVine API](https://comicvine.gamespot.com/api/), even if it's not wonderful, it works pretty well for this technical challenge. To help you a little bit, I added a Postman collection in the root of this project. Please, feel free to use it, including my own API Key 😁
+- Due to API's connection, sometimes Maestro tests are not working successfully :(
+- What about IA? Yes, I used Cursor basically in 2 things: to help me with the loading animation and to improve README.MD file. Also I used ChatGPT and Google to help me with some doubts and information.
