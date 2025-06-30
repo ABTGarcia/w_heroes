@@ -10,7 +10,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     public init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
         Task {
-            await viewModel.process(.loadData)
+            await viewModel.process(.appeared)
         }
     }
 
@@ -20,7 +20,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
             VStack {
                 SearchFieldView(searchText: $searchText) {
                     Task {
-                        await viewModel.process(.clearResults)
+                        await viewModel.process(.tapClearResults)
                     }
                 }
                 .padding()
@@ -30,7 +30,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                         return
                     }
                     Task {
-                        await viewModel.process(.search(searchText))
+                        await viewModel.process(.searchTextChanged(searchText))
                     }
                 }
 
@@ -60,6 +60,12 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                             LoadingView()
                             Spacer()
                         }
+                    } else if data.hasError {
+                        ErrorView {
+                            Task {
+                                await viewModel.process(.tapListRetry)
+                            }
+                        }.background(Color.white)
                     }
                 }
                 .overlay(alignment: .top) {
@@ -85,7 +91,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
         case .error:
             ErrorView {
                 Task {
-                    await viewModel.process(.loadData)
+                    await viewModel.process(.tapMainRetry)
                 }
             }
         }
