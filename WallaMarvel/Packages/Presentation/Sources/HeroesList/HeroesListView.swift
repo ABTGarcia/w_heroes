@@ -4,13 +4,12 @@ import SwiftUI
 
 public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
-    @EnvironmentObject private var coordinator: Coordinator
     @State private var searchText = ""
 
     public init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
         Task {
-            await viewModel.process(.loadData)
+            await viewModel.process(.appeared)
         }
     }
 
@@ -20,14 +19,17 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
             VStack {
                 SearchFieldView(searchText: $searchText) {
                     Task {
-                        await viewModel.process(.clearResults)
+                        await viewModel.process(.tapClearResults)
                     }
                 }
                 .padding()
                 .shadow(radius: 2)
-                .onChange(of: searchText, initial: true) { _, _ in
+                .onChange(of: searchText, initial: true) { prev, current in
+                    guard prev != current else {
+                        return
+                    }
                     Task {
-                        await viewModel.process(.search(searchText))
+                        await viewModel.process(.searchTextChanged(searchText))
                     }
                 }
 
@@ -44,8 +46,11 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                                     }
                                 }
                                 .onTapGesture {
-                                    coordinator.push(page: .heroDetail(hero.apiDetailUrl))
+                                    Task {
+                                        await viewModel.process(.tapHeroCell(hero.apiDetailUrl))
+                                    }
                                 }
+                                .accessibilityHint(String(localized: String.LocalizationValue(WMString.heroListAccNavigateDetail)))
                                 .frame(maxHeight: .infinity, alignment: .top)
                         }
                     }
@@ -56,6 +61,12 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                             LoadingView()
                             Spacer()
                         }
+                    } else if data.hasError {
+                        ErrorView {
+                            Task {
+                                await viewModel.process(.tapListRetry)
+                            }
+                        }.background(Color.white)
                     }
                 }
                 .overlay(alignment: .top) {
@@ -65,8 +76,11 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                                 ForEach(data.searchList) { result in
                                     SearchResultsCardView(result: result)
                                         .onTapGesture {
-                                            coordinator.push(page: .heroDetail(result.apiDetailUrl))
+                                            Task {
+                                                await viewModel.process(.tapHeroCell(result.apiDetailUrl))
+                                            }
                                         }
+                                        .accessibilityHint(String(localized: String.LocalizationValue(WMString.heroListAccNavigateDetail)))
                                         .padding()
                                 }
                             }
@@ -80,7 +94,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
         case .error:
             ErrorView {
                 Task {
-                    await viewModel.process(.loadData)
+                    await viewModel.process(.tapMainRetry)
                 }
             }
         }

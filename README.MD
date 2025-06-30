@@ -11,6 +11,7 @@
 - [Usage](#usage)
 - [Architecture](#architecture)
 - [Testing](#testing)
+- [Changelog](#changelog)
 - [More](#more)
 
 ---
@@ -18,6 +19,7 @@
 ## ✨ Features
 - Browse a list of Marvel heroes
 - View detailed information for each hero
+- Search hero by name
 
 ---
 
@@ -86,6 +88,59 @@ The codebase is designed with testability in mind. Unit and snapshot tests are i
   - [Swift Testing](https://developer.apple.com/documentation/testing)
   - [Snapshot Testing](https://github.com/pointfreeco/swift-snapshot-testing)
   - [Sourcery](https://github.com/krzysztofzablocki/Sourcery)
+  - [Maestro](https://maestro.mobile.dev/)
+
+
+### 🤖 UI Automation (Maestro)
+
+This project includes UI automation tests using [Maestro](https://maestro.mobile.dev/), a modern open-source mobile UI testing framework.
+
+#### 🚦 How to Run Maestro Tests
+
+1. **Install Maestro CLI** (if not already installed):
+   ```bash
+    brew tap mobile-dev-inc/tap
+    brew install maestro
+   ```
+
+2. **Run a Maestro test flow:**
+   ```bash
+   maestro test Maestro/Search.yml
+   maestro test Maestro/Navigation.yml
+   ```
+
+#### 📝 What the Tests Cover
+- **Search.yml**: Launches the app, searches for heroes, verifies search results, navigates to hero details, and checks for correct UI elements.
+- **Navigation.yml**: Launches the app, navigates to hero details, verifies content, scrolls to specific heroes, and checks navigation back and forth.
+
+---
+
+## 📝 Changelog
+
+### **v1.0.0**
+- Add basic list of heroes
+- Add basic Detail of heroes
+
+
+### **v1.1.0**
+ - Add Postman collection
+ - Improve loading animation
+ - Improve Heroes List UI
+ - Improve Heroes Detail UI
+ - Add Search feature
+ - Improve API query to get the only necessary fields
+
+### **v1.2.0**
+ - Bugfix of retry button in error page
+ - Update Postman collection
+ - Improve accessibility
+ - Add Maestro tests
+ - Show error when load more in HeroesList
+ - Improve navigation
+ - Bugfix realname in HeroDetail
+
 
 ## 👀 More
-- Marvel API documentation was not running, returning constantly errors and I couldn't even use it. Instead of that API, I used [ComicVine API](https://comicvine.gamespot.com/api/), even if it's not wonderful, it works pretty well for this technical challenge. To help you a little bit, I added a postman collection in the root of this project. Please, feel free to use it, including my own API Key 😁
+- Marvel API documentation was not running, returning constantly errors and I couldn't even use it. Instead of that API, I used [ComicVine API](https://comicvine.gamespot.com/api/), even if it's not wonderful, it works pretty well for this technical challenge. To help you a little bit, I added a Postman collection in the root of this project. Please, feel free to use it, including my own API Key 😁
+- Due to API's connection, sometimes Maestro tests are not working successfully :(
+- What about IA? Yes, I used Cursor basically in 2 things: to help me with the loading animation and to improve README.MD file. Also I used ChatGPT and Google to help me with some doubts and information.

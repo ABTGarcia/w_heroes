@@ -12,12 +12,14 @@ public struct SearchFieldView: View {
     public var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
+                .accessibilityHidden(true)
             TextField(String(localized: String.LocalizationValue(WMString.heroDetailSearch)), text: $searchText)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .padding(.spacingXS)
                 .background(Color.wmTranspBackground)
                 .cornerRadius(8)
+                .accessibilityHint(String(localized: String.LocalizationValue(WMString.searchHeroesAccTextfield)))
 
             if !searchText.isEmpty {
                 Button(action: {
@@ -26,7 +28,9 @@ public struct SearchFieldView: View {
                 }, label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundColor(.wmMain)
+                        .accessibilityHidden(true)
                 })
+                .accessibilityHint(String(localized: String.LocalizationValue(WMString.searchHeroesAccClear)))
             }
         }
     }

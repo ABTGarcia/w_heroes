@@ -11,6 +11,7 @@ struct HeroesListViewModelTests {
     private let container: Container
     private var getHeroesListUseCaseProtocolMock = GetHeroesListUseCaseProtocolMock()
     private var searchHeroByNameUseCaseProtocolMock = SearchHeroByNameUseCaseProtocolMock()
+    private var coordinatorProtocolMock = CoordinatorProtocolMock()
 
     private let heroesList = HeroesList(
         heroes: [Hero(id: "1", image: "A", thumbnail: "F", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
@@ -20,7 +21,7 @@ struct HeroesListViewModelTests {
     init() {
         container = Container()
         setDependencies()
-        sut = HeroesListViewModel(container: container)
+        sut = HeroesListViewModel(coordinator: coordinatorProtocolMock, container: container)
     }
 
     @Test func initTests() async throws {
@@ -28,13 +29,13 @@ struct HeroesListViewModelTests {
         #expect(sut.state == .loading)
     }
 
-    @Test func loadData() async throws {
+    @Test func appeared() async throws {
         // Given
         let expected: HeroesListState = .loaded(HeroesListViewData(heroes: heroesList.heroes, isLoading: false, searchList: []))
         getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
 
         // When
-        await sut.process(.loadData)
+        await sut.process(.appeared)
 
         // Then
         #expect(sut.state == expected)
@@ -42,7 +43,7 @@ struct HeroesListViewModelTests {
         #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == nil)
     }
 
-    @Test func loadDataLastHeroReached() async throws {
+    @Test func appearedLastHeroReached() async throws {
         // Given
         let heroesList = HeroesList(
             heroes: [Hero(id: "1", image: "A", thumbnail: "F", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
@@ -52,7 +53,7 @@ struct HeroesListViewModelTests {
         getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
 
         // When
-        await sut.process(.loadData)
+        await sut.process(.appeared)
 
         // Then
         #expect(sut.state == expected)
@@ -78,12 +79,12 @@ struct HeroesListViewModelTests {
         #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == "5")
     }
 
-    @Test func loadDataThrows() async throws {
+    @Test func appearedThrows() async throws {
         // Given
         getHeroesListUseCaseProtocolMock.invokeLastIdThrowableError = TestError.genericError
 
         // When
-        await sut.process(.loadData)
+        await sut.process(.appeared)
 
         // Then
         #expect(sut.state == .error)
@@ -103,7 +104,7 @@ struct HeroesListViewModelTests {
         #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == "5")
     }
 
-    @Test func search() async throws {
+    @Test func searchTextChanged() async throws {
         // Given
         let listData = HeroesListViewData(
             heroes: [],
@@ -118,7 +119,7 @@ struct HeroesListViewModelTests {
         searchHeroByNameUseCaseProtocolMock.invokeReturnValue = heroesList.heroes
 
         // When
-        await sut.process(.search("A"))
+        await sut.process(.searchTextChanged("A"))
 
         // Then
         #expect(sut.state == .loaded(listData))
@@ -129,7 +130,7 @@ struct HeroesListViewModelTests {
         searchHeroByNameUseCaseProtocolMock.invokeReturnValue = nil
 
         // When
-        await sut.process(.search("A"))
+        await sut.process(.searchTextChanged("A"))
 
         // Then
         #expect(sut.state == .loading)
@@ -145,7 +146,7 @@ struct HeroesListViewModelTests {
         searchHeroByNameUseCaseProtocolMock.invokeReturnValue = []
 
         // When
-        await sut.process(.search("A"))
+        await sut.process(.searchTextChanged("A"))
 
         // Then
         #expect(sut.state == .loaded(listData))
@@ -161,23 +162,89 @@ struct HeroesListViewModelTests {
         searchHeroByNameUseCaseProtocolMock.invokeThrowableError = TestError.genericError
 
         // When
-        await sut.process(.search("A"))
+        await sut.process(.searchTextChanged("A"))
 
         // Then
         #expect(sut.state == .loaded(listData))
     }
 
-    @Test func clearResults() async throws {
+    @Test func searchEmptyText() async throws {
+        // Given
+        let expected = HeroesListViewData(
+            heroes: [],
+            isLoading: false,
+            searchList: []
+        )
+        searchHeroByNameUseCaseProtocolMock.invokeReturnValue = heroesList.heroes
+
+        // When
+        await sut.process(.searchTextChanged("A"))
+        await sut.process(.searchTextChanged(""))
+
+        // Then
+        #expect(sut.state == .loaded(expected))
+    }
+
+    @Test func tapClearResults() async throws {
         // Given
         let listData = HeroesListViewData(heroes: [], isLoading: false, searchList: [])
         getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
 
         // When
-        await sut.process(.search("A"))
-        await sut.process(.clearResults)
+        await sut.process(.searchTextChanged("A"))
+        await sut.process(.tapClearResults)
 
         // Then
         #expect(sut.state == .loaded(listData))
+    }
+
+    @Test func tapMainRetry() async throws {
+        // Given
+        let expected: HeroesListState = .loaded(HeroesListViewData(heroes: heroesList.heroes, isLoading: false, searchList: []))
+        getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
+
+        // When
+        await sut.process(.tapMainRetry)
+
+        // Then
+        #expect(sut.state == expected)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdCallsCount == 1)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == nil)
+    }
+
+    @Test func tapListRetry() async throws {
+        // Given
+        getHeroesListUseCaseProtocolMock.invokeLastIdReturnValue = heroesList
+
+        // When
+        await sut.process(.appeared)
+        await sut.process(.tapListRetry)
+
+        // Then
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdCallsCount == 2)
+        #expect(getHeroesListUseCaseProtocolMock.invokeLastIdReceivedLastId == "1")
+    }
+
+    @Test func tapHeroCell() async throws {
+        // Given
+        let url = "AA"
+
+        // When
+        await sut.process(.tapHeroCell(url))
+
+        // Then
+        #expect(coordinatorProtocolMock.pushPageReceivedPage == .heroDetail(url))
+    }
+
+    @Test func tapHeroCellEmptyUrlDoesntNavigates() async throws {
+        // Given
+        let url = ""
+
+        // When
+        await sut.process(.tapHeroCell(url))
+
+        // Then
+        #expect(!coordinatorProtocolMock.pushPageCalled)
     }
 
     private func setDependencies() {

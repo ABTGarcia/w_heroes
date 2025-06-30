@@ -4,10 +4,13 @@ import FactoryKit
 import Foundation
 
 public enum HeroesListEvent: Equatable, Sendable {
-    case loadData
+    case appeared
+    case tapMainRetry
     case appearedHeroId(String)
-    case search(String)
-    case clearResults
+    case searchTextChanged(String)
+    case tapClearResults
+    case tapListRetry
+    case tapHeroCell(String)
 }
 
 public enum HeroesListState: Equatable, Sendable {
@@ -28,13 +31,14 @@ public protocol HeroesListViewModelProtocol: ObservableObject {
 public final class HeroesListViewModel: HeroesListViewModelProtocol {
     @Published public var state: HeroesListState
 
+    private let coordinator: CoordinatorProtocol
     private let container: Container
     private var viewData = HeroesListViewData(heroes: [], isLoading: false, searchList: [])
     private var getHeroesListUseCase: GetHeroesListUseCaseProtocol
     private var searchHeroByNameUseCase: SearchHeroByNameUseCaseProtocol
     private var showResults = false
 
-    public init(container: Container = .shared) {
+    public init(coordinator: CoordinatorProtocol, container: Container = .shared) {
         self.container = container
         guard
             let getHeroesListUseCase = container.getHeroesListUseCase(),
@@ -42,6 +46,7 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
         else {
             preconditionFailure("UseCase not found")
         }
+        self.coordinator = coordinator
         self.getHeroesListUseCase = getHeroesListUseCase
         self.searchHeroByNameUseCase = searchHeroByNameUseCase
         state = .loading
@@ -49,17 +54,35 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
 
     public func process(_ event: HeroesListEvent) async {
         switch event {
-        case .loadData:
-            state = .loading
-            await retrieveData()
+        case .appeared:
+            await firstRetrieveData()
         case let .appearedHeroId(id):
             setLoadMore(true)
             await retrieveData(lastId: id)
-        case let .search(name):
+        case let .searchTextChanged(name):
             await search(by: name)
-        case .clearResults:
+        case .tapClearResults:
             clearResults()
+        case .tapMainRetry:
+            await firstRetrieveData()
+        case .tapListRetry:
+            setLoadMore(true)
+            await retrieveData(lastId: viewData.list.last?.id)
+        case let .tapHeroCell(apiDetailUrl):
+            navigateDetail(apiDetailUrl)
         }
+    }
+
+    private func navigateDetail(_ url: String) {
+        guard !url.isEmpty else {
+            return
+        }
+        coordinator.push(page: .heroDetail(url))
+    }
+
+    private func firstRetrieveData() async {
+        state = .loading
+        await retrieveData()
     }
 
     private func retrieveData(lastId: String? = nil) async {
@@ -78,7 +101,11 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
             viewData.appendHeroes(newHeroesList.heroes)
             setLoadMore(false)
         } catch {
-            state = .error
+            if viewData.list.isEmpty {
+                state = .error
+            } else {
+                setListError(true)
+            }
         }
     }
 
@@ -88,6 +115,13 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
 
     private func setLoadMore(_ loading: Bool) {
         viewData.isLoading = loading
+        viewData.hasError = false
+        state = .loaded(viewData)
+    }
+
+    private func setListError(_ error: Bool) {
+        viewData.hasError = error
+        viewData.isLoading = false
         state = .loaded(viewData)
     }
 
@@ -98,6 +132,10 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     }
 
     private func search(by name: String) async {
+        guard !name.isEmpty else {
+            clearResults()
+            return
+        }
         showResults = true
         do {
             guard let results = try await searchHeroByNameUseCase.invoke(name) else {

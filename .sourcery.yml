@@ -19,6 +19,7 @@ configurations:
    output: WallaMarvel/Packages/Presentation/Tests/Mocks.swift
    args:
      autoMockableImports:
+       - SwiftUI
        - Domain
      autoMockableTestableImports:
        - Presentation

@@ -1,0 +1,19 @@
+appId: com.alberto.WallaMarvel
+---
+- launchApp
+- assertVisible : "Lightning Lad"
+- tapOn: "Search by name"
+- inputText: "qwewq"
+- assertVisible : "No Name"
+- tapOn:
+    id: "xmark.circle.fill"
+- assertVisible : "Lightning Lad"
+- tapOn: "Search by name"
+- inputText: "qwewq"
+- tapOn: "No Name"
+- assertVisible : .*Enemies.*
+- tapOn: "Back"
+- assertVisible : "No Name"
+- tapOn:
+    id: "xmark.circle.fill"
+- assertVisible : "Lightning Lad"

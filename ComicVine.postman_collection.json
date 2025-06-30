@@ -10,7 +10,36 @@
 			"name": "Hero Detail",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "https://comicvine.gamespot.com/api/character/4005-1254/?api_key=b828066fb611bb4d0d637c0bbe68bb90f2c39134&format=json&field_list=id,name,realName,image,creators,deck,character_friends,character_enemies",
+					"protocol": "https",
+					"host": [
+						"comicvine",
+						"gamespot",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						"4005-1254",
+						""
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "b828066fb611bb4d0d637c0bbe68bb90f2c39134"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "field_list",
+							"value": "id,name,real_name,image,creators,deck,character_friends,character_enemies"
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -23,7 +52,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://comicvine.gamespot.com/api/characters?api_key=b828066fb611bb4d0d637c0bbe68bb90f2c39134&format=json&limit=20&offset=0",
+					"raw": "https://comicvine.gamespot.com/api/characters?api_key=b828066fb611bb4d0d637c0bbe68bb90f2c39134&format=json&limit=20&offset=0&field_list=id,name,api_detail_url,image,real_name,deck",
 					"protocol": "https",
 					"host": [
 						"comicvine",
@@ -50,6 +79,60 @@
 						{
 							"key": "offset",
 							"value": "0"
+						},
+						{
+							"key": "field_list",
+							"value": "id,name,api_detail_url,image,real_name,deck"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Hero",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://comicvine.gamespot.com/api/search?api_key=b828066fb611bb4d0d637c0bbe68bb90f2c39134&format=json&resources=character&query=name:thor&field_list=name,api_detail_url,image&limit=100",
+					"protocol": "https",
+					"host": [
+						"comicvine",
+						"gamespot",
+						"com"
+					],
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "b828066fb611bb4d0d637c0bbe68bb90f2c39134"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "resources",
+							"value": "character"
+						},
+						{
+							"key": "query",
+							"value": "name:thor"
+						},
+						{
+							"key": "field_list",
+							"value": "name,api_detail_url,image"
+						},
+						{
+							"key": "limit",
+							"value": "100"
 						}
 					]
 				}

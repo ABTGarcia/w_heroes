@@ -12,6 +12,7 @@ struct HeroesListViewTests {
     private var viewModel = HeroesListViewModelProtocolMock()
 
     init() {
+        viewModel = HeroesListViewModelProtocolMock()
         sut = HeroesListView(viewModel: viewModel)
     }
 
@@ -53,6 +54,19 @@ struct HeroesListViewTests {
             heroes: [Hero(id: "1", image: "A", thumbnail: "G", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
             isLoading: true,
             searchList: []
+        ))
+
+        // Then
+        expectSnapshot(matching: sut, size: .iPhone16Portrait)
+    }
+
+    @Test func loadedError() async throws {
+        // Given
+        viewModel.state = .loaded(HeroesListViewData(
+            heroes: [Hero(id: "1", image: "A", thumbnail: "G", name: "B", realName: "FDF", description: "C", apiDetailUrl: "J")],
+            isLoading: false,
+            searchList: [],
+            hasError: true
         ))
 
         // Then

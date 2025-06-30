@@ -4,7 +4,6 @@ import SwiftUI
 
 public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
-    @EnvironmentObject private var coordinator: Coordinator
 
     public init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -22,10 +21,12 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .accessibilityHidden(true)
                     } placeholder: {
                         WMImage.heroDetailPlaceholder
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .accessibilityHidden(true)
                     }
                     .clipped()
                     .cornerRadius(12)
@@ -38,6 +39,7 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                         }, icon: {
                             Image(systemName: "person.fill.questionmark")
                                 .foregroundColor(.wmMain)
+                                .accessibilityHidden(true)
                         })
                         Text(data.realName ?? data.name)
                             .font(.wmTitle)

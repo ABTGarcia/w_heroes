@@ -13,6 +13,7 @@ public struct SearchResultsCardView: View {
                 .clipShape(Circle())
                 .frame(width: 50, height: 50)
                 .padding(.trailing, .spacingXXS)
+                .accessibilityHidden(true)
             Text(result.name)
                 .font(.wmTitle)
                 .foregroundColor(.wmMainText)
