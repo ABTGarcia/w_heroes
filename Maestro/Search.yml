@@ -3,17 +3,17 @@ appId: com.alberto.WallaMarvel
 - launchApp
 - assertVisible : "Lightning Lad"
 - tapOn: "Search by name"
-- inputText: "Groot"
-- assertVisible : "The Groot"
+- inputText: "qwewq"
+- assertVisible : "No Name"
 - tapOn:
     id: "xmark.circle.fill"
 - assertVisible : "Lightning Lad"
 - tapOn: "Search by name"
-- inputText: "Groot"
-- tapOn: "The Groot"
+- inputText: "qwewq"
+- tapOn: "No Name"
 - assertVisible : .*Enemies.*
 - tapOn: "Back"
-- assertVisible : "The Groot"
+- assertVisible : "No Name"
 - tapOn:
     id: "xmark.circle.fill"
 - assertVisible : "Lightning Lad"
