@@ -4,13 +4,13 @@ import FactoryKit
 import Testing
 
 struct HeroDatasourceTests {
-    private var sut: HeroDatasource
+    private var sut: HeroRemoteDatasource
     private let container: Container
     private let networkService = NetworkServiceProtocolMock()
 
     init() {
         container = Container()
-        sut = HeroDatasource(container: container)
+        sut = HeroRemoteDatasource(container: container)
         setDependencies()
     }
 

@@ -5,7 +5,7 @@ extension Container {
         NetworkService(environment: NetworkEnvironment(), logger: NetworkServiceLogger())
     } }
 
-    var heroDatasource: Factory<HeroDatasourceProtocol> { self {
-        HeroDatasource()
+    var heroDatasource: Factory<HeroRemoteDatasourceProtocol> { self {
+        HeroRemoteDatasource()
     } }
 }

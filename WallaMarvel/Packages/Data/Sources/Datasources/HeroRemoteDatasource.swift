@@ -2,13 +2,13 @@ import Domain
 import FactoryKit
 
 // sourcery: AutoMockable
-protocol HeroDatasourceProtocol: Sendable {
+protocol HeroRemoteDatasourceProtocol: Sendable {
     func findAll(from position: Int) async throws -> ListEntity<[HeroEntity]>
     func getDetail(withUrl url: String) async throws -> HeroDetailEntity
     func searchByName(_ name: String) async throws -> [HeroEntity]
 }
 
-final class HeroDatasource: HeroDatasourceProtocol {
+final class HeroRemoteDatasource: HeroRemoteDatasourceProtocol {
     private let container: Container
 
     public init(container: Container = .shared) {

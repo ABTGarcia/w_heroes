@@ -18,7 +18,7 @@ import Domain
 
 @testable import Data
 
-class HeroDatasourceProtocolMock: HeroDatasourceProtocol, @unchecked Sendable {
+class HeroDatasourceProtocolMock: HeroRemoteDatasourceProtocol, @unchecked Sendable {
     // MARK: - findAll
 
     var findAllFromThrowableError: (any Error)?
