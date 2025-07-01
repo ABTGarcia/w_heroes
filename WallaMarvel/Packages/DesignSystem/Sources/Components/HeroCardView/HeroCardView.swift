@@ -1,3 +1,4 @@
+import Kingfisher
 import SwiftUI
 
 public struct HeroCardView: View {
@@ -38,12 +39,12 @@ public struct HeroCardView: View {
 
     @ViewBuilder
     private var profileImage: some View {
-        AsyncImage(url: URL(string: data.image ?? "")) { image in
-            image.resizable()
-        } placeholder: {
-            Image(.userPlaceholder)
-                .resizable()
-        }
+        KFImage(URL(string: data.image ?? ""))
+            .placeholder {
+                Image(.userPlaceholder)
+                    .resizable()
+            }
+            .resizable()
     }
 }
 

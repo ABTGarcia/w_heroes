@@ -75,6 +75,7 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                             LazyVStack(alignment: .leading) {
                                 ForEach(data.searchList) { result in
                                     SearchResultsCardView(result: result)
+                                        .background(Color.wmTranspBackground)
                                         .onTapGesture {
                                             Task {
                                                 await viewModel.process(.tapHeroCell(result.apiDetailUrl))

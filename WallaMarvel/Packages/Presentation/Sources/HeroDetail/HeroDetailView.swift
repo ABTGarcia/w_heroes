@@ -1,5 +1,6 @@
 import DesignSystem
 import Domain
+import Kingfisher
 import SwiftUI
 
 public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
@@ -17,19 +18,16 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
         case let .loaded(data):
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    AsyncImage(url: URL(string: data.image)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .accessibilityHidden(true)
-                    } placeholder: {
-                        WMImage.heroDetailPlaceholder
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .accessibilityHidden(true)
-                    }
-                    .clipped()
-                    .cornerRadius(12)
+                    KFImage(URL(string: data.image))
+                        .placeholder {
+                            WMImage.heroDetailPlaceholder
+                                .resizable()
+                        }
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .accessibilityHidden(true)
+                        .clipped()
+                        .cornerRadius(12)
 
                     HStack {
                         Label(title: {
