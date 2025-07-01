@@ -3,6 +3,7 @@ import SwiftData
 
 @Model
 class HeroDetailEntity: Codable, Equatable {
+    @Relationship(deleteRule: .cascade, inverse: \RelatedSource.hero)
     var id: Int
     var name: String
     var realName: String?

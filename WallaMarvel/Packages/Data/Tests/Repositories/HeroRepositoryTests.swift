@@ -25,9 +25,9 @@ struct HeroRepositoryTests: @unchecked Sendable {
         realName: "B",
         deck: "C",
         image: ImageEntity(iconUrl: "F", smallUrl: "D", screenUrl: "E"),
-        creators: [RelatedSource(id: 1, name: "F", apiDetailUrl: "G")],
-        characterFriends: [RelatedSource(id: 2, name: "H", apiDetailUrl: "I")],
-        characterEnemies: [RelatedSource(id: 3, name: "J", apiDetailUrl: "K")]
+        creators: [RelatedSource(id: 1, name: "F", apiDetailUrl: "G", hero: nil)],
+        characterFriends: [RelatedSource(id: 2, name: "H", apiDetailUrl: "I", hero: nil)],
+        characterEnemies: [RelatedSource(id: 3, name: "J", apiDetailUrl: "K", hero: nil)]
     )
 
     init() {

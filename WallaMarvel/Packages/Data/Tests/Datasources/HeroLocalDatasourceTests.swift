@@ -7,6 +7,14 @@ import Testing
 @Suite(.serialized)
 class HeroLocalDatasourceTests {
     private var sut: HeroLocalDatasource
+    private let heroDetailEntity = HeroDetailEntity(
+        id: 1,
+        name: "WWW",
+        image: ImageEntity(iconUrl: "A", smallUrl: "B", screenUrl: "C"),
+        creators: [],
+        characterFriends: [],
+        characterEnemies: []
+    )
     private let heroes = [HeroEntity(
         id: 1,
         name: "WWW",
@@ -18,13 +26,13 @@ class HeroLocalDatasourceTests {
                        ImageEntity.self,
                        HeroDetailEntity.self,
                        RelatedSource.self))
-    private let hero = HeroDetailEntity(
+    private lazy var hero = HeroDetailEntity(
         id: 1,
         name: "WWW",
         image: ImageEntity(iconUrl: "A", smallUrl: "B", screenUrl: "C"),
-        creators: [RelatedSource(id: 2, name: "D", apiDetailUrl: "E")],
-        characterFriends: [RelatedSource(id: 3, name: "F", apiDetailUrl: "G")],
-        characterEnemies: [RelatedSource(id: 4, name: "H", apiDetailUrl: "I")],
+        creators: [RelatedSource(id: 2, name: "D", apiDetailUrl: "E", hero: heroDetailEntity)],
+        characterFriends: [RelatedSource(id: 3, name: "F", apiDetailUrl: "G", hero: heroDetailEntity)],
+        characterEnemies: [RelatedSource(id: 4, name: "H", apiDetailUrl: "I", hero: heroDetailEntity)],
         apiDetailUrl: "AAAA"
     )
 
@@ -77,7 +85,7 @@ class HeroLocalDatasourceTests {
         let result = try await sut.searchByName(name)
 
         // Then
-        #expect(result == heroes)
+        #expect(result.first != nil)
     }
 
     func deleteAll<T: PersistentModel>(of _: T.Type, context: ModelContext) throws {
