@@ -13,11 +13,18 @@ let package = Package(
         )
     ],
     dependencies: [
+        .package(
+            url: "https://github.com/onevcat/Kingfisher.git",
+            from: "8.3.3"
+        ),
         .package(path: "../TestExtensions")
     ],
     targets: [
         .target(
             name: "DesignSystem",
+            dependencies: [
+                .product(name: "Kingfisher", package: "Kingfisher")
+            ],
             path: "Sources",
             resources: [
                 .process("Resources/Images.xcassets"),
