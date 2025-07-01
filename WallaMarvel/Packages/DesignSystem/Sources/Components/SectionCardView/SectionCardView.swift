@@ -11,6 +11,7 @@ public struct SectionCardView: View {
         VStack(alignment: .leading) {
             Label(title: {
                 Text(data.name)
+                    .foregroundStyle(Color.wmMainText)
                     .font(.wmTitle)
             }, icon: {
                 Image(systemName: data.systemImageName)
@@ -22,6 +23,7 @@ public struct SectionCardView: View {
 
             ForEach(data.content, id: \.self) { item in
                 Text("• \(item)")
+                    .foregroundStyle(Color.wmMainText)
                     .font(.wmDescription)
             }
         }

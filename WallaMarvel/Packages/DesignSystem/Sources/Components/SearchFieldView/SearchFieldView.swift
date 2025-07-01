@@ -16,11 +16,13 @@ public struct SearchFieldView<ViewModel: SearchFieldViewModelProtocol>: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .accessibilityHidden(true)
-                TextField(String(localized: String.LocalizationValue(WMString.heroDetailSearch)), text: $searchText)
+                    .foregroundColor(.wmMain)
+
+                TextField("", text: $searchText, prompt: Text(String(localized: String.LocalizationValue(WMString.heroDetailSearch))).foregroundStyle(Color.wmNegativeGrayText))
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .padding(.spacingXS)
-                    .background(Color.wmTranspBackground)
+                    .foregroundStyle(Color.wmNegativeText)
                     .cornerRadius(8)
                     .accessibilityHint(String(localized: String.LocalizationValue(WMString.searchHeroesAccTextfield)))
 
@@ -52,7 +54,7 @@ public struct SearchFieldView<ViewModel: SearchFieldViewModelProtocol>: View {
                     LazyVStack(alignment: .leading) {
                         ForEach(data) { result in
                             SearchResultsCardView(result: result)
-                                .background(Color.wmTranspBackground)
+                                .background(Color.wmMainBackground)
                                 .onTapGesture {
                                     tapClosure(result.apiDetailUrl)
                                 }
@@ -62,7 +64,7 @@ public struct SearchFieldView<ViewModel: SearchFieldViewModelProtocol>: View {
                     }
                 }
                 .frame(height: 300)
-                .background(Color.wmTranspBackground)
+                .background(Color.wmMainBackground)
             case .loading:
                 HStack {
                     Spacer()
@@ -70,20 +72,22 @@ public struct SearchFieldView<ViewModel: SearchFieldViewModelProtocol>: View {
                         .padding()
                     Spacer()
                 }
-                .background(Color.white)
+                .background(Color.wmMainBackground)
             case .error:
                 Text(WMString.searchHeroesError)
                     .font(.wmDescription)
                     .foregroundStyle(Color.wmMain)
+                    .background(Color.wmMainBackground)
             case .hidden:
                 EmptyView()
             case .noResults:
                 Text(WMString.searchHeroesEmpty)
                     .font(.wmDescription)
                     .foregroundStyle(Color.wmMainText)
+                    .background(Color.wmMainBackground)
             }
         }
-        .background(Color.white)
+        .background(Color.wmMainBackground)
     }
 }
 

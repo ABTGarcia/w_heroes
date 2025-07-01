@@ -26,12 +26,12 @@ public struct ErrorView: View {
             Text(String(localized: String.LocalizationValue(errorTitle), bundle: .module))
                 .font(.wmHeader)
                 .multilineTextAlignment(.center)
-                .foregroundColor(.wmMainText)
+                .foregroundColor(.wmNegativeText)
 
             Text(String(localized: String.LocalizationValue(errorMessage), bundle: .module))
                 .font(.wmTitle)
                 .multilineTextAlignment(.center)
-                .foregroundColor(.wmSecondaryText)
+                .foregroundColor(.wmNegativeGrayText)
                 .padding(.horizontal)
 
             Button(action: onRetry) {
