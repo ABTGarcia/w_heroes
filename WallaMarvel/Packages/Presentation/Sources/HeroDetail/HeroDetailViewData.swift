@@ -11,10 +11,13 @@ public struct HeroDetailViewData: Equatable, Sendable {
     let friends: [String]
 
     public init(name: String, realName: String?, image: String, deck: String?, creators: [String], enemies: [String], friends: [String]) {
+        let realName = realName?.trimmingCharacters(in: .whitespaces)
+        let deck = deck?.trimmingCharacters(in: .whitespaces)
+
         self.name = name
-        self.realName = realName
+        self.realName = (realName ?? "").isEmpty ? nil : realName
         self.image = image
-        self.deck = deck
+        self.deck = (deck ?? "").isEmpty ? nil : deck
         self.creators = creators
         self.enemies = enemies
         self.friends = friends

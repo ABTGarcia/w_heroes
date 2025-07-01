@@ -19,7 +19,7 @@ public struct GetHeroesListUseCase: GetHeroesListUseCaseProtocol {
         guard let repository = container.heroRepository() else {
             preconditionFailure("Repository not found")
         }
-        guard canRequestMore, heroes.count < pagination.total else {
+        guard canRequestMore else {
             return HeroesList(heroes: [], pagination: pagination)
         }
 

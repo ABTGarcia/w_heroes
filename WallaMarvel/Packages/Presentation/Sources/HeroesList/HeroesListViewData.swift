@@ -19,11 +19,12 @@ public struct HeroesListViewData: Equatable, Sendable {
     }
 
     private func heroToCard(_ hero: Hero) -> HeroCardViewData {
-        HeroCardViewData(
+        let realName = hero.realName?.trimmingCharacters(in: .whitespaces)
+        return HeroCardViewData(
             id: hero.id,
             image: hero.image,
             name: hero.name,
-            realName: hero.realName,
+            realName: (realName ?? "").isEmpty ? nil : realName,
             description: hero.description,
             apiDetailUrl: hero.apiDetailUrl
         )
