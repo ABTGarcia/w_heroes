@@ -6,6 +6,7 @@ import SwiftData
 protocol HeroLocalDatasourceProtocol {
     func findAll(from position: Int, limit: Int) async throws -> ListEntity<[HeroEntity]>
     func getDetail(withUrl url: String) async throws -> HeroDetailEntity
+    func searchByName(_ name: String) async throws -> [HeroEntity]
     func save(heroes: [HeroEntity]) async throws
     func save(heroDetail: HeroDetailEntity) async throws
 }
@@ -46,6 +47,27 @@ final class HeroLocalDatasource: HeroLocalDatasourceProtocol {
         }
 
         return heroDetail
+    }
+
+    func searchByName(_ name: String) async throws -> [HeroEntity] {
+        let descriptor = FetchDescriptor<HeroDetailEntity>(
+            predicate: #Predicate {
+                $0.name.localizedStandardContains(name)
+            }
+        )
+
+        let heroesDetail = try context.fetch(descriptor)
+
+        let heroes = heroesDetail.map { HeroEntity(
+            id: $0.id,
+            name: $0.name,
+            realName: $0.realName,
+            deck: $0.deck,
+            image: $0.image,
+            apiDetailUrl: $0.apiDetailUrl ?? ""
+        ) }
+
+        return heroes
     }
 
     public func save(heroes: [HeroEntity]) async throws {

@@ -46,4 +46,13 @@ class HeroEntity: Codable, Equatable {
         try container.encode(image, forKey: .image)
         try container.encode(apiDetailUrl, forKey: .apiDetailUrl)
     }
+
+    static func == (lhs: HeroEntity, rhs: HeroEntity) -> Bool {
+        lhs.id == rhs.id &&
+            lhs.name == rhs.name &&
+            lhs.realName == rhs.realName &&
+            lhs.deck == rhs.deck &&
+            lhs.image == rhs.image &&
+            lhs.apiDetailUrl == rhs.apiDetailUrl
+    }
 }

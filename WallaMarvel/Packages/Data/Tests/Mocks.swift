@@ -73,6 +73,33 @@ class HeroLocalDatasourceProtocolMock: HeroLocalDatasourceProtocol {
         }
     }
 
+    // MARK: - searchByName
+
+    var searchByNameThrowableError: (any Error)?
+    var searchByNameCallsCount = 0
+    var searchByNameCalled: Bool {
+        searchByNameCallsCount > 0
+    }
+
+    var searchByNameReceivedName: String?
+    var searchByNameReceivedInvocations: [String] = []
+    var searchByNameReturnValue: [HeroEntity]!
+    var searchByNameClosure: ((String) async throws -> [HeroEntity])?
+
+    func searchByName(_ name: String) async throws -> [HeroEntity] {
+        searchByNameCallsCount += 1
+        searchByNameReceivedName = name
+        searchByNameReceivedInvocations.append(name)
+        if let error = searchByNameThrowableError {
+            throw error
+        }
+        if let searchByNameClosure {
+            return try await searchByNameClosure(name)
+        } else {
+            return searchByNameReturnValue
+        }
+    }
+
     // MARK: - save
 
     var saveHeroesThrowableError: (any Error)?

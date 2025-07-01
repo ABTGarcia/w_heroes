@@ -9,15 +9,24 @@ class HeroLocalDatasourceTests {
     private var sut: HeroLocalDatasource
     private let heroes = [HeroEntity(
         id: 1,
-        name: "A",
-        image: ImageEntity(iconUrl: "C", smallUrl: "D", screenUrl: "E"),
-        apiDetailUrl: "B"
+        name: "WWW",
+        image: ImageEntity(iconUrl: "A", smallUrl: "B", screenUrl: "C"),
+        apiDetailUrl: "AAAA"
     )]
     private let context = try! ModelContext(
         ModelContainer(for: HeroEntity.self,
                        ImageEntity.self,
                        HeroDetailEntity.self,
                        RelatedSource.self))
+    private let hero = HeroDetailEntity(
+        id: 1,
+        name: "WWW",
+        image: ImageEntity(iconUrl: "A", smallUrl: "B", screenUrl: "C"),
+        creators: [RelatedSource(id: 2, name: "D", apiDetailUrl: "E")],
+        characterFriends: [RelatedSource(id: 3, name: "F", apiDetailUrl: "G")],
+        characterEnemies: [RelatedSource(id: 4, name: "H", apiDetailUrl: "I")],
+        apiDetailUrl: "AAAA"
+    )
 
     init() async throws {
         sut = HeroLocalDatasource(context: context)
@@ -40,7 +49,6 @@ class HeroLocalDatasourceTests {
         )
 
         // When
-        // I'm saving here to check that in findAll the data will be fetched
         try await sut.save(heroes: heroes)
         let result = try await sut.findAll(from: 0, limit: 20)
 
@@ -51,23 +59,25 @@ class HeroLocalDatasourceTests {
     @Test func getDetail() async throws {
         // Given
         let url = "AAAA"
-        let hero = HeroDetailEntity(
-            id: 1,
-            name: "WWW",
-            image: ImageEntity(iconUrl: "A", smallUrl: "B", screenUrl: "C"),
-            creators: [RelatedSource(id: 2, name: "D", apiDetailUrl: "E")],
-            characterFriends: [RelatedSource(id: 3, name: "F", apiDetailUrl: "G")],
-            characterEnemies: [RelatedSource(id: 4, name: "H", apiDetailUrl: "I")],
-            apiDetailUrl: url
-        )
 
         // When
-        // I'm saving here to check that in findAll the data will be fetched
         try await sut.save(heroDetail: hero)
         let result = try await sut.getDetail(withUrl: url)
 
         // Then
         #expect(result == hero)
+    }
+
+    @Test func searchByName() async throws {
+        // Given
+        let name = "WWW"
+
+        // When
+        try await sut.save(heroDetail: hero)
+        let result = try await sut.searchByName(name)
+
+        // Then
+        #expect(result == heroes)
     }
 
     func deleteAll<T: PersistentModel>(of _: T.Type, context: ModelContext) throws {

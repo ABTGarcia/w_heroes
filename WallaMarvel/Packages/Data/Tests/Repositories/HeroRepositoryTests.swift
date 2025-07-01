@@ -123,6 +123,30 @@ struct HeroRepositoryTests: @unchecked Sendable {
         #expect(result == returnValue.map { $0.toDomain() })
     }
 
+    @Test func searchByNameLocally() async throws {
+        // Given
+        let name = "AAA"
+        let returnValue = [HeroEntity(
+            id: 1,
+            name: "A",
+            realName: "B",
+            deck: "C",
+            image: ImageEntity(iconUrl: "F", smallUrl: "D", screenUrl: "E"),
+            apiDetailUrl: "J"
+        )]
+        heroRemoteDatasource.searchByNameThrowableError = TestError.genericError
+        heroLocalDatasource.searchByNameReturnValue = returnValue
+
+        // When
+        let result = try await sut.searchByName(name)
+
+        // Then
+        #expect(heroRemoteDatasource.searchByNameCallsCount == 1)
+        #expect(heroLocalDatasource.searchByNameCallsCount == 1)
+        #expect(heroRemoteDatasource.searchByNameReceivedName == name)
+        #expect(result == returnValue.map { $0.toDomain() })
+    }
+
     private func setDependencies() {
         container.heroRemoteDatasource.register { heroRemoteDatasource }
         container.heroLocalDatasource.register { heroLocalDatasource }

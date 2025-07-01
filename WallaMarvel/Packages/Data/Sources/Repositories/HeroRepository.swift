@@ -37,8 +37,13 @@ public final class HeroRepository: HeroRepositoryProtocol {
     }
 
     public func searchByName(_ name: String) async throws -> [Hero] {
-        let response = try await container.heroRemoteDatasource().searchByName(name)
-        return response.map { $0.toDomain() }
+        do {
+            let response = try await container.heroRemoteDatasource().searchByName(name)
+            return response.map { $0.toDomain() }
+        } catch {
+            let response = try await container.heroLocalDatasource().searchByName(name)
+            return response.map { $0.toDomain() }
+        }
     }
 
     private func responseToHeroesList(_ response: ListEntity<[HeroEntity]>) -> HeroesList {
