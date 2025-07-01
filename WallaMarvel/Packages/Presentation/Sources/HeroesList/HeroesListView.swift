@@ -2,36 +2,33 @@ import DesignSystem
 import Domain
 import SwiftUI
 
-public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
-    @StateObject private var viewModel: ViewModel
+public struct HeroesListView<
+    HeroesListViewModel: HeroesListViewModelProtocol,
+    SearchViewModel: SearchFieldViewModelProtocol
+>: View {
+    @StateObject private var heroesListViewModel: HeroesListViewModel
+    @StateObject private var searchViewModel: SearchViewModel
     @State private var searchText = ""
 
-    public init(viewModel: ViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+    public init(heroesListViewModel: HeroesListViewModel, searchViewModel: SearchViewModel) {
+        _heroesListViewModel = StateObject(wrappedValue: heroesListViewModel)
+        _searchViewModel = StateObject(wrappedValue: searchViewModel)
         Task {
-            await viewModel.process(.appeared)
+            await heroesListViewModel.process(.appeared)
         }
     }
 
     public var body: some View {
-        switch viewModel.state {
+        switch heroesListViewModel.state {
         case let .loaded(data):
-            VStack {
-                SearchFieldView(searchText: $searchText) {
+            ZStack(alignment: .top) {
+                SearchFieldView(searchText: $searchText, viewModel: searchViewModel) { apiDetailUrl in
                     Task {
-                        await viewModel.process(.tapClearResults)
+                        await heroesListViewModel.process(.tapHeroCell(apiDetailUrl))
                     }
                 }
                 .padding()
-                .shadow(radius: 2)
-                .onChange(of: searchText, initial: true) { prev, current in
-                    guard prev != current else {
-                        return
-                    }
-                    Task {
-                        await viewModel.process(.searchTextChanged(searchText))
-                    }
-                }
+                .zIndex(1)
 
                 ScrollView {
                     LazyVGrid(columns: [
@@ -42,12 +39,12 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                             HeroCardView(data: hero)
                                 .onAppear {
                                     Task {
-                                        await viewModel.process(.appearedHeroId(hero.id))
+                                        await heroesListViewModel.process(.appearedHeroId(hero.id))
                                     }
                                 }
                                 .onTapGesture {
                                     Task {
-                                        await viewModel.process(.tapHeroCell(hero.apiDetailUrl))
+                                        await heroesListViewModel.process(.tapHeroCell(hero.apiDetailUrl))
                                     }
                                 }
                                 .accessibilityHint(String(localized: String.LocalizationValue(WMString.heroListAccNavigateDetail)))
@@ -64,38 +61,19 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
                     } else if data.hasError {
                         ErrorView {
                             Task {
-                                await viewModel.process(.tapListRetry)
+                                await heroesListViewModel.process(.tapListRetry)
                             }
                         }.background(Color.white)
                     }
                 }
-                .overlay(alignment: .top) {
-                    if !data.searchList.isEmpty {
-                        ScrollView {
-                            LazyVStack(alignment: .leading) {
-                                ForEach(data.searchList) { result in
-                                    SearchResultsCardView(result: result)
-                                        .background(Color.wmTranspBackground)
-                                        .onTapGesture {
-                                            Task {
-                                                await viewModel.process(.tapHeroCell(result.apiDetailUrl))
-                                            }
-                                        }
-                                        .accessibilityHint(String(localized: String.LocalizationValue(WMString.heroListAccNavigateDetail)))
-                                        .padding()
-                                }
-                            }
-                        }
-                        .background(Color.white)
-                    }
-                }
+                .padding(.top, .spacingXXL)
             }
         case .loading:
             LoadingView()
         case .error:
             ErrorView {
                 Task {
-                    await viewModel.process(.tapMainRetry)
+                    await heroesListViewModel.process(.tapMainRetry)
                 }
             }
         }
@@ -112,7 +90,14 @@ public struct HeroesListView<ViewModel: HeroesListViewModelProtocol>: View {
 
         func process(_: HeroesListEvent) async {}
     }
-    let viewModel = HeroesListViewModelPreview()
+    let heroesListViewModel = HeroesListViewModelPreview()
 
-    return HeroesListView(viewModel: viewModel)
+    final class SearchFieldViewModelPreview: SearchFieldViewModelProtocol {
+        var state: DesignSystem.SearchFieldViewState = .loading
+
+        func process(_: DesignSystem.SearchFieldViewEvent) async {}
+    }
+    let searchViewModel = SearchFieldViewModelPreview()
+
+    return HeroesListView(heroesListViewModel: heroesListViewModel, searchViewModel: searchViewModel)
 }

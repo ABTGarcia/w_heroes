@@ -14,6 +14,7 @@ import Foundation
     import AppKit
 #endif
 
+import DesignSystem
 import Domain
 import SwiftUI
 
@@ -324,6 +325,35 @@ public class HeroesListViewModelProtocolMock: HeroesListViewModelProtocol {
     public var processClosure: ((HeroesListEvent) async -> Void)?
 
     public func process(_ event: HeroesListEvent) async {
+        processCallsCount += 1
+        processReceivedEvent = event
+        processReceivedInvocations.append(event)
+        await processClosure?(event)
+    }
+}
+
+public class SearchFieldViewModelProtocolMock: SearchFieldViewModelProtocol {
+    public init() {}
+
+    public var state: SearchFieldViewState {
+        get { underlyingState }
+        set(value) { underlyingState = value }
+    }
+
+    public var underlyingState: SearchFieldViewState!
+
+    // MARK: - process
+
+    public var processCallsCount = 0
+    public var processCalled: Bool {
+        processCallsCount > 0
+    }
+
+    public var processReceivedEvent: SearchFieldViewEvent?
+    public var processReceivedInvocations: [SearchFieldViewEvent] = []
+    public var processClosure: ((SearchFieldViewEvent) async -> Void)?
+
+    public func process(_ event: SearchFieldViewEvent) async {
         processCallsCount += 1
         processReceivedEvent = event
         processReceivedInvocations.append(event)

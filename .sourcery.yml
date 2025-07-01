@@ -14,6 +14,7 @@ configurations:
  - sources:
      - WallaMarvel/Packages/Presentation/Sources
      - WallaMarvel/Packages/Domain/Sources/UseCases
+     - WallaMarvel/Packages/DesignSystem/Sources
    templates:
      - WallaMarvel/Automockable.stencil
    output: WallaMarvel/Packages/Presentation/Tests/Mocks.swift
@@ -21,6 +22,7 @@ configurations:
      autoMockableImports:
        - SwiftUI
        - Domain
+       - DesignSystem
      autoMockableTestableImports:
        - Presentation
  - sources:
@@ -41,3 +43,14 @@ configurations:
    args:
      autoMockableTestableImports:
        - Domain
+ - sources:
+     - WallaMarvel/Packages/DesignSystem/Sources
+     - WallaMarvel/Packages/Domain/Sources/UseCases
+   templates:
+     - WallaMarvel/Automockable.stencil
+   output: WallaMarvel/Packages/DesignSystem/Tests/Mocks.swift
+   args:
+     autoMockableImports:
+       - Domain
+     autoMockableTestableImports:
+       - DesignSystem
