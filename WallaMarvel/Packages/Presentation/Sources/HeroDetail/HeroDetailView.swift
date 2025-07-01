@@ -33,21 +33,21 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
                         Label(title: {
                             Text(String(localized: String.LocalizationValue(WMString.heroDetailRealName)))
                                 .font(.wmTitle)
-                                .foregroundColor(.wmMainText)
+                                .foregroundColor(.wmNegativeText)
                         }, icon: {
                             Image(systemName: "person.fill.questionmark")
                                 .foregroundColor(.wmMain)
                                 .accessibilityHidden(true)
                         })
                         Text(data.realName ?? data.name)
-                            .font(.wmTitle)
-                            .foregroundColor(.wmSecondaryText)
+                            .font(.wmDescription)
+                            .foregroundColor(.wmNegativeGrayText)
                     }
 
                     if let deck = data.deck {
                         Text(deck)
                             .font(.wmTitle)
-                            .foregroundColor(.wmSecondaryText)
+                            .foregroundColor(.wmNegativeGrayText)
                     }
 
                     HStack(alignment: .top) {

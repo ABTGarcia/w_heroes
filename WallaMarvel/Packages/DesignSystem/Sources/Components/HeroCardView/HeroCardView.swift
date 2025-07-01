@@ -16,16 +16,19 @@ public struct HeroCardView: View {
                 .accessibilityHidden(true)
             VStack(alignment: .center) {
                 Text(data.name)
+                    .foregroundStyle(Color.wmMainText)
                     .font(.wmTitle)
 
                 if let realName = data.realName {
                     Text("(\(realName))")
+                        .foregroundStyle(Color.wmMainText)
                         .font(.wmSmallText)
                 }
 
                 if let description = data.description {
                     Text(description)
                         .font(.wmDescription)
+                        .foregroundStyle(Color.wmMainText)
                         .lineLimit(4)
                         .truncationMode(.tail)
                         .padding(.top, .spacingXS)
