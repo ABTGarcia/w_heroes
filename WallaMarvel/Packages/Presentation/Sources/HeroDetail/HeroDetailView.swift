@@ -1,5 +1,6 @@
 import DesignSystem
 import Domain
+import Kingfisher
 import SwiftUI
 
 public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
@@ -17,39 +18,36 @@ public struct HeroDetailView<ViewModel: HeroDetailViewModelProtocol>: View {
         case let .loaded(data):
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    AsyncImage(url: URL(string: data.image)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .accessibilityHidden(true)
-                    } placeholder: {
-                        WMImage.heroDetailPlaceholder
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .accessibilityHidden(true)
-                    }
-                    .clipped()
-                    .cornerRadius(12)
+                    KFImage(URL(string: data.image))
+                        .placeholder {
+                            WMImage.heroDetailPlaceholder
+                                .resizable()
+                        }
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .accessibilityHidden(true)
+                        .clipped()
+                        .cornerRadius(12)
 
                     HStack {
                         Label(title: {
                             Text(String(localized: String.LocalizationValue(WMString.heroDetailRealName)))
                                 .font(.wmTitle)
-                                .foregroundColor(.wmMainText)
+                                .foregroundColor(.wmNegativeText)
                         }, icon: {
                             Image(systemName: "person.fill.questionmark")
                                 .foregroundColor(.wmMain)
                                 .accessibilityHidden(true)
                         })
                         Text(data.realName ?? data.name)
-                            .font(.wmTitle)
-                            .foregroundColor(.wmSecondaryText)
+                            .font(.wmDescription)
+                            .foregroundColor(.wmNegativeGrayText)
                     }
 
                     if let deck = data.deck {
                         Text(deck)
                             .font(.wmTitle)
-                            .foregroundColor(.wmSecondaryText)
+                            .foregroundColor(.wmNegativeGrayText)
                     }
 
                     HStack(alignment: .top) {

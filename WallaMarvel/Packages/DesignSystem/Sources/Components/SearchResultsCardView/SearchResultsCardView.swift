@@ -1,3 +1,4 @@
+import Kingfisher
 import SwiftUI
 
 public struct SearchResultsCardView: View {
@@ -16,17 +17,18 @@ public struct SearchResultsCardView: View {
                 .accessibilityHidden(true)
             Text(result.name)
                 .font(.wmTitle)
-                .foregroundColor(.wmMainText)
+                .foregroundColor(.wmNegativeGrayText)
+            Spacer()
         }
     }
 
     private var thumbnail: some View {
-        AsyncImage(url: URL(string: result.thumbnail)) { image in
-            image.resizable()
-        } placeholder: {
-            Image(.userPlaceholder)
-                .resizable()
-        }
+        KFImage(URL(string: result.thumbnail))
+            .placeholder {
+                Image(.userPlaceholder)
+                    .resizable()
+            }
+            .resizable()
     }
 }
 

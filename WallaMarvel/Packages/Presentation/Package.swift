@@ -19,6 +19,10 @@ let package = Package(
         .package(
             url: "https://github.com/hmlongco/Factory",
             from: "2.5.1"
+        ),
+        .package(
+            url: "https://github.com/onevcat/Kingfisher.git",
+            from: "8.3.3"
         )
     ],
     targets: [
@@ -27,7 +31,8 @@ let package = Package(
             dependencies: [
                 "Domain",
                 "DesignSystem",
-                .product(name: "FactoryKit", package: "Factory")
+                .product(name: "FactoryKit", package: "Factory"),
+                .product(name: "Kingfisher", package: "Kingfisher")
             ],
             path: "Sources"
         ),

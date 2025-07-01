@@ -24,7 +24,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.1134429052" green="0.74589461089999998" blue="0.69154036050000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.060422010720000002" green="0.77097648379999995" blue="0.74229723219999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3E4-9G-n2O" secondAttribute="trailing" constant="30" id="7hL-XV-Yhq"/>
                             <constraint firstItem="3E4-9G-n2O" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Yc9-fU-eIK"/>
@@ -38,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Launch" width="512" height="512"/>
+        <image name="Launch" width="1024" height="1024"/>
     </resources>
 </document>

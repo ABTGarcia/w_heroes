@@ -3,14 +3,14 @@ import Domain
 import FactoryKit
 import Testing
 
-struct HeroDatasourceTests {
-    private var sut: HeroDatasource
+struct HeroRemoteDatasourceTests {
+    private var sut: HeroRemoteDatasource
     private let container: Container
     private let networkService = NetworkServiceProtocolMock()
 
     init() {
         container = Container()
-        sut = HeroDatasource(container: container)
+        sut = HeroRemoteDatasource(container: container)
         setDependencies()
     }
 
@@ -27,7 +27,7 @@ struct HeroDatasourceTests {
         networkService.requestWithReturnValue = list
 
         // When
-        let result = try await sut.findAll(from: 0)
+        let result = try await sut.findAll(from: 0, limit: 20)
 
         // Then
         #expect(networkService.requestWithCalled)
@@ -48,9 +48,9 @@ struct HeroDatasourceTests {
                 realName: "B",
                 deck: "C",
                 image: ImageEntity(iconUrl: "A", smallUrl: "D", screenUrl: "E"),
-                creators: [RelatedSource(id: 2, name: "F", apiDetailUrl: "G")],
-                characterFriends: [RelatedSource(id: 3, name: "H", apiDetailUrl: "I")],
-                characterEnemies: [RelatedSource(id: 4, name: "J", apiDetailUrl: "K")]
+                creators: [RelatedSource(id: 2, name: "F", apiDetailUrl: "G", hero: nil)],
+                characterFriends: [RelatedSource(id: 3, name: "H", apiDetailUrl: "I", hero: nil)],
+                characterEnemies: [RelatedSource(id: 4, name: "J", apiDetailUrl: "K", hero: nil)]
             )
         )
         networkService.requestWithReturnValue = list
