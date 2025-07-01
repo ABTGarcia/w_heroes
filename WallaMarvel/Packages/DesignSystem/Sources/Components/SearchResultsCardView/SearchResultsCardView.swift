@@ -17,7 +17,7 @@ public struct SearchResultsCardView: View {
                 .accessibilityHidden(true)
             Text(result.name)
                 .font(.wmTitle)
-                .foregroundColor(.wmMainText)
+                .foregroundColor(.wmNegativeGrayText)
             Spacer()
         }
     }
