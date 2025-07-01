@@ -7,8 +7,6 @@ public enum HeroesListEvent: Equatable, Sendable {
     case appeared
     case tapMainRetry
     case appearedHeroId(String)
-    case searchTextChanged(String)
-    case tapClearResults
     case tapListRetry
     case tapHeroCell(String)
 }
@@ -35,20 +33,15 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
     private let container: Container
     private var viewData = HeroesListViewData(heroes: [], isLoading: false, searchList: [])
     private var getHeroesListUseCase: GetHeroesListUseCaseProtocol
-    private var searchHeroByNameUseCase: SearchHeroByNameUseCaseProtocol
     private var showResults = false
 
     public init(coordinator: CoordinatorProtocol, container: Container = .shared) {
         self.container = container
-        guard
-            let getHeroesListUseCase = container.getHeroesListUseCase(),
-            let searchHeroByNameUseCase = container.searchHeroByNameUseCase()
-        else {
+        guard let getHeroesListUseCase = container.getHeroesListUseCase() else {
             preconditionFailure("UseCase not found")
         }
         self.coordinator = coordinator
         self.getHeroesListUseCase = getHeroesListUseCase
-        self.searchHeroByNameUseCase = searchHeroByNameUseCase
         state = .loading
     }
 
@@ -59,10 +52,6 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
         case let .appearedHeroId(id):
             setLoadMore(true)
             await retrieveData(lastId: id)
-        case let .searchTextChanged(name):
-            await search(by: name)
-        case .tapClearResults:
-            clearResults()
         case .tapMainRetry:
             await firstRetrieveData()
         case .tapListRetry:
@@ -123,35 +112,5 @@ public final class HeroesListViewModel: HeroesListViewModelProtocol {
         viewData.hasError = error
         viewData.isLoading = false
         state = .loaded(viewData)
-    }
-
-    private func clearResults() {
-        showResults = false
-        viewData.searchList = []
-        state = .loaded(viewData)
-    }
-
-    private func search(by name: String) async {
-        guard !name.isEmpty else {
-            clearResults()
-            return
-        }
-        showResults = true
-        do {
-            guard let results = try await searchHeroByNameUseCase.invoke(name) else {
-                return
-            }
-
-            guard showResults else {
-                return
-            }
-
-            let foundHeroes = results.map { SearchResultsCardViewData(id: $0.id, name: $0.name, thumbnail: $0.thumbnail, apiDetailUrl: $0.apiDetailUrl) }
-            viewData.searchList = foundHeroes.count > 0 ? foundHeroes : [SearchResultsCardViewData(id: "", name: WMString.searchHeroesEmpty, thumbnail: "", apiDetailUrl: "")]
-            state = .loaded(viewData)
-        } catch {
-            viewData.searchList = [SearchResultsCardViewData(id: "", name: WMString.searchHeroesError, thumbnail: "", apiDetailUrl: "")]
-            state = .loaded(viewData)
-        }
     }
 }

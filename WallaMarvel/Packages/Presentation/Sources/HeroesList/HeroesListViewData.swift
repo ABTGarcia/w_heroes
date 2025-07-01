@@ -4,11 +4,9 @@ import Domain
 public struct HeroesListViewData: Equatable, Sendable {
     var list: [HeroCardViewData] = []
     var isLoading: Bool = false
-    var searchList: [SearchResultsCardViewData]
     var hasError: Bool = false
 
-    public init(heroes: [Hero], isLoading: Bool, searchList: [SearchResultsCardViewData], hasError: Bool = false) {
-        self.searchList = searchList
+    public init(heroes: [Hero], isLoading: Bool, searchList _: [SearchResultsCardViewData], hasError: Bool = false) {
         list = heroes.map { heroToCard($0) }
         self.isLoading = isLoading
         self.hasError = hasError

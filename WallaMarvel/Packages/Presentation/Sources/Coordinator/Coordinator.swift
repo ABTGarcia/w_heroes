@@ -1,3 +1,4 @@
+import DesignSystem
 import Foundation
 import SwiftUI
 
@@ -57,7 +58,7 @@ public class Coordinator: CoordinatorProtocol, ObservableObject {
     public func build(page: AppPages) -> any View {
         switch page {
         case .heroesList:
-            HeroesListView(viewModel: HeroesListViewModel(coordinator: self))
+            HeroesListView(heroesListViewModel: HeroesListViewModel(coordinator: self), searchViewModel: SearchFieldViewModel())
         case let .heroDetail(detailUrl):
             HeroDetailView(viewModel: HeroDetailViewModel(detailUrl: detailUrl))
         }
