@@ -20,6 +20,8 @@
 - Browse a list of Marvel heroes
 - View detailed information for each hero
 - Search hero by name
+- Show previously displayed content without connection
+- Dark mode available
 
 ---
 
@@ -139,6 +141,11 @@ This project includes UI automation tests using [Maestro](https://maestro.mobile
  - Improve navigation
  - Bugfix realname in HeroDetail
 
+### **v1.3.0**
+ - Display local stored data when there's no connection
+ - Cached images displayed
+ - Bugfix touchable area in search results
+ - Improve search whith loading display
 
 ## 👀 More
 - Marvel API documentation was not running, returning constantly errors and I couldn't even use it. Instead of that API, I used [ComicVine API](https://comicvine.gamespot.com/api/), even if it's not wonderful, it works pretty well for this technical challenge. To help you a little bit, I added a Postman collection in the root of this project. Please, feel free to use it, including my own API Key 😁
