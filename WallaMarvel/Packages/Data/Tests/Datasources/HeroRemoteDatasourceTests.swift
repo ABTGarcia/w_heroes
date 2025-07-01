@@ -3,14 +3,14 @@ import Domain
 import FactoryKit
 import Testing
 
-struct HeroDatasourceTests {
-    private var sut: HeroDatasource
+struct HeroRemoteDatasourceTests {
+    private var sut: HeroRemoteDatasource
     private let container: Container
     private let networkService = NetworkServiceProtocolMock()
 
     init() {
         container = Container()
-        sut = HeroDatasource(container: container)
+        sut = HeroRemoteDatasource(container: container)
         setDependencies()
     }
 
@@ -27,7 +27,7 @@ struct HeroDatasourceTests {
         networkService.requestWithReturnValue = list
 
         // When
-        let result = try await sut.findAll(from: 0)
+        let result = try await sut.findAll(from: 0, limit: 20)
 
         // Then
         #expect(networkService.requestWithCalled)
