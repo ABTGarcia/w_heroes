@@ -24,9 +24,16 @@ public final class HeroRepository: HeroRepositoryProtocol {
     }
 
     public func getDetail(withUrl url: String) async throws -> HeroDetail {
-        let response = try await container.heroRemoteDatasource().getDetail(withUrl: url)
+        do {
+            let response = try await container.heroRemoteDatasource().getDetail(withUrl: url)
+            response.apiDetailUrl = url
+            try await container.heroLocalDatasource().save(heroDetail: response)
+            return response.toDomain()
 
-        return response.toDomain()
+        } catch {
+            let response = try await container.heroLocalDatasource().getDetail(withUrl: url)
+            return response.toDomain()
+        }
     }
 
     public func searchByName(_ name: String) async throws -> [Hero] {

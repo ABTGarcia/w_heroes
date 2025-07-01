@@ -5,7 +5,9 @@ import SwiftData
 // sourcery: AutoMockable
 protocol HeroLocalDatasourceProtocol {
     func findAll(from position: Int, limit: Int) async throws -> ListEntity<[HeroEntity]>
+    func getDetail(withUrl url: String) async throws -> HeroDetailEntity
     func save(heroes: [HeroEntity]) async throws
+    func save(heroDetail: HeroDetailEntity) async throws
 }
 
 final class HeroLocalDatasource: HeroLocalDatasourceProtocol {
@@ -34,6 +36,18 @@ final class HeroLocalDatasource: HeroLocalDatasourceProtocol {
         )
     }
 
+    func getDetail(withUrl: String) async throws -> HeroDetailEntity {
+        let descriptor = FetchDescriptor<HeroDetailEntity>(
+            predicate: #Predicate { $0.apiDetailUrl == withUrl }
+        )
+
+        guard let heroDetail = try context.fetch(descriptor).first else {
+            throw LocalDataError.noDataFound
+        }
+
+        return heroDetail
+    }
+
     public func save(heroes: [HeroEntity]) async throws {
         for hero in heroes {
             let fetchDescriptor = FetchDescriptor<HeroEntity>(
@@ -50,6 +64,26 @@ final class HeroLocalDatasource: HeroLocalDatasourceProtocol {
             } else {
                 context.insert(hero)
             }
+        }
+        try context.save()
+    }
+
+    public func save(heroDetail: HeroDetailEntity) async throws {
+        let fetchDescriptor = FetchDescriptor<HeroDetailEntity>(
+            predicate: #Predicate { $0.id == heroDetail.id }
+        )
+
+        if let existing = try? context.fetch(fetchDescriptor).first {
+            existing.name = heroDetail.name
+            existing.realName = heroDetail.realName
+            existing.deck = heroDetail.deck
+            existing.image = heroDetail.image
+            existing.creators = heroDetail.creators
+            existing.characterFriends = heroDetail.characterFriends
+            existing.characterEnemies = heroDetail.characterEnemies
+            existing.apiDetailUrl = heroDetail.apiDetailUrl
+        } else {
+            context.insert(heroDetail)
         }
         try context.save()
     }

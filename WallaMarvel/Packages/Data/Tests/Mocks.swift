@@ -46,6 +46,33 @@ class HeroLocalDatasourceProtocolMock: HeroLocalDatasourceProtocol {
         }
     }
 
+    // MARK: - getDetail
+
+    var getDetailWithUrlThrowableError: (any Error)?
+    var getDetailWithUrlCallsCount = 0
+    var getDetailWithUrlCalled: Bool {
+        getDetailWithUrlCallsCount > 0
+    }
+
+    var getDetailWithUrlReceivedUrl: String?
+    var getDetailWithUrlReceivedInvocations: [String] = []
+    var getDetailWithUrlReturnValue: HeroDetailEntity!
+    var getDetailWithUrlClosure: ((String) async throws -> HeroDetailEntity)?
+
+    func getDetail(withUrl url: String) async throws -> HeroDetailEntity {
+        getDetailWithUrlCallsCount += 1
+        getDetailWithUrlReceivedUrl = url
+        getDetailWithUrlReceivedInvocations.append(url)
+        if let error = getDetailWithUrlThrowableError {
+            throw error
+        }
+        if let getDetailWithUrlClosure {
+            return try await getDetailWithUrlClosure(url)
+        } else {
+            return getDetailWithUrlReturnValue
+        }
+    }
+
     // MARK: - save
 
     var saveHeroesThrowableError: (any Error)?
@@ -66,6 +93,28 @@ class HeroLocalDatasourceProtocolMock: HeroLocalDatasourceProtocol {
             throw error
         }
         try await saveHeroesClosure?(heroes)
+    }
+
+    // MARK: - save
+
+    var saveHeroDetailThrowableError: (any Error)?
+    var saveHeroDetailCallsCount = 0
+    var saveHeroDetailCalled: Bool {
+        saveHeroDetailCallsCount > 0
+    }
+
+    var saveHeroDetailReceivedHeroDetail: HeroDetailEntity?
+    var saveHeroDetailReceivedInvocations: [HeroDetailEntity] = []
+    var saveHeroDetailClosure: ((HeroDetailEntity) async throws -> Void)?
+
+    func save(heroDetail: HeroDetailEntity) async throws {
+        saveHeroDetailCallsCount += 1
+        saveHeroDetailReceivedHeroDetail = heroDetail
+        saveHeroDetailReceivedInvocations.append(heroDetail)
+        if let error = saveHeroDetailThrowableError {
+            throw error
+        }
+        try await saveHeroDetailClosure?(heroDetail)
     }
 }
 

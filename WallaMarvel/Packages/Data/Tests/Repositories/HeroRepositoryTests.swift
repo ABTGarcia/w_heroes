@@ -19,6 +19,17 @@ struct HeroRepositoryTests: @unchecked Sendable {
         )
     }
 
+    private let detailEntity = HeroDetailEntity(
+        id: 1,
+        name: "A",
+        realName: "B",
+        deck: "C",
+        image: ImageEntity(iconUrl: "F", smallUrl: "D", screenUrl: "E"),
+        creators: [RelatedSource(id: 1, name: "F", apiDetailUrl: "G")],
+        characterFriends: [RelatedSource(id: 2, name: "H", apiDetailUrl: "I")],
+        characterEnemies: [RelatedSource(id: 3, name: "J", apiDetailUrl: "K")]
+    )
+
     init() {
         container = Container()
         sut = HeroRepository(container: container)
@@ -62,16 +73,6 @@ struct HeroRepositoryTests: @unchecked Sendable {
     @Test func getDetail() async throws {
         // Given
         let detailURL = "AAA"
-        let detailEntity = HeroDetailEntity(
-            id: 1,
-            name: "A",
-            realName: "B",
-            deck: "C",
-            image: ImageEntity(iconUrl: "F", smallUrl: "D", screenUrl: "E"),
-            creators: [RelatedSource(id: 1, name: "F", apiDetailUrl: "G")],
-            characterFriends: [RelatedSource(id: 2, name: "H", apiDetailUrl: "I")],
-            characterEnemies: [RelatedSource(id: 3, name: "J", apiDetailUrl: "K")]
-        )
         heroRemoteDatasource.getDetailWithUrlReturnValue = detailEntity
 
         // When
@@ -79,6 +80,23 @@ struct HeroRepositoryTests: @unchecked Sendable {
 
         // Then
         #expect(heroRemoteDatasource.getDetailWithUrlCallsCount == 1)
+        #expect(heroRemoteDatasource.getDetailWithUrlReceivedUrl == detailURL)
+        #expect(result == detailEntity.toDomain())
+    }
+
+    @Test func getDetailLocally() async throws {
+        // Given
+        let detailURL = "AAA"
+
+        heroRemoteDatasource.getDetailWithUrlThrowableError = TestError.genericError
+        heroLocalDatasource.getDetailWithUrlReturnValue = detailEntity
+
+        // When
+        let result = try await sut.getDetail(withUrl: detailURL)
+
+        // Then
+        #expect(heroRemoteDatasource.getDetailWithUrlCallsCount == 1)
+        #expect(heroLocalDatasource.getDetailWithUrlCallsCount == 1)
         #expect(heroRemoteDatasource.getDetailWithUrlReceivedUrl == detailURL)
         #expect(result == detailEntity.toDomain())
     }
