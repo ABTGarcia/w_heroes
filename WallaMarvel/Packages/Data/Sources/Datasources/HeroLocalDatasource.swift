@@ -105,6 +105,9 @@ final class HeroLocalDatasource: HeroLocalDatasourceProtocol {
             existing.characterEnemies = heroDetail.characterEnemies
             existing.apiDetailUrl = heroDetail.apiDetailUrl
         } else {
+            heroDetail.characterFriends.forEach { context.insert($0) }
+            heroDetail.characterEnemies.forEach { context.insert($0) }
+            heroDetail.creators.forEach { context.insert($0) }
             context.insert(heroDetail)
         }
         try context.save()

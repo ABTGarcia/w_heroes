@@ -61,7 +61,8 @@ public struct SearchFieldView<ViewModel: SearchFieldViewModelProtocol>: View {
                         }
                     }
                 }
-                .background(Color.white)
+                .frame(height: 300)
+                .background(Color.wmTranspBackground)
             case .loading:
                 HStack {
                     Spacer()
